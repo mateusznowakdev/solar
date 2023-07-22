@@ -1,5 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth.models import User
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework import routers, serializers, viewsets
 
 
@@ -23,5 +24,7 @@ router.register(r"users", UserViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
+    path("api/schema", SpectacularAPIView.as_view(), name="schema"),
+    path("api/schema/ui", SpectacularSwaggerView.as_view(), name="schema-ui"),
 ]
