@@ -1,5 +1,23 @@
 from datetime import datetime as dt
 
+from django.conf import settings
+from django.core.management import BaseCommand
+
+from modbus.core.models import State
+
+
+class Command(BaseCommand):
+    def handle(self, *args, **options):
+        if not settings.DEBUG:
+            print("Cannot run this command in production environment")
+            return
+
+        objects = [State(**dict(zip(keys, value_row))) for value_row in values]
+        count = State.objects.bulk_create(objects)
+
+        print(f"Created {len(count)} new entries.")
+
+
 keys = [
     "controller_faults",
     "inverter_faults",
