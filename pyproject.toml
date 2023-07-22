@@ -6,6 +6,10 @@ authors = []
 
 [tool.poetry.dependencies]
 python = "^3.11"
+django = "^4.2.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
 
 [build-system]
 requires = ["poetry-core"]
