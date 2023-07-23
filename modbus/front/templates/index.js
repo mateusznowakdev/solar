@@ -1,4 +1,7 @@
-const { createElement: c, useEffect, useState } = React;
+const UPDATE_INTERVAL = 2500;
+const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
+
+const { Fragment, createElement: c, useEffect, useState } = React;
 
 function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;
@@ -8,6 +11,16 @@ function sortByPinned(a, b) {
   if (a.key > b.key) return 1;
 
   return 0;
+}
+
+function Counter({ value }) {
+  if (value < UPDATE_MAX_COUNT) return;
+
+  return c(
+    "div",
+    { className: "alert alert-secondary m-3" },
+    "Updates paused, refresh to continue",
+  );
 }
 
 function StateListItem({ item, toggleFn }) {
@@ -40,6 +53,8 @@ function App() {
   const [state, setState] = useState({});
   const [pinned, setPinned] = useState([]);
 
+  const [counter, setCounter] = useState(0);
+
   function getState() {
     fetch("/api/state/")
       .then((response) => response.json())
@@ -47,7 +62,9 @@ function App() {
   }
 
   function getPinned() {
-    const pinned = JSON.parse(localStorage.getItem("pinned") || '["timestamp"]');
+    const pinned = JSON.parse(
+      localStorage.getItem("pinned") || '["timestamp"]',
+    );
     setPinned(pinned);
   }
 
@@ -71,10 +88,32 @@ function App() {
       .sort(sortByPinned);
   }
 
+  function updateCounter() {
+    // {# This is counter-intuitive, but updated state would not be accessible #}
+    setCounter((c) => {
+      if (c < UPDATE_MAX_COUNT) {
+        getState();
+        return c + 1;
+      } else {
+        return c;
+      }
+    });
+  }
+
   useEffect(getPinned, []);
   useEffect(getState, []);
 
-  return c(StateList, { items: mergeData(), toggleFn: togglePinned });
+  useEffect(() => {
+    const fn = setInterval(updateCounter, UPDATE_INTERVAL);
+    return () => clearInterval(fn);
+  }, []);
+
+  return c(
+    Fragment,
+    null,
+    c(Counter, { value: counter }),
+    c(StateList, { items: mergeData(), toggleFn: togglePinned }),
+  );
 }
 
 ReactDOM.render(c(App), document.getElementById("root"));
