@@ -18,7 +18,7 @@
     <script type="text/javascript">
       const stateList = document.getElementById("state");
 
-      function c(tag, options, ...children) {
+      function c(tag, options = {}, children = []) {
         const element = document.createElement(tag);
 
         for (const key in options) element[key] = options[key];
@@ -32,8 +32,13 @@
           c(
             "li",
             { className: "d-flex justify-content-between list-group-item" },
-            c("div", { className: "", textContent: key }),
-            c("div", { className: "", textContent: value }),
+            [
+              c("div", { className: "d-flex" }, [
+                c("div", { className: "me-2", textContent: "⚪" }),
+                c("div", { className: "me-2", textContent: key }),
+              ]),
+              c("div", { textContent: value }),
+            ],
           ),
         );
       }
