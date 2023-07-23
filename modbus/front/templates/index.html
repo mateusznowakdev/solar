@@ -18,11 +18,21 @@
     <script type="text/javascript">
       const stateList = document.getElementById("state");
 
+      function c(tag, options) {
+        const element = document.createElement(tag);
+        for (const key in options) {
+          element[key] = options[key];
+        }
+        return element;
+      }
+
       function appendListItem([key, value]) {
-        const item = document.createElement("li");
-        item.className = "list-group-item";
-        item.textContent = `${key} : ${value}`;
-        stateList.appendChild(item);
+        stateList.appendChild(
+          c("li", {
+            className: "list-group-item",
+            textContent: `${key} : ${value}`,
+          }),
+        );
       }
 
       fetch("/api/state/")
