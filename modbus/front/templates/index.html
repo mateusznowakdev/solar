@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
+    <ul id="state"></ul>
     <script type="text/javascript">
+      const stateList = document.getElementById("state");
+
+      function appendListItem([key, value]) {
+        const item = document.createElement("li");
+        item.textContent = `${key} : ${value}`;
+        stateList.appendChild(item);
+      }
+
       fetch("/api/state/")
-        .then((response) => response.text())
-        .then((text) => (document.body.textContent = text));
+        .then((response) => response.json())
+        .then((json) => Object.entries(json).sort().forEach(appendListItem));
     </script>
   </body>
 </html>
