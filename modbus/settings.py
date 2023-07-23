@@ -46,6 +46,7 @@ EXTRA_APPS = [
 
 CUSTOM_APPS = [
     "modbus.core",
+    "modbus.front",
 ]
 
 INSTALLED_APPS = MAIN_APPS + EXTRA_APPS + CUSTOM_APPS

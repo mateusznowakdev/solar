@@ -3,7 +3,11 @@ from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from modbus.core.serializers import NullSerializer, StateRequestSerializer, StateResponseSerializer
+from modbus.core.serializers import (
+    NullSerializer,
+    StateRequestSerializer,
+    StateResponseSerializer,
+)
 from modbus.core.services import get_state, patch_state
 
 
