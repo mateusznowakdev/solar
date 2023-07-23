@@ -11,27 +11,30 @@
     />
   </head>
   <body>
-    <div class="container m-0 p-0">
+    <div class="container-fluid m-0 p-0">
       <ul class="list-group list-group-flush" id="state"></ul>
     </div>
 
     <script type="text/javascript">
       const stateList = document.getElementById("state");
 
-      function c(tag, options) {
+      function c(tag, options, ...children) {
         const element = document.createElement(tag);
-        for (const key in options) {
-          element[key] = options[key];
-        }
+
+        for (const key in options) element[key] = options[key];
+        for (const child of children) element.appendChild(child);
+
         return element;
       }
 
       function appendListItem([key, value]) {
         stateList.appendChild(
-          c("li", {
-            className: "list-group-item",
-            textContent: `${key} : ${value}`,
-          }),
+          c(
+            "li",
+            { className: "d-flex justify-content-between list-group-item" },
+            c("div", { className: "", textContent: key }),
+            c("div", { className: "", textContent: value }),
+          ),
         );
       }
 
