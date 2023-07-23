@@ -4,11 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      crossorigin
+      href="https://unpkg.com/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
     />
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"
+    ></script>
     <style>
       .pin-icon {
         cursor: pointer;
@@ -16,51 +23,49 @@
     </style>
   </head>
   <body>
-    <div class="container-fluid m-0 p-0">
-      <ul class="list-group list-group-flush" id="state"></ul>
-    </div>
-
+    <div class="container-fluid m-0 p-0" id="root"></div>
     <script type="text/javascript">
-      const pinned = new Set();
-      const stateList = document.getElementById("state");
+      const { createElement: c, useEffect, useState } = React;
 
-      function c(tag, options = {}, children = []) {
-        const element = document.createElement(tag);
-
-        for (const key in options) element[key] = options[key];
-        for (const child of children) element.appendChild(child);
-
-        return element;
-      }
-
-      function togglePin(key) {
-        pinned.has(key) ? pinned.delete(key) : pinned.add(key);
-        console.log(pinned);
-      }
-
-      function appendListItem([key, value]) {
-        stateList.appendChild(
+      function StateListItem({ id, value }) {
+        return c(
+          "li",
+          { className: "d-flex justify-content-between list-group-item" },
           c(
-            "li",
-            { className: "d-flex justify-content-between list-group-item" },
-            [
-              c("div", { className: "d-flex" }, [
-                c("div", {
-                  className: "me-2 pin-icon",
-                  onclick: () => togglePin(key),
-                  textContent: "⚪",
-                }),
-                c("div", { className: "me-2", textContent: key }),
-              ]),
-              c("div", { textContent: value }),
-            ],
+            "div",
+            { className: "d-flex" },
+            c("div", { className: "me-2 pin-icon" }, "⚪"),
+            c("div", { className: "me-2" }, id),
           ),
+          c("div", null, value),
         );
       }
 
-      fetch("/api/state/")
-        .then((response) => response.json())
-        .then((json) => Object.entries(json).sort().forEach(appendListItem));
+      function StateList({ state }) {
+        return c(
+          "ul",
+          { className: "list-group list-group-flush" },
+          Object.entries(state)
+            .sort()
+            .map(([id, value]) => c(StateListItem, { id, value })),
+        );
+      }
+
+      function App() {
+        const [state, setState] = useState({});
+
+        function getState() {
+          fetch("/api/state/")
+            .then((response) => response.json())
+            .then((json) => setState(json));
+        }
+
+        useEffect(getState, []);
+
+        return c(StateList, { state });
+      }
+
+      ReactDOM.render(c(App), document.getElementById("root"));
     </script>
   </body>
 </html>
