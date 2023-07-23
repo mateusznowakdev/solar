@@ -9,6 +9,11 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
+    <style>
+      .pin-icon {
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="container-fluid m-0 p-0">
@@ -16,6 +21,7 @@
     </div>
 
     <script type="text/javascript">
+      const pinned = new Set();
       const stateList = document.getElementById("state");
 
       function c(tag, options = {}, children = []) {
@@ -27,6 +33,11 @@
         return element;
       }
 
+      function togglePin(key) {
+        pinned.has(key) ? pinned.delete(key) : pinned.add(key);
+        console.log(pinned);
+      }
+
       function appendListItem([key, value]) {
         stateList.appendChild(
           c(
@@ -34,7 +45,11 @@
             { className: "d-flex justify-content-between list-group-item" },
             [
               c("div", { className: "d-flex" }, [
-                c("div", { className: "me-2", textContent: "⚪" }),
+                c("div", {
+                  className: "me-2 pin-icon",
+                  onclick: () => togglePin(key),
+                  textContent: "⚪",
+                }),
                 c("div", { className: "me-2", textContent: key }),
               ]),
               c("div", { textContent: value }),
