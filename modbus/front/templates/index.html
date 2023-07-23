@@ -74,7 +74,8 @@
         }
 
         function getPinned() {
-          setPinned(["battery_voltage", "bus_voltage", "dc_voltage"]);
+          const pinned = JSON.parse(localStorage.getItem("pinned") || "[]");
+          setPinned(pinned);
         }
 
         function togglePinned(key) {
@@ -84,6 +85,7 @@
           idx === -1 ? pinnedCopy.push(key) : pinnedCopy.splice(idx, 1);
 
           setPinned(pinnedCopy);
+          localStorage.setItem("pinned", JSON.stringify(pinnedCopy));
         }
 
         function mergeData() {
