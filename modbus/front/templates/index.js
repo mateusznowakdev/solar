@@ -45,7 +45,7 @@ function StateList({ items, toggleFn }) {
   return c(
     "ul",
     { className: "list-group list-group-flush" },
-    items.map((item) => c(StateListItem, { item, toggleFn })),
+    items.map((item, key) => c(StateListItem, { item, key, toggleFn })),
   );
 }
 
