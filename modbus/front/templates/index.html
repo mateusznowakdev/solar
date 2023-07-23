@@ -1,11 +1,14 @@
+<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    </head>
-    <body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
     <script type="text/javascript">
-        fetch("/api/state/").then(response => response.text()).then(text => document.body.textContent = text)
+      fetch("/api/state/")
+        .then((response) => response.text())
+        .then((text) => (document.body.textContent = text));
     </script>
-    </body>
+  </body>
 </html>
