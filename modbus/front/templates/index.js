@@ -47,7 +47,7 @@ function App() {
   }
 
   function getPinned() {
-    const pinned = JSON.parse(localStorage.getItem("pinned") || "[]");
+    const pinned = JSON.parse(localStorage.getItem("pinned") || '["timestamp"]');
     setPinned(pinned);
   }
 
