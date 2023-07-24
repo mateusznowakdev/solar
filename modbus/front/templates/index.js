@@ -3,6 +3,24 @@ const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
 
 const { Fragment, createElement: c, useEffect, useState } = React;
 
+function isDate(value) {
+  return value
+    .toString()
+    .substring(0, 10)
+    .match(/\d{4}-\d{2}-\d{2}/);
+}
+
+function handleDate(value) {
+  if (isDate(value)) {
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: "short",
+      timeStyle: "medium",
+    }).format(new Date(value));
+  }
+
+  return value;
+}
+
 function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;
   if (!a.pin && b.pin) return 1;
@@ -88,7 +106,7 @@ function App() {
         const keyMeta = meta[key] || {};
         return {
           key,
-          value,
+          value: handleDate(value),
           pin: pinned.includes(key),
           description: keyMeta["description"] || key,
           unit: keyMeta["unit"] || "",
