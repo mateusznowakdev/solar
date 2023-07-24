@@ -12,7 +12,7 @@ function isDate(value) {
 
 function mapValue(value, choices) {
   if (choices) {
-    return choices[value.toString()] || value
+    return choices[value.toString()] || value;
   }
 
   if (isDate(value)) {
@@ -20,6 +20,10 @@ function mapValue(value, choices) {
       dateStyle: "short",
       timeStyle: "medium",
     }).format(new Date(value));
+  }
+
+  if (typeof value == "object") {
+    return JSON.stringify(value);
   }
 
   return value;

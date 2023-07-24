@@ -49,7 +49,7 @@ def get_meta() -> dict:
             },
         },
         "controller_faults": {
-            "description": "Błędy kontrolera",
+            "description": "Kody błędów sterownika",
         },
         "current_state": {
             "description": "Tryb inwertera",
@@ -114,7 +114,7 @@ def get_meta() -> dict:
             "unit": "mV",
         },
         "inverter_faults": {
-            "description": "Błędy inwertera",
+            "description": "Kody błędów inwertera",
         },
         "inverter_frequency": {
             "description": "Częstotliwość inwertera",
