@@ -7,10 +7,7 @@ function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;
   if (!a.pin && b.pin) return 1;
 
-  if (a.key < b.key) return -1;
-  if (a.key > b.key) return 1;
-
-  return 0;
+  return a.description.localeCompare(b.description);
 }
 
 function IdleRefreshButton({ value }) {
@@ -35,9 +32,9 @@ function StateListItem({ item, toggleFn }) {
         { className: "me-2 pin-icon", onClick: () => toggleFn(item.key) },
         item.pin ? "⚫" : "⚪",
       ),
-      c("div", { className: "me-2" }, item.description || item.key),
+      c("div", { className: "me-2" }, item.description),
     ),
-    c("div", null, `${item.value}${item.unit || ""}`),
+    c("div", null, `${item.value} ${item.unit}`),
   );
 }
 
@@ -88,12 +85,13 @@ function App() {
   function mergeData() {
     return Object.entries(state)
       .map(([key, value]) => {
-        const initial = meta[key] || {};
+        const keyMeta = meta[key] || {};
         return {
-          ...initial,
           key,
           value,
           pin: pinned.includes(key),
+          description: keyMeta["description"] || key,
+          unit: keyMeta["unit"] || "",
         };
       })
       .sort(sortByPinned);
