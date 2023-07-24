@@ -38,19 +38,24 @@ function SeriesSelect({ choices, current, setCurrent }) {
 function PresetButtons() {
   return c(
     "div",
-    { className: "mb-3 mx-3 time-buttons" },
+    { className: "mb-3 mx-3 preset-buttons" },
     Object.keys(PRESETS).map((label) =>
       c("button", { className: "btn btn-light", key: label }, label),
     ),
   );
 }
 
-function DateTimeInput() {
+function DateTimeInput({ current, setCurrent }) {
   return c(
     "div",
-    { className: "input-group mb-3" },
+    {
+      className: "date-time-input input-group mb-3",
+      onChange: (e) => setCurrent(e.target.value),
+      value: current,
+    },
     c("input", { className: "form-control ms-3", type: "date" }),
-    c("input", { className: "form-control me-3", type: "time" }),
+    c("input", { className: "form-control", type: "time" }),
+    c("button", { className: "btn btn-light me-3" }, "×"),
   );
 }
 
@@ -58,13 +63,15 @@ function App() {
   const [state, setState] = useState({});
   const [meta, setMeta] = useState({});
 
-  const [current, setCurrent] = useState("");
+  const [choice, setChoice] = useState("");
+  const [startDate, setStartDate] = useState();
+  const [stopDate, setStopDate] = useState();
 
   function getInitialKey() {
     const params = new URLSearchParams(location.search);
     const initial = params.get("initial");
 
-    if (initial) setCurrent(initial);
+    if (initial) setChoice(initial);
   }
 
   function getState() {
@@ -98,10 +105,14 @@ function App() {
   return c(
     Fragment,
     null,
-    c(SeriesSelect, { choices: mergeSelectData(), current, setCurrent }),
+    c(SeriesSelect, {
+      choices: mergeSelectData(),
+      current: choice,
+      setCurrent: setChoice,
+    }),
     c(PresetButtons),
-    c(DateTimeInput),
-    c(DateTimeInput),
+    c(DateTimeInput, { current: startDate, setCurrent: setStartDate }),
+    c(DateTimeInput, { current: stopDate, setCurrent: setStopDate }),
   );
 }
 
