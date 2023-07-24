@@ -1,7 +1,48 @@
-const { createElement: c, useEffect, useState } = React;
+const { Fragment, createElement: c, useEffect, useState } = React;
+
+const PRESETS = {
+  "1m": 60,
+  "5m": 60 * 5,
+  "10m": 60 * 10,
+  "30m": 60 * 30,
+  "60m": 60 * 60,
+  "1h": 60 * 60,
+  "2h": 60 * 60 * 2,
+  "4h": 60 * 60 * 4,
+  "12h": 60 * 60 * 12,
+  "24h": 60 * 60 * 24,
+};
 
 function sort(a, b) {
   return a.description.localeCompare(b.description);
+}
+
+function SeriesSelect({ choices, current, setCurrent }) {
+  return c(
+    "div",
+    { className: "input-group" },
+    c(
+      "select",
+      {
+        className: "form-select m-3",
+        onChange: (e) => setCurrent(e.target.value),
+        value: current,
+      },
+      choices.map((item) =>
+        c("option", { key: item.key, value: item.key }, item.description),
+      ),
+    ),
+  );
+}
+
+function PresetButtons() {
+  return c(
+    "div",
+    { className: "mx-3 time-buttons" },
+    Object.keys(PRESETS).map((label) =>
+      c("button", { className: "btn btn-light", key: label }, label),
+    ),
+  );
 }
 
 function App() {
@@ -46,19 +87,10 @@ function App() {
   useEffect(getMeta, []);
 
   return c(
-    "div",
-    { className: "input-group" },
-    c(
-      "select",
-      {
-        className: "form-select m-3",
-        onChange: (e) => setCurrent(e.target.value),
-        value: current,
-      },
-      mergeSelectData().map((item, key) =>
-        c("option", { key, value: item.key }, item.description),
-      ),
-    ),
+    Fragment,
+    null,
+    c(SeriesSelect, { choices: mergeSelectData(), current, setCurrent }),
+    c(PresetButtons),
   );
 }
 

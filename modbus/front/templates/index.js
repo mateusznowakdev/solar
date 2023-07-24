@@ -1,7 +1,7 @@
+const { Fragment, createElement: c, useEffect, useState } = React;
+
 const UPDATE_INTERVAL = 2500;
 const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
-
-const { Fragment, createElement: c, useEffect, useState } = React;
 
 function isDate(value) {
   return value
@@ -46,7 +46,7 @@ function IdleRefreshButton({ value }) {
   );
 }
 
-function StateListItem({ item, toggleFn }) {
+function StateListItem({ item, togglePinned }) {
   return c(
     "a",
     {
@@ -61,7 +61,7 @@ function StateListItem({ item, toggleFn }) {
         {
           className: "me-2 pin-icon",
           onClick: (e) => {
-            toggleFn(item.key);
+            togglePinned(item.key);
             e.preventDefault();
           },
         },
@@ -73,11 +73,13 @@ function StateListItem({ item, toggleFn }) {
   );
 }
 
-function StateList({ items, toggleFn }) {
+function StateList({ items, togglePinned }) {
   return c(
     "div",
     { className: "list-group list-group-flush" },
-    items.map((item, key) => c(StateListItem, { item, key, toggleFn })),
+    items.map((item) =>
+      c(StateListItem, { item, key: item.key, togglePinned }),
+    ),
   );
 }
 
@@ -157,7 +159,7 @@ function App() {
     Fragment,
     null,
     c(IdleRefreshButton, { value: counter }),
-    c(StateList, { items: mergeListData(), toggleFn: togglePinned }),
+    c(StateList, { items: mergeListData(), togglePinned }),
   );
 }
 
