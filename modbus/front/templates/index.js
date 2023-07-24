@@ -48,14 +48,23 @@ function IdleRefreshButton({ value }) {
 
 function StateListItem({ item, toggleFn }) {
   return c(
-    "li",
-    { className: "d-flex justify-content-between list-group-item" },
+    "a",
+    {
+      className: "d-flex justify-content-between list-group-item",
+      href: `/charts/?initial=${item.key}`,
+    },
     c(
       "div",
       { className: "d-flex" },
       c(
         "div",
-        { className: "me-2 pin-icon", onClick: () => toggleFn(item.key) },
+        {
+          className: "me-2 pin-icon",
+          onClick: (e) => {
+            toggleFn(item.key);
+            e.preventDefault();
+          },
+        },
         item.pin ? "⚫" : "⚪",
       ),
       c("div", { className: "me-2" }, item.description),
@@ -66,7 +75,7 @@ function StateListItem({ item, toggleFn }) {
 
 function StateList({ items, toggleFn }) {
   return c(
-    "ul",
+    "div",
     { className: "list-group list-group-flush" },
     items.map((item, key) => c(StateListItem, { item, key, toggleFn })),
   );
