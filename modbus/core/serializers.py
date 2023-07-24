@@ -4,8 +4,9 @@ from modbus.core.models import State
 
 
 class MetaResponseSerializer(serializers.Serializer):
-    description = serializers.CharField()
-    unit = serializers.CharField()
+    description = serializers.CharField(required=False)
+    choices = serializers.DictField(required=False, child=serializers.CharField())
+    unit = serializers.CharField(required=False)
 
 
 class NullSerializer(serializers.Serializer):

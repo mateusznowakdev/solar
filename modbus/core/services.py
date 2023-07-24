@@ -29,15 +29,42 @@ def get_meta() -> dict:
         },
         "charge_priority": {
             "description": "Priorytet ładowania",
+            "choices": {
+                "0": "Preferuj PV",
+                "1": "Preferuj sieć",
+                "2": "Tryb mieszany",
+                "3": "Tylko PV",
+            },
         },
         "charge_status": {
-            "description": "Stan ładowania",
+            "description": "Tryb ładowania",
+            "choices": {
+                "0": "Wyłączone",
+                "1": "Włączone",
+                "2": "MPPT",
+                "3": "Wyrównujące",
+                "4": "Przyspieszone",
+                "5": "Pływające",
+                "6": "Ograniczone",
+            },
         },
         "controller_faults": {
             "description": "Błędy kontrolera",
         },
         "current_state": {
-            "description": "Stan inwertera",
+            "description": "Tryb inwertera",
+            "choices": {
+                "0": "Opóźnienie po uruchomieniu",
+                "1": "Oczekiwanie",
+                "2": "Uruchamianie",
+                "3": "Miękki start",
+                "4": "Sieć",
+                "5": "Inwerter",
+                "6": "Inwerter do sieci",
+                "7": "Sieć do inwertera",
+                "10": "Wyłączone",
+                "11": "Awaria",
+            },
         },
         "current_time": {
             "description": "Czas inwertera",
@@ -111,6 +138,10 @@ def get_meta() -> dict:
         },
         "load_on": {
             "description": "Obciążenie",
+            "choices": {
+                "false": "Nie",
+                "true": "Tak",
+            },
         },
         "load_pf": {
             "description": "Współczynnik mocy obciążenia",
@@ -125,6 +156,11 @@ def get_meta() -> dict:
         },
         "output_priority": {
             "description": "Priorytet wyjścia",
+            "choices": {
+                "0": "Panel",
+                "1": "Sieć",
+                "2": "Inwerter",
+            },
         },
         "pv_buck_current_1": {
             "description": "Zbiorczy prąd PV 1",

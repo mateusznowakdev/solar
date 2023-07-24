@@ -10,7 +10,11 @@ function isDate(value) {
     .match(/\d{4}-\d{2}-\d{2}/);
 }
 
-function handleDate(value) {
+function mapValue(value, choices) {
+  if (choices) {
+    return choices[value.toString()] || value
+  }
+
   if (isDate(value)) {
     return new Intl.DateTimeFormat(undefined, {
       dateStyle: "short",
@@ -106,7 +110,7 @@ function App() {
         const keyMeta = meta[key] || {};
         return {
           key,
-          value: handleDate(value),
+          value: mapValue(value, keyMeta["choices"]),
           pin: pinned.includes(key),
           description: keyMeta["description"] || key,
           unit: keyMeta["unit"] || "",
