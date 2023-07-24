@@ -8,6 +8,15 @@ function App() {
   const [state, setState] = useState({});
   const [meta, setMeta] = useState({});
 
+  const [current, setCurrent] = useState(null);
+
+  function getInitialKey() {
+    const params = new URLSearchParams(location.search);
+    const initial = params.get("initial");
+
+    if (initial) setCurrent(initial);
+  }
+
   function getState() {
     fetch("/api/state/")
       .then((response) => response.json())
@@ -32,18 +41,24 @@ function App() {
       .sort(sort);
   }
 
+  useEffect(getInitialKey, []);
   useEffect(getState, []);
   useEffect(getMeta, []);
-
-  const m = mergeSelectData();
 
   return c(
     "div",
     { className: "input-group" },
     c(
       "select",
-      { className: "form-select m-3" },
-      m.map((item) => c("option", { value: item.key }, item.description)),
+      {
+        autoComplete: false,
+        className: "form-select m-3",
+        onChange: (e) => setCurrent(e.target.value),
+        value: current,
+      },
+      mergeSelectData().map((item) =>
+        c("option", { value: item.key }, item.description),
+      ),
     ),
   );
 }
