@@ -4,11 +4,18 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from modbus.core.serializers import (
+    MetaResponseSerializer,
     NullSerializer,
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from modbus.core.services import get_state, patch_state
+from modbus.core.services import get_meta, get_state, patch_state
+
+
+class MetaAPIView(views.APIView):
+    @extend_schema(responses={200: MetaResponseSerializer(many=True)})
+    def get(self, request: Request) -> Response:
+        return Response(data=get_meta())
 
 
 class StateAPIView(views.APIView):

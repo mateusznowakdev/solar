@@ -1,6 +1,15 @@
 from modbus.core.models import State
 
 
+def get_meta() -> dict:
+    return {
+        "ambient_temperature": {
+            "description": "Temperatura otoczenia",
+            "unit": "°C",
+        }
+    }
+
+
 def get_state() -> State:
     return State.objects.last()
 

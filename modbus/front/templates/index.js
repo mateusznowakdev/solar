@@ -35,9 +35,9 @@ function StateListItem({ item, toggleFn }) {
         { className: "me-2 pin-icon", onClick: () => toggleFn(item.key) },
         item.pin ? "⚫" : "⚪",
       ),
-      c("div", { className: "me-2" }, item.key),
+      c("div", { className: "me-2" }, item.description || item.key),
     ),
-    c("div", null, item.value),
+    c("div", null, `${item.value}${item.unit || ""}`),
   );
 }
 
@@ -51,6 +51,7 @@ function StateList({ items, toggleFn }) {
 
 function App() {
   const [state, setState] = useState({});
+  const [meta, setMeta] = useState({});
   const [pinned, setPinned] = useState([]);
 
   const [counter, setCounter] = useState(0);
@@ -59,6 +60,12 @@ function App() {
     fetch("/api/state/")
       .then((response) => response.json())
       .then((json) => setState(json));
+  }
+
+  function getMeta() {
+    fetch("/api/meta/")
+      .then((response) => response.json())
+      .then((json) => setMeta(json));
   }
 
   function getPinned() {
@@ -80,11 +87,15 @@ function App() {
 
   function mergeData() {
     return Object.entries(state)
-      .map(([key, value]) => ({
-        key,
-        value,
-        pin: pinned.includes(key),
-      }))
+      .map(([key, value]) => {
+        const initial = meta[key] || {};
+        return {
+          ...initial,
+          key,
+          value,
+          pin: pinned.includes(key),
+        };
+      })
       .sort(sortByPinned);
   }
 
@@ -100,8 +111,9 @@ function App() {
     });
   }
 
-  useEffect(getPinned, []);
   useEffect(getState, []);
+  useEffect(getMeta, []);
+  useEffect(getPinned, []);
 
   useEffect(() => {
     const fn = setInterval(updateCounter, UPDATE_INTERVAL);

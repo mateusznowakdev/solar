@@ -3,6 +3,11 @@ from rest_framework import serializers
 from modbus.core.models import State
 
 
+class MetaResponseSerializer(serializers.Serializer):
+    description = serializers.CharField()
+    unit = serializers.CharField()
+
+
 class NullSerializer(serializers.Serializer):
     pass
 
