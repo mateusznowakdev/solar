@@ -108,7 +108,7 @@ function App() {
     localStorage.setItem("pinned", JSON.stringify(pinnedCopy));
   }
 
-  function mergeData() {
+  function mergeListData() {
     return Object.entries(state)
       .map(([key, value]) => {
         const keyMeta = meta[key] || {};
@@ -148,7 +148,7 @@ function App() {
     Fragment,
     null,
     c(IdleRefreshButton, { value: counter }),
-    c(StateList, { items: mergeData(), toggleFn: togglePinned }),
+    c(StateList, { items: mergeListData(), toggleFn: togglePinned }),
   );
 }
 
