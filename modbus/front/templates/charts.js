@@ -8,7 +8,7 @@ function App() {
   const [state, setState] = useState({});
   const [meta, setMeta] = useState({});
 
-  const [current, setCurrent] = useState(null);
+  const [current, setCurrent] = useState("");
 
   function getInitialKey() {
     const params = new URLSearchParams(location.search);
@@ -51,13 +51,12 @@ function App() {
     c(
       "select",
       {
-        autoComplete: false,
         className: "form-select m-3",
         onChange: (e) => setCurrent(e.target.value),
         value: current,
       },
-      mergeSelectData().map((item) =>
-        c("option", { value: item.key }, item.description),
+      mergeSelectData().map((item, key) =>
+        c("option", { key, value: item.key }, item.description),
       ),
     ),
   );
