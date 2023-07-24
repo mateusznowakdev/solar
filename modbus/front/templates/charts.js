@@ -38,10 +38,19 @@ function SeriesSelect({ choices, current, setCurrent }) {
 function PresetButtons() {
   return c(
     "div",
-    { className: "mx-3 time-buttons" },
+    { className: "mb-3 mx-3 time-buttons" },
     Object.keys(PRESETS).map((label) =>
       c("button", { className: "btn btn-light", key: label }, label),
     ),
+  );
+}
+
+function DateTimeInput() {
+  return c(
+    "div",
+    { className: "input-group mb-3" },
+    c("input", { className: "form-control ms-3", type: "date" }),
+    c("input", { className: "form-control me-3", type: "time" }),
   );
 }
 
@@ -91,6 +100,8 @@ function App() {
     null,
     c(SeriesSelect, { choices: mergeSelectData(), current, setCurrent }),
     c(PresetButtons),
+    c(DateTimeInput),
+    c(DateTimeInput),
   );
 }
 
