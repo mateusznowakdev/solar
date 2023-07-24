@@ -13,13 +13,13 @@ function sortByPinned(a, b) {
   return 0;
 }
 
-function Counter({ value }) {
+function IdleRefreshButton({ value }) {
   if (value < UPDATE_MAX_COUNT) return;
 
   return c(
-    "div",
-    { className: "alert alert-secondary m-3" },
-    "Updates paused, refresh to continue",
+    "button",
+    { className: "btn btn-light m-3", onClick: () => location.reload() },
+    "Odśwież",
   );
 }
 
@@ -111,7 +111,7 @@ function App() {
   return c(
     Fragment,
     null,
-    c(Counter, { value: counter }),
+    c(IdleRefreshButton, { value: counter }),
     c(StateList, { items: mergeData(), toggleFn: togglePinned }),
   );
 }

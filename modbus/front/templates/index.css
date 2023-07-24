@@ -1,3 +1,8 @@
+.btn-light {
+  border-color: var(--bs-btn-hover-border-color);
+}
+
 .pin-icon {
   cursor: pointer;
+  user-select: none;
 }
