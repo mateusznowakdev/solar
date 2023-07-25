@@ -45,16 +45,22 @@ function PresetButtons() {
   );
 }
 
-function DateTimeInput({ current, setCurrent }) {
+function DateTimeInput({ current: { date, time }, setCurrent }) {
   return c(
     "div",
-    {
-      className: "date-time-input input-group mb-3",
-      onChange: (e) => setCurrent(e.target.value),
-      value: current,
-    },
-    c("input", { className: "form-control ms-3", type: "date" }),
-    c("input", { className: "form-control", type: "time" }),
+    { className: "date-time-input input-group mb-3" },
+    c("input", {
+      className: "form-control ms-3",
+      onChange: (e) => setCurrent((c) => ({ ...c, date: e.target.value })),
+      type: "date",
+      value: date,
+    }),
+    c("input", {
+      className: "form-control",
+      onChange: (e) => setCurrent((c) => ({ ...c, time: e.target.value })),
+      type: "time",
+      value: time,
+    }),
     c("button", { className: "btn btn-light me-3" }, "×"),
   );
 }
@@ -64,8 +70,8 @@ function App() {
   const [meta, setMeta] = useState({});
 
   const [choice, setChoice] = useState("");
-  const [startDate, setStartDate] = useState();
-  const [stopDate, setStopDate] = useState();
+  const [startDate, setStartDate] = useState({ date: "", time: "" });
+  const [stopDate, setStopDate] = useState({ date: "", time: "" });
 
   function getInitialKey() {
     const params = new URLSearchParams(location.search);
@@ -113,6 +119,7 @@ function App() {
     c(PresetButtons),
     c(DateTimeInput, { current: startDate, setCurrent: setStartDate }),
     c(DateTimeInput, { current: stopDate, setCurrent: setStopDate }),
+    c("pre", {}, JSON.stringify({ from: startDate, to: stopDate }, null, 4)),
   );
 }
 
