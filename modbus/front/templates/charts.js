@@ -13,6 +13,14 @@ const PRESETS = {
   "7d": 60 * 60 * 24 * 7,
 };
 
+function buildDate({ date, time }) {
+  const [year, month, day] = date.split("-");
+  const [hour, minute] = time.split(":");
+
+  const result = new Date(year, month, day, hour, minute);
+  return !isNaN(result) ? result : null;
+}
+
 function sort(a, b) {
   return a.description.localeCompare(b.description);
 }
@@ -114,6 +122,13 @@ function App() {
   useEffect(getInitialKey, []);
   useEffect(getState, []);
   useEffect(getMeta, []);
+
+  useEffect(() => {
+    console.log({
+      from: buildDate(startDate),
+      to: buildDate(stopDate),
+    });
+  }, [startDate, stopDate]);
 
   return c(
     Fragment,
