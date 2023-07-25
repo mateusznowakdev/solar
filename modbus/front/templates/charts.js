@@ -61,7 +61,14 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
       type: "time",
       value: time,
     }),
-    c("button", { className: "btn btn-light me-3" }, "×"),
+    c(
+      "button",
+      {
+        className: "btn btn-light me-3",
+        onClick: () => setCurrent({ date: "", time: "" }),
+      },
+      "×",
+    ),
   );
 }
 
