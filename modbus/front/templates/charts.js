@@ -1,6 +1,6 @@
 const { Fragment, createElement: c, useEffect, useState } = React;
 
-const PRESETS = {
+const OFFSETS = {
   "1m": 60,
   "5m": 60 * 5,
   "10m": 60 * 10,
@@ -13,12 +13,24 @@ const PRESETS = {
   "7d": 60 * 60 * 24 * 7,
 };
 
-function buildDate({ date, time }) {
-  const [year, month, day] = date.split("-");
-  const [hour, minute] = time.split(":");
+function buildDateFromStrings(date, time) {
+  return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
+}
 
-  const result = new Date(year, month, day, hour, minute);
-  return !isNaN(result) ? result : null;
+function buildDateWithOffset(offset) {
+  return dayjs().subtract(offset, "seconds");
+}
+
+function getEmptyDateState() {
+  return { date: "", time: "" };
+}
+
+function getPastDateState(offset) {
+  const date = buildDateWithOffset(offset);
+  return {
+    date: dayjs(date).format("YYYY-MM-DD"),
+    time: dayjs(date).format("HH:mm"),
+  };
 }
 
 function sort(a, b) {
@@ -43,12 +55,23 @@ function SeriesSelect({ choices, current, setCurrent }) {
   );
 }
 
-function PresetButtons() {
+function PresetButtons({ setStartDate, setStopDate }) {
   return c(
     "div",
     { className: "mb-3 mx-3 preset-buttons" },
-    Object.keys(PRESETS).map((label) =>
-      c("button", { className: "btn btn-light", key: label }, label),
+    Object.entries(OFFSETS).map(([label, offset]) =>
+      c(
+        "button",
+        {
+          className: "btn btn-light",
+          onClick: () => {
+            setStartDate(getPastDateState(offset));
+            setStopDate(getEmptyDateState());
+          },
+          key: label,
+        },
+        label,
+      ),
     ),
   );
 }
@@ -73,7 +96,7 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
       "button",
       {
         className: "btn btn-light me-3",
-        onClick: () => setCurrent({ date: "", time: "" }),
+        onClick: () => setCurrent(getEmptyDateState()),
       },
       "×",
     ),
@@ -85,8 +108,8 @@ function App() {
   const [meta, setMeta] = useState({});
 
   const [choice, setChoice] = useState("");
-  const [startDate, setStartDate] = useState({ date: "", time: "" });
-  const [stopDate, setStopDate] = useState({ date: "", time: "" });
+  const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
+  const [stopDate, setStopDate] = useState(getEmptyDateState());
 
   function getInitialKey() {
     const params = new URLSearchParams(location.search);
@@ -125,8 +148,8 @@ function App() {
 
   useEffect(() => {
     console.log({
-      from: buildDate(startDate),
-      to: buildDate(stopDate),
+      from: buildDateFromStrings(startDate.date, startDate.time),
+      to: buildDateFromStrings(stopDate.date, stopDate.time),
     });
   }, [startDate, stopDate]);
 
@@ -138,10 +161,9 @@ function App() {
       current: choice,
       setCurrent: setChoice,
     }),
-    c(PresetButtons),
+    c(PresetButtons, { setStartDate, setStopDate }),
     c(DateTimeInput, { current: startDate, setCurrent: setStartDate }),
     c(DateTimeInput, { current: stopDate, setCurrent: setStopDate }),
-    c("pre", {}, JSON.stringify({ from: startDate, to: stopDate }, null, 4)),
   );
 }
 
