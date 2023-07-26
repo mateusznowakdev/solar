@@ -13,12 +13,6 @@ const OFFSETS = {
   "7d": 60 * 60 * 24 * 7,
 };
 
-const SAMPLE_BASE_DATE = new Date();
-const SAMPLE = [...Array(60).keys()].reverse().map((offset) => ({
-  x: dayjs(SAMPLE_BASE_DATE).subtract(offset, "seconds").format("HH:mm:ss"),
-  y: offset + Math.random() * 5,
-}));
-
 function buildDateFromStrings(date, time) {
   return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
 }
@@ -109,13 +103,13 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
   );
 }
 
-function SeriesChart() {
+function SeriesChart({ data }) {
   useEffect(() => {
-    new Chart(document.getElementById("canvas"), {
+    const chart = new Chart(document.getElementById("canvas"), {
       type: "line",
       data: {
-        datasets: [{ data: SAMPLE.map((row) => row.y) }],
-        labels: SAMPLE.map((row) => row.x),
+        datasets: [{ data: data.map((row) => row[1]) }],
+        labels: data.map((row) => row[0]),
       },
       options: {
         animation: false,
@@ -131,7 +125,11 @@ function SeriesChart() {
         responsive: true,
       },
     });
-  }, []);
+
+    return () => {
+      if (chart) chart.destroy();
+    };
+  }, [data]);
 
   return c(
     "div",
@@ -180,9 +178,10 @@ function App() {
     const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
     if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
 
-    fetch("/api/series?" + new URLSearchParams(params))
-      .then((response) => response.json())
-      .then((json) => setSeries(json));
+    fetch("/api/series?" + new URLSearchParams(params)).then((response) => {
+      if (!response.ok) return;
+      response.json().then((json) => setSeries(json));
+    });
   }
 
   function mergeSelectData() {
@@ -214,7 +213,7 @@ function App() {
     c(PresetButtons, { setStartDate, setStopDate }),
     c(DateTimeInput, { current: startDate, setCurrent: setStartDate }),
     c(DateTimeInput, { current: stopDate, setCurrent: setStopDate }),
-    c(SeriesChart),
+    c(SeriesChart, { data: series }),
   );
 }
 
