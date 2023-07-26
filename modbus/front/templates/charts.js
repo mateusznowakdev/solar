@@ -175,10 +175,10 @@ function App() {
     };
 
     const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
-    if (!isNaN(startDateObj)) params.from = startDateObj.toISOString();
+    if (!isNaN(startDateObj)) params.date_from = startDateObj.toISOString();
 
     const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
-    if (!isNaN(stopDateObj)) params.to = stopDateObj.toISOString();
+    if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
 
     fetch("/api/series?" + new URLSearchParams(params))
       .then((response) => response.json())

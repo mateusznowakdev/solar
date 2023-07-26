@@ -1,11 +1,17 @@
+from datetime import datetime
+
+from django.core.exceptions import FieldError
+from django.db.models import Q
 from drf_spectacular.utils import extend_schema
 from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from modbus.core.models import State
 from modbus.core.serializers import (
     MetaResponseSerializer,
     NullSerializer,
+    SeriesRequestSerializer,
     StateRequestSerializer,
     StateResponseSerializer,
 )
@@ -34,3 +40,23 @@ class StateAPIView(views.APIView):
         patch_state(in_serializer.data)
 
         return Response(status=204)
+
+
+class SeriesAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        in_serializer = SeriesRequestSerializer(data=self.request.query_params)
+        in_serializer.is_valid(raise_exception=True)
+
+        filters = Q()
+
+        if date_from_str := in_serializer.data.get("date_from"):
+            filters &= Q(timestamp__gte=datetime.fromisoformat(date_from_str))
+        if date_to_str := in_serializer.data.get("date_to"):
+            filters &= Q(timestamp__lte=datetime.fromisoformat(date_to_str))
+
+        try:
+            values = State.objects.filter(filters).values_list("timestamp", in_serializer.data["source"])
+        except FieldError:
+            values = []
+
+        return Response(data=values)
