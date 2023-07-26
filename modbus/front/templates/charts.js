@@ -188,10 +188,12 @@ function App() {
     return Object.keys(state)
       .map((key) => {
         const keyMeta = meta[key] || {};
-        return {
-          key,
-          description: keyMeta["description"] || key,
-        };
+
+        const unit = keyMeta["unit"];
+        let description = keyMeta["description"] || key;
+        if (unit) description += ` (${unit})`;
+
+        return { description, key };
       })
       .sort(sort);
   }
