@@ -144,6 +144,8 @@ function App() {
   const [state, setState] = useState({});
   const [meta, setMeta] = useState({});
 
+  const [series, setSeries] = useState([]);
+
   const [choice, setChoice] = useState("");
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
@@ -167,6 +169,22 @@ function App() {
       .then((json) => setMeta(json));
   }
 
+  function getSeries() {
+    const params = {
+      source: choice,
+    };
+
+    const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
+    if (!isNaN(startDateObj)) params.from = startDateObj.toISOString();
+
+    const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
+    if (!isNaN(stopDateObj)) params.to = stopDateObj.toISOString();
+
+    fetch("/api/series?" + new URLSearchParams(params))
+      .then((response) => response.json())
+      .then((json) => setSeries(json));
+  }
+
   function mergeSelectData() {
     return Object.keys(state)
       .map((key) => {
@@ -183,12 +201,7 @@ function App() {
   useEffect(getState, []);
   useEffect(getMeta, []);
 
-  useEffect(() => {
-    console.log({
-      from: buildDateFromStrings(startDate.date, startDate.time),
-      to: buildDateFromStrings(stopDate.date, stopDate.time),
-    });
-  }, [startDate, stopDate]);
+  useEffect(getSeries, [choice, startDate, stopDate]);
 
   return c(
     Fragment,
