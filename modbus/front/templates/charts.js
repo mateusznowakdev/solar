@@ -109,7 +109,7 @@ function SeriesChart({ data }) {
       type: "line",
       data: {
         datasets: [{ data: data.map((row) => row[1]) }],
-        labels: data.map((row) => row[0]),
+        labels: data.map((row) => dayjs(row[0]).format("HH:mm:ss")),
       },
       options: {
         animation: false,
