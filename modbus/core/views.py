@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.core.exceptions import FieldError
-from django.db.models import Q
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema
 from rest_framework import views
 from rest_framework.request import Request
@@ -47,15 +47,43 @@ class SeriesAPIView(views.APIView):
         in_serializer = SeriesRequestSerializer(data=self.request.query_params)
         in_serializer.is_valid(raise_exception=True)
 
-        filters = Q()
-
-        if date_from_str := in_serializer.data.get("date_from"):
-            filters &= Q(timestamp__gte=datetime.fromisoformat(date_from_str))
-        if date_to_str := in_serializer.data.get("date_to"):
-            filters &= Q(timestamp__lte=datetime.fromisoformat(date_to_str))
+        try:
+            date_from = datetime.fromisoformat(in_serializer.data.get("date_from"))
+        except TypeError:
+            date_from = None
 
         try:
-            values = State.objects.filter(filters).values_list("timestamp", in_serializer.data["source"])
+            date_to = datetime.fromisoformat(in_serializer.data.get("date_to"))
+        except TypeError:
+            date_to = None
+
+        days_limit = 7
+
+        if date_from and date_to:
+            date_limit = date_from + timedelta(days=days_limit)
+            date_to = min(date_to, date_limit)
+
+        elif date_from and not date_to:
+            date_to = timezone.now()
+            date_limit = date_from + timedelta(days=days_limit)
+
+            if date_to < date_limit:
+                # user cannot enter second and microsecond, therefore it needs to be aligned here
+                date_from = date_from.replace(second=date_to.second, microsecond=date_to.microsecond)
+            else:
+                date_to = date_limit
+
+        elif not date_from and date_to:
+            date_from = date_to - timedelta(days=days_limit)
+
+        else:
+            date_to = timezone.now()
+            date_from = date_to - timedelta(days=days_limit)
+
+        try:
+            values = State.objects.filter(
+                timestamp__gte=date_from, timestamp__lte=date_to
+            ).values_list("timestamp", in_serializer.data["source"])
         except FieldError:
             values = []
 
