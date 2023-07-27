@@ -1,13 +1,8 @@
-from datetime import datetime, timedelta
-
-from django.core.exceptions import FieldError
-from django.utils import timezone
 from drf_spectacular.utils import extend_schema
 from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from modbus.core.models import State
 from modbus.core.serializers import (
     MetaResponseSerializer,
     NullSerializer,
@@ -15,7 +10,7 @@ from modbus.core.serializers import (
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from modbus.core.services import get_meta, get_state, patch_state
+from modbus.core.services import get_meta, get_series, get_state, patch_state
 
 
 class MetaAPIView(views.APIView):
@@ -37,7 +32,7 @@ class StateAPIView(views.APIView):
         in_serializer = StateRequestSerializer(data=request.data)
         in_serializer.is_valid(raise_exception=True)
 
-        patch_state(in_serializer.data)
+        patch_state(data=in_serializer.data)
 
         return Response(status=204)
 
@@ -47,44 +42,9 @@ class SeriesAPIView(views.APIView):
         in_serializer = SeriesRequestSerializer(data=self.request.query_params)
         in_serializer.is_valid(raise_exception=True)
 
-        try:
-            date_from = datetime.fromisoformat(in_serializer.data.get("date_from"))
-        except TypeError:
-            date_from = None
-
-        try:
-            date_to = datetime.fromisoformat(in_serializer.data.get("date_to"))
-        except TypeError:
-            date_to = None
-
-        days_limit = 7
-
-        if date_from and date_to:
-            date_limit = date_from + timedelta(days=days_limit)
-            date_to = min(date_to, date_limit)
-
-        elif date_from and not date_to:
-            date_to = timezone.now()
-            date_limit = date_from + timedelta(days=days_limit)
-
-            if date_to < date_limit:
-                # user cannot enter second and microsecond, therefore it needs to be aligned here
-                date_from = date_from.replace(second=date_to.second, microsecond=date_to.microsecond)
-            else:
-                date_to = date_limit
-
-        elif not date_from and date_to:
-            date_from = date_to - timedelta(days=days_limit)
-
-        else:
-            date_to = timezone.now()
-            date_from = date_to - timedelta(days=days_limit)
-
-        try:
-            values = State.objects.filter(
-                timestamp__gte=date_from, timestamp__lte=date_to
-            ).values_list("timestamp", in_serializer.data["source"])
-        except FieldError:
-            values = []
-
-        return Response(data=values)
+        out_data = get_series(
+            source=in_serializer.data.get("source"),
+            date_from=in_serializer.data.get("date_from"),
+            date_to=in_serializer.data.get("date_to"),
+        )
+        return Response(data=out_data)

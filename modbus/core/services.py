@@ -1,3 +1,9 @@
+from datetime import datetime, timedelta
+from typing import Any
+
+from django.core.exceptions import FieldError
+from django.utils import timezone
+
 from modbus.core.models import State
 
 
@@ -192,7 +198,7 @@ def get_state() -> State:
     return State.objects.last()
 
 
-def patch_state(data: dict) -> None:
+def patch_state(*, data: dict) -> None:
     output_priority = data.get("output_priority")
     if output_priority is not None:
         print(f"Changing output priority to {output_priority}")
@@ -200,3 +206,49 @@ def patch_state(data: dict) -> None:
     charge_priority = data.get("charge_priority")
     if charge_priority is not None:
         print(f"Changing charge priority to {charge_priority}")
+
+
+def get_series(
+    *, source: str, date_from: str | None, date_to: str | None
+) -> list[list[Any]]:
+    try:
+        date_from = datetime.fromisoformat(date_from)
+    except TypeError:
+        date_from = None
+
+    try:
+        date_to = datetime.fromisoformat(date_to)
+    except TypeError:
+        date_to = None
+
+    days_limit = 7
+
+    if date_from and date_to:
+        date_limit = date_from + timedelta(days=days_limit)
+        date_to = min(date_to, date_limit)
+
+    elif date_from and not date_to:
+        date_to = timezone.now()
+        date_limit = date_from + timedelta(days=days_limit)
+
+        if date_to < date_limit:
+            # user cannot enter second and microsecond, therefore it needs to be aligned here
+            date_from = date_from.replace(
+                second=date_to.second, microsecond=date_to.microsecond
+            )
+        else:
+            date_to = date_limit
+
+    elif not date_from and date_to:
+        date_from = date_to - timedelta(days=days_limit)
+
+    else:
+        date_to = timezone.now()
+        date_from = date_to - timedelta(days=days_limit)
+
+    try:
+        return State.objects.filter(
+            timestamp__gte=date_from, timestamp__lte=date_to
+        ).values_list("timestamp", source)
+    except FieldError:
+        return []
