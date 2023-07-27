@@ -9,6 +9,7 @@ from django.utils import timezone
 from modbus.core.models import State
 
 DATE_BIN = "DATE_BIN(%s, \"timestamp\", TIMESTAMP '2001-01-01 00:00:00')"
+DAYS_LIMIT = 7
 
 
 def get_meta() -> dict:
@@ -225,15 +226,13 @@ def get_series(
     except TypeError:
         date_to = None
 
-    days_limit = 7
-
     if date_from and date_to:
-        date_limit = date_from + timedelta(days=days_limit)
+        date_limit = date_from + timedelta(days=DAYS_LIMIT)
         date_to = min(date_to, date_limit)
 
     elif date_from and not date_to:
         date_to = timezone.now()
-        date_limit = date_from + timedelta(days=days_limit)
+        date_limit = date_from + timedelta(days=DAYS_LIMIT)
 
         if date_to < date_limit:
             # user cannot enter second and microsecond, therefore it needs to be aligned here
@@ -244,11 +243,11 @@ def get_series(
             date_to = date_limit
 
     elif not date_from and date_to:
-        date_from = date_to - timedelta(days=days_limit)
+        date_from = date_to - timedelta(days=DAYS_LIMIT)
 
     else:
         date_to = timezone.now()
-        date_from = date_to - timedelta(days=days_limit)
+        date_from = date_to - timedelta(days=DAYS_LIMIT)
 
     delta = date_to - date_from
     stride = delta.total_seconds() // 1000
