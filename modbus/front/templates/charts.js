@@ -25,6 +25,10 @@ function getEmptyDateState() {
   return { date: "", time: "" };
 }
 
+function getInitialKey() {
+  return new URLSearchParams(location.search).get("initial");
+}
+
 function getPastDateState(offset) {
   const date = buildDateWithOffset(offset);
   return {
@@ -144,16 +148,9 @@ function App() {
 
   const [series, setSeries] = useState([]);
 
-  const [choice, setChoice] = useState("");
+  const [choice, setChoice] = useState(getInitialKey());
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
-
-  function getInitialKey() {
-    const params = new URLSearchParams(location.search);
-    const initial = params.get("initial");
-
-    if (initial) setChoice(initial);
-  }
 
   function getState() {
     fetch("/api/state/")
@@ -198,7 +195,6 @@ function App() {
       .sort(sort);
   }
 
-  useEffect(getInitialKey, []);
   useEffect(getState, []);
   useEffect(getMeta, []);
 
