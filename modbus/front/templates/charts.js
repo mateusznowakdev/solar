@@ -52,6 +52,7 @@ function SeriesSelect({ choices, current, setCurrent }) {
         onChange: (e) => setCurrent(e.target.value),
         value: current,
       },
+      c("option", { key: "", value: "" }, "------"),
       choices.map((item) =>
         c("option", { key: item.key, value: item.key }, item.description),
       ),
