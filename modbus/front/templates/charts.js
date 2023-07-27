@@ -176,10 +176,9 @@ function App() {
     const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
     if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
 
-    fetch("/api/series/?" + new URLSearchParams(params)).then((response) => {
-      if (!response.ok) return;
-      response.json().then((json) => setSeries(json));
-    });
+    fetch("/api/series/?" + new URLSearchParams(params))
+      .then((response) => (response.ok ? response.json() : []))
+      .then((json) => setSeries(json));
   }
 
   function mergeSelectData() {
