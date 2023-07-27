@@ -2,9 +2,13 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from django.core.exceptions import FieldError
+from django.db.models import Avg
+from django.db.models.expressions import RawSQL
 from django.utils import timezone
 
 from modbus.core.models import State
+
+DATE_BIN = "DATE_BIN(%s, \"timestamp\", TIMESTAMP '2001-01-01 00:00:00')"
 
 
 def get_meta() -> dict:
@@ -246,9 +250,17 @@ def get_series(
         date_to = timezone.now()
         date_from = date_to - timedelta(days=days_limit)
 
+    delta = date_to - date_from
+    stride = delta.total_seconds() // 1000
+    stride = max(1, int(stride))
+
     try:
-        return State.objects.filter(
-            timestamp__gte=date_from, timestamp__lte=date_to
-        ).values_list("timestamp", source)
+        return (
+            State.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
+            .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
+            .order_by("avg_timestamp")
+            .values_list("avg_timestamp")
+            .annotate(avg_value=Avg(source))
+        )
     except FieldError:
         return []
