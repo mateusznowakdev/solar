@@ -10,6 +10,9 @@ class State(models.Model):
     # - fault bits (0x200)
     # - password protection (0x211)
 
+    class Meta:
+        ordering = ("timestamp",)
+
     timestamp = models.DateTimeField()
 
     battery_level_soc = models.IntegerField()
