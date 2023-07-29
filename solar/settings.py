@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = bool(int(os.environ.get("DJANGO_DEBUG", "0")))
 SECRET_KEY = "devsecretkey" if DEBUG else os.environ.get("DJANGO_SECRET_KEY")
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "solar.local"]
 
 MAIN_APPS = [
     "django.contrib.admin",
