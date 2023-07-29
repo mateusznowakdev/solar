@@ -1,5 +1,6 @@
 import datetime
 import time
+import traceback
 
 from django.core.management import BaseCommand
 from django.utils import timezone
@@ -151,4 +152,9 @@ def capture(device):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        capture("/dev/ttyUSB0")
+        for device in ("/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3"):
+            try:
+                capture(device)
+            except Exception as e:
+                traceback.print_exception(e)
+                time.sleep(2.0)
