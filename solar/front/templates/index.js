@@ -43,7 +43,7 @@ function IdleRefreshButton({ value }) {
     stickyContent = c(
       "button",
       { className: "btn btn-light m-3", onClick: () => location.reload() },
-      "Odśwież",
+      "↻",
     );
   } else {
     stickyContent = c(
