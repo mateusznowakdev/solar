@@ -50,7 +50,7 @@ function IdleRefreshButton({ value }) {
       "div",
       { className: "progress", style: { height: "2px" } },
       c("div", {
-        className: "progress-bar",
+        className: "bg-danger progress-bar",
         style: { width: `${100 - (value * 100) / UPDATE_MAX_COUNT}%` },
       }),
     );
