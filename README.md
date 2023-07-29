@@ -5,13 +5,11 @@
 - Clone this repository
 - Create new file `.env` in project directory, add `DJANGO_SECRET_KEY` and `POSTGRES_PASSWORD` environment variables
 - Create new directory /var/lib/solar/postgresql/data
-- Run `docker compose up -d --build --force-recreate`
-- Run `docker exec -it solar-web-1 python /app/manage.py migrate`
+- Run `./update.sh` script to get new changes and rebuild images
 - Run `docker exec -it solar-web-1 curl http://localhost:8000/api/state/`, should return valid JSON data
 
 # Updating
 
 - Update the repository
-- Run `docker compose up -d --build --force-recreate`
-- Run `docker exec -it solar-web-1 python /app/manage.py migrate`
+- Run `./update.sh` script to get new changes and rebuild images
 - Run `docker exec -it solar-web-1 curl http://localhost:8000/api/state/`, should return valid JSON data
