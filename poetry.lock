@@ -358,6 +358,20 @@ repl = ["aiohttp (>=3.8.5)", "click (>=8.0.0)", "prompt-toolkit (>=3.0.36)", "py
 serial = ["pyserial (>=3.5)"]
 
 [[package]]
+name = "pyserial"
+version = "3.5"
+description = "Python Serial Port Extension"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},
+    {file = "pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb"},
+]
+
+[package.extras]
+cp2110 = ["hidapi"]
+
+[[package]]
 name = "pytz"
 version = "2023.3"
 description = "World timezone definitions, modern and historical"
@@ -590,4 +604,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "360f77b4c655bc62f6c9158c3cb001f3cbc7cf1389ba661721c61c536382c9e1"
+content-hash = "5ee7081fccfb936ed21185a688ee71cbac65dd0072c538d53d1b0e4550a90267"
