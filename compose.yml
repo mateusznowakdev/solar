@@ -2,25 +2,27 @@ services:
   web:
     build: .
     command: python manage.py runserver --noreload --nostatic
-    environment:
-      - DJANGO_SECRET_KEY=secretkey
-      - POSTGRESQL_HOST=db
     deploy:
       restart_policy:
         condition: any
         delay: 5s
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
   capture:
     build: .
     command: python manage.py capture_data
-    environment:
-      - DJANGO_SECRET_KEY=secretkey
-      - POSTGRESQL_HOST=db
     deploy:
       restart_policy:
         condition: any
         delay: 5s
     devices:
       - /dev:/dev
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
     privileged: true
   db:
     image: postgres
@@ -28,5 +30,5 @@ services:
       restart_policy:
         condition: any
         delay: 5s
-    environment:
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - .env
