@@ -1,3 +1,4 @@
+import sys
 import time
 import traceback
 
@@ -16,3 +17,5 @@ class Command(BaseCommand):
             except Exception as e:
                 traceback.print_exception(e)
                 time.sleep(1.5)
+
+        sys.exit(1)
