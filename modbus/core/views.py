@@ -10,7 +10,7 @@ from modbus.core.serializers import (
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from modbus.core.services import get_meta, get_series, get_state, patch_state
+from modbus.core.services.endpoints import get_meta, get_series, get_state, patch_state
 
 
 class MetaAPIView(views.APIView):
