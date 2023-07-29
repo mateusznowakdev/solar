@@ -48,7 +48,7 @@ function SeriesSelect({ choices, current, setCurrent }) {
     c(
       "select",
       {
-        className: "form-select m-3",
+        className: "form-select mb-3 mx-3",
         onChange: (e) => setCurrent(e.target.value),
         value: current,
       },
@@ -203,6 +203,11 @@ function App() {
   return c(
     Fragment,
     null,
+    c(
+      "button",
+      { className: "btn btn-light m-3", onClick: () => (location.href = "/") },
+      "←",
+    ),
     c(SeriesSelect, {
       choices: mergeSelectData(),
       current: choice,
