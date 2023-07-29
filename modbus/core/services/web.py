@@ -4,6 +4,7 @@ from typing import Any
 from django.core.exceptions import FieldError
 from django.db.models import Avg
 from django.db.models.expressions import RawSQL
+from django.http import Http404
 from django.utils import timezone
 
 from modbus.core.const import METADATA
@@ -76,7 +77,12 @@ class WebSeriesService:
 class WebStateService:
     @staticmethod
     def get_state() -> State:
-        return State.objects.last()
+        state = State.objects.last()
+
+        if not state:
+            raise Http404()
+
+        return state
 
     @staticmethod
     def patch_state(*, data: dict) -> None:

@@ -92,7 +92,7 @@ function App() {
 
   function getState() {
     fetch("/api/state/")
-      .then((response) => response.json())
+      .then((response) => response.ok ? response.json(): {})
       .then((json) => setState(json));
   }
 
