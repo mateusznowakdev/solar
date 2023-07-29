@@ -37,13 +37,26 @@ function sortByPinned(a, b) {
 }
 
 function IdleRefreshButton({ value }) {
-  if (value < UPDATE_MAX_COUNT) return;
+  let stickyContent;
 
-  return c(
-    "button",
-    { className: "btn btn-light m-3", onClick: () => location.reload() },
-    "Odśwież",
-  );
+  if (value >= UPDATE_MAX_COUNT) {
+    stickyContent = c(
+      "button",
+      { className: "btn btn-light m-3", onClick: () => location.reload() },
+      "Odśwież",
+    );
+  } else {
+    stickyContent = c(
+      "div",
+      { className: "progress", style: { height: "2px" } },
+      c("div", {
+        className: "progress-bar",
+        style: { width: `${100 - (value * 100) / UPDATE_MAX_COUNT}%` },
+      }),
+    );
+  }
+
+  return c("div", { className: "sticky-top" }, stickyContent);
 }
 
 function StateListItem({ item, togglePinned }) {
