@@ -2,14 +2,6 @@ from django.db import models
 
 
 class State(models.Model):
-    # These variables are not implemented because I can't test them
-    #
-    # - controller temperature (0x103)
-    # - battery temperature (0x103)
-    # - brightness (0x10B)
-    # - fault bits (0x200)
-    # - password protection (0x211)
-
     class Meta:
         ordering = ("timestamp",)
 

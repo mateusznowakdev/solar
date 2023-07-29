@@ -95,6 +95,14 @@ def recv_data(client: ModbusSerialClient, first_reg: int, last_reg: int) -> list
 
 
 def capture(device):
+    # These variables are not implemented because I can't test them
+    #
+    # - controller temperature (0x103)
+    # - battery temperature (0x103)
+    # - brightness (0x10B)
+    # - fault bits (0x200)
+    # - password protection (0x211)
+
     client = ModbusSerialClient(
         port=device, baudrate=9600, bytesize=8, method="rtu", stopbits=1, parity="N"
     )
@@ -157,4 +165,4 @@ class Command(BaseCommand):
                 capture(device)
             except Exception as e:
                 traceback.print_exception(e)
-                time.sleep(2.0)
+                time.sleep(1.5)
