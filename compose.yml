@@ -25,7 +25,7 @@ services:
       - POSTGRES_HOST=db
     privileged: true
   db:
-    image: postgres
+    image: postgres:15-alpine
     deploy:
       restart_policy:
         condition: any
