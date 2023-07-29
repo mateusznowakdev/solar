@@ -10,19 +10,32 @@ from modbus.core.serializers import (
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from modbus.core.services.endpoints import get_meta, get_series, get_state, patch_state
+from modbus.core.services import WebMetaService, WebSeriesService, WebStateService
 
 
 class MetaAPIView(views.APIView):
     @extend_schema(responses={200: MetaResponseSerializer(many=True)})
     def get(self, request: Request) -> Response:
-        return Response(data=get_meta())
+        return Response(data=WebMetaService.get_meta())
+
+
+class SeriesAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        in_serializer = SeriesRequestSerializer(data=self.request.query_params)
+        in_serializer.is_valid(raise_exception=True)
+
+        out_data = WebSeriesService.get_series(
+            source=in_serializer.data.get("source"),
+            date_from=in_serializer.data.get("date_from"),
+            date_to=in_serializer.data.get("date_to"),
+        )
+        return Response(data=out_data)
 
 
 class StateAPIView(views.APIView):
     @extend_schema(responses={200: StateResponseSerializer})
     def get(self, request: Request) -> Response:
-        out_data = get_state()
+        out_data = WebStateService.get_state()
         out_serializer = StateResponseSerializer(instance=out_data)
 
         return Response(data=out_serializer.data)
@@ -32,19 +45,6 @@ class StateAPIView(views.APIView):
         in_serializer = StateRequestSerializer(data=request.data)
         in_serializer.is_valid(raise_exception=True)
 
-        patch_state(data=in_serializer.data)
+        WebStateService.patch_state(data=in_serializer.data)
 
         return Response(status=204)
-
-
-class SeriesAPIView(views.APIView):
-    def get(self, request: Request) -> Response:
-        in_serializer = SeriesRequestSerializer(data=self.request.query_params)
-        in_serializer.is_valid(raise_exception=True)
-
-        out_data = get_series(
-            source=in_serializer.data.get("source"),
-            date_from=in_serializer.data.get("date_from"),
-            date_to=in_serializer.data.get("date_to"),
-        )
-        return Response(data=out_data)
