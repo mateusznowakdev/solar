@@ -57,7 +57,7 @@ Swap:        1048572       38912     1009660
 - Install Docker, add user to `docker` group, make sure `docker-compose-plugin` is installed
 - Clone this repository
 - Create new file `.env` in project directory, add these environment variables:
-  - `DJANGO_ALLOWED_HOSTS`
+  - `DJANGO_ALLOWED_HOSTS` (example value: `localhost,solar.local`)
   - `DJANGO_SECRET_KEY`
   - `POSTGRES_PASSWORD`
 - Create new directory `/var/lib/solar/postgresql/data`
