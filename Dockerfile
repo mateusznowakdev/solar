@@ -11,6 +11,8 @@ RUN poetry export > requirements.txt
 
 FROM python:3.11-alpine AS target
 
+RUN apk add bash curl
+
 COPY --from=intermediate requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
 

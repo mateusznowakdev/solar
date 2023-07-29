@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    command: python manage.py runserver --noreload --nostatic
+    environment:
+      - DJANGO_SECRET_KEY=secretkey
+      - POSTGRESQL_HOST=db
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+  db:
+    image: postgres
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+    environment:
+      - POSTGRES_PASSWORD=postgres
