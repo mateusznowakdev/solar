@@ -1,9 +1,15 @@
 # Datalogger for solar inverter
 
+| ![](assets/scr1.png) | ![](assets/scr2.png) |
+| :------------------: | :------------------: |
+|    Parameter list    |   Parameter charts   |
+
+## Features
+
+- Read parameters of inverter using Modbus serial protocol
 - Save current inverter state to the database
-- Display current inverter state and charts for each parameter
-- Compatible with solar inverter using Modbus serial protocol
-- Powered by Docker Compose for easy deployment
+- Display current inverter state, pin parameters to the top
+- Display charts for each inverter parameter
 
 Tested with Raspberry Pi 3A and Debian 12 in UEFI mode:
 
@@ -31,6 +37,13 @@ Swap:        1048572       38912     1009660
 ```
 
 </details>
+
+## Used technologies
+
+- Python, Django + REST framework
+- JavaScript, React, Bootstrap, Chart.js, Day.js
+- PostgreSQL
+- Docker, Compose
 
 ## Configuration
 
