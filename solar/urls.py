@@ -1,8 +1,8 @@
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from modbus.core.views import MetaAPIView, SeriesAPIView, StateAPIView
-from modbus.front.views import ChartView, IndexView
+from solar.core.views import MetaAPIView, SeriesAPIView, StateAPIView
+from solar.front.views import ChartView, IndexView
 
 urlpatterns = [
     # UI

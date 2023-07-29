@@ -17,5 +17,5 @@ COPY --from=intermediate requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
 WORKDIR /app
-COPY modbus /app/modbus
+COPY solar /app/solar
 COPY manage.py /app/manage.py

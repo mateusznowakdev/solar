@@ -33,4 +33,4 @@ services:
     env_file:
       - .env
     volumes:
-      - /var/lib/modbus/postgresql/data:/var/lib/postgresql/data
+      - /var/lib/solar/postgresql/data:/var/lib/postgresql/data

@@ -21,8 +21,8 @@ EXTRA_APPS = [
     "rest_framework",
 ]
 CUSTOM_APPS = [
-    "modbus.core",
-    "modbus.front",
+    "solar.core",
+    "solar.front",
 ]
 INSTALLED_APPS = MAIN_APPS + EXTRA_APPS + CUSTOM_APPS
 
@@ -36,7 +36,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "modbus.urls"
+ROOT_URLCONF = "solar.urls"
 
 TEMPLATES = [
     {
@@ -54,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "modbus.wsgi.application"
+WSGI_APPLICATION = "solar.wsgi.application"
 
 DATABASES = {
     "default": {

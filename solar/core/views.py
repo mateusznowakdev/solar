@@ -3,14 +3,14 @@ from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from modbus.core.serializers import (
+from solar.core.serializers import (
     MetaResponseSerializer,
     NullSerializer,
     SeriesRequestSerializer,
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from modbus.core.services import WebMetaService, WebSeriesService, WebStateService
+from solar.core.services import WebMetaService, WebSeriesService, WebStateService
 
 
 class MetaAPIView(views.APIView):

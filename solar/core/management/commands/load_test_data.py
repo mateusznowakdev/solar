@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.management import BaseCommand
 from django.utils import timezone
 
-from modbus.core.models import State
+from solar.core.models import State
 
 
 def dt(*args):

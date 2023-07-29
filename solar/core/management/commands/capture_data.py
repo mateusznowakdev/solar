@@ -4,7 +4,7 @@ import traceback
 
 from django.core.management import BaseCommand
 
-from modbus.core.services import CaptureService
+from solar.core.services import CaptureService
 
 DEVICE_LIST = ("/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3")
 

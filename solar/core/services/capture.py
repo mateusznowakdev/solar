@@ -5,7 +5,7 @@ from typing import NoReturn
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from modbus.core.models import State
+from solar.core.models import State
 
 CHUNK_SIZE = 32
 

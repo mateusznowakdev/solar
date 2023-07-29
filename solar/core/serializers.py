@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from modbus.core.models import State
+from solar.core.models import State
 
 
 class MetaResponseSerializer(serializers.Serializer):
