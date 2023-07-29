@@ -78,7 +78,7 @@ function StateListItem({ item, togglePinned }) {
             e.preventDefault();
           },
         },
-        item.pin ? "⚫" : "⚪",
+        item.pin ? "🔴" : "⚪",
       ),
       c("div", { className: "me-2" }, item.description),
     ),

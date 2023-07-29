@@ -113,7 +113,14 @@ function SeriesChart({ data }) {
     const chart = new Chart(document.getElementById("canvas"), {
       type: "line",
       data: {
-        datasets: [{ data: data.map((row) => parseFloat(row[1])) }],
+        datasets: [
+          {
+            borderColor: "#ff0000",
+            backgroundColor: "#ff000033",
+            data: data.map((row) => parseFloat(row[1])),
+            fill: true,
+          },
+        ],
         labels: data.map((row) => dayjs(row[0]).format("HH:mm:ss")),
       },
       options: {
