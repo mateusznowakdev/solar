@@ -6,12 +6,14 @@
 
 ## Features
 
-- Read parameters of inverter using Modbus serial protocol
+- Read inverter parameters using Modbus serial protocol
 - Save current inverter state to the database
 - Display current inverter state, pin parameters to the top
 - Display charts for each inverter parameter
 
-Tested with Raspberry Pi 3A and Debian 12 in UEFI mode:
+Static files (JS libraries and Bootstrap) are loaded from CDN for best performance.
+
+This software is tested with Raspberry Pi 3A and Debian 12 in UEFI mode:
 
 <details>
 <summary>Details</summary>
