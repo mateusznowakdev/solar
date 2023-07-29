@@ -32,3 +32,5 @@ services:
         delay: 5s
     env_file:
       - .env
+    volumes:
+      - /var/lib/modbus/postgresql/data:/var/lib/postgresql/data
