@@ -26,6 +26,17 @@ services:
     environment:
       - POSTGRES_HOST=db
     privileged: true
+  publish:
+    build: .
+    command: python manage.py publish_data
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
   db:
     image: postgres:15-alpine
     deploy:
