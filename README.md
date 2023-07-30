@@ -1,5 +1,10 @@
 # Datalogger for solar inverter
 
+> This is EXPERIMENTAL SOFTWARE that is, and will be, optimized for one hardware
+> configuration, and uses Polish language for user interface. **DO NOT ASK FOR
+> ANY KIND OF HELP** even if you believe you have the same inverter model. I
+> don't have physical access to the device, let alone free time.
+
 | ![](assets/scr1.png) | ![](assets/scr2.png) |
 | :------------------: | :------------------: |
 |    Parameter list    |   Parameter charts   |
@@ -12,7 +17,8 @@
 - Display current inverter state, pin parameters to the top
 - Display charts for each inverter parameter
 
-Static files (JS libraries and Bootstrap) are loaded from CDN for best performance.
+Static files (JS libraries and Bootstrap) are loaded from CDN for best
+performance.
 
 This software is tested with Raspberry Pi 3A and Debian 12 in UEFI mode:
 
@@ -41,10 +47,6 @@ Swap:        1048572       38912     1009660
 
 </details>
 
-> **WARNING**: This is EXPERIMENTAL SOFTWARE that is, and will be, optimized for one hardware configuration, and uses
-> Polish language for user interface. DO NOT ASK FOR ANY KIND OF HELP even if you believe you have the same inverter
-> model.
-
 ## Used technologies
 
 - Python, Django + REST framework
@@ -58,22 +60,29 @@ Swap:        1048572       38912     1009660
 ### Deployment
 
 - Set up OS on ARM64 Raspberry Pi
-- Install SSH server, disable password auth, add SSH key and change other options
+- Install SSH server, disable password auth, add SSH key and change other
+  options
 - Install `avahi-daemon` for mDNS support
-- Install Docker, add user to `docker` group, make sure `docker-compose-plugin` is installed
+- Install Docker, add user to `docker` group, make sure `docker-compose-plugin`
+  is installed
 - Clone this repository
 - Create new file `.env` in project directory, add these environment variables:
   - `DJANGO_ALLOWED_HOSTS` (example value: `localhost,solar.local`)
   - `DJANGO_SECRET_KEY`
-  - `MQTT_TOPICS` (optional, example value: `battery_voltage,grid_frequency,pv_power`)
+  - `MQTT_TOPICS` (optional, example value:
+    `battery_voltage,grid_frequency,pv_power`)
   - `POSTGRES_PASSWORD`
 - Create new directory `/var/lib/solar/postgresql/data`
-- Run `./update.sh` script to get new changes, rebuild images and apply migrations
-- Run `docker exec -it solar-web-1 curl http://localhost:8000/api/state/`, should return valid JSON data
+- Run `./update.sh` script to get new changes, rebuild images and apply
+  migrations
+- Run `docker exec -it solar-web-1 curl http://localhost:8000/api/state/`,
+  should return valid JSON data
 
 ### Updates
 
 - Make sure .env file has all the required variables
 - Update the repository
-- Run `./update.sh` script to get new changes, rebuild images and apply migrations
-- Run `docker exec -it solar-web-1 curl http://localhost:8000/api/state/`, should return valid JSON data
+- Run `./update.sh` script to get new changes, rebuild images and apply
+  migrations
+- Run `docker exec -it solar-web-1 curl http://localhost:8000/api/state/`,
+  should return valid JSON data
