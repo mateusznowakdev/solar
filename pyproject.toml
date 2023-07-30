@@ -9,6 +9,7 @@ python = "^3.11"
 django = "^4.2.3"
 djangorestframework = "^3.14.0"
 drf-spectacular = "^0.26.3"
+paho-mqtt = "^1.6.1"
 psycopg = {extras = ["binary"], version = "^3.1.9"}
 pymodbus = "^3.4.1"
 pyserial = "^3.5"
