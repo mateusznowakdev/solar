@@ -15,7 +15,7 @@ class PublishService:
         if len(topics) == 0:
             print("MQTT_TOPICS environment variable not set, no data will be sent")
             while True:
-                pass
+                time.sleep(100.0)
 
         client = Client(f"publisher-{random.randint(0, 9999):04d}")
         client.connect(broker, port)
