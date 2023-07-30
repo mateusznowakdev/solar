@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:15-alpine
     deploy:
       restart_policy:
         condition: any
@@ -11,3 +11,9 @@ services:
       - 5432:5432
     volumes:
       - ./data:/var/lib/postgresql/data
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports:
+      - 1883:1883
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
