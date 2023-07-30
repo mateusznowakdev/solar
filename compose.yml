@@ -49,6 +49,10 @@ services:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
   mqtt:
     image: eclipse-mosquitto:2
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
     ports:
       - 1883:1883
     volumes:

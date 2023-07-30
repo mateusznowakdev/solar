@@ -1,10 +1,6 @@
 services:
   db:
     image: postgres:15-alpine
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
     env_file:
       - .env
     ports:
