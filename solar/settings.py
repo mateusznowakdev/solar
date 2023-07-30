@@ -101,4 +101,5 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_PATCH": False,
 }
 
+MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_TOPICS = [t for t in os.environ.get("MQTT_TOPICS", "").split(",") if t]

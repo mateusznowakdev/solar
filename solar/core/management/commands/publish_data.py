@@ -6,7 +6,7 @@ from django.core.management import BaseCommand
 
 from solar.core.services import PublishService
 
-MQTT_BROKER = "localhost"
+MQTT_BROKER = settings.MQTT_BROKER
 MQTT_PORT = 1883
 MQTT_TOPICS = settings.MQTT_TOPICS
 
