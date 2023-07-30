@@ -1,13 +1,14 @@
 import sys
 import traceback
 
+from django.conf import settings
 from django.core.management import BaseCommand
 
 from solar.core.services import PublishService
 
 MQTT_BROKER = "localhost"
 MQTT_PORT = 1883
-MQTT_TOPICS = ["pv_power", "pv_voltage"]
+MQTT_TOPICS = settings.MQTT_TOPICS
 
 
 class Command(BaseCommand):

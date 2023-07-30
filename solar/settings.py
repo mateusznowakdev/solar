@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = bool(int(os.environ.get("DJANGO_DEBUG", "0")))
 SECRET_KEY = "devsecretkey" if DEBUG else os.environ.get("DJANGO_SECRET_KEY")
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h]
 
 MAIN_APPS = [
     "django.contrib.admin",
@@ -100,3 +100,5 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_PATCH": False,
 }
+
+MQTT_TOPICS = [t for t in os.environ.get("MQTT_TOPICS", "").split(",") if t]

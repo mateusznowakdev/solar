@@ -12,6 +12,11 @@ MQTT_TOPIC_PREFIX = "solar/"
 class PublishService:
     @staticmethod
     def publish_data(*, broker: str, port: int, topics: list[str]) -> NoReturn:
+        if len(topics) == 0:
+            print("MQTT_TOPICS environment variable not set, no data will be sent")
+            while True:
+                pass
+
         client = Client(f"publisher-{random.randint(0, 9999):04d}")
         client.connect(broker, port)
         client.loop_start()
