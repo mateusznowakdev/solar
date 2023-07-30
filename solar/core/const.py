@@ -3,6 +3,10 @@ METADATA = {
         "description": "Temperatura otoczenia",
         "unit": "°C",
     },
+    "battery_apparent_power": {
+        "description": "Moc baterii (pozorna)",
+        "unit": "W",
+    },
     "battery_current": {
         "description": "Prąd baterii",
         "unit": "A",
@@ -18,10 +22,6 @@ METADATA = {
     "bus_voltage": {
         "description": "Napięcie magistrali",
         "unit": "V",
-    },
-    "charge_power": {
-        "description": "Moc ładowania",
-        "unit": "W",
     },
     "charge_priority": {
         "description": "Priorytet ładowania",
@@ -121,11 +121,11 @@ METADATA = {
         "unit": "V",
     },
     "load_active_power": {
-        "description": "Czynna moc obciążenia",
+        "description": "Moc obciążenia (czynna)",
         "unit": "W",
     },
     "load_apparent_power": {
-        "description": "Pozorna moc obciążenia",
+        "description": "Moc obciążenia (pozorna)",
         "unit": "VA",
     },
     "load_current": {

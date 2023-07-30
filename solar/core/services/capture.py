@@ -114,7 +114,7 @@ class CaptureService:
             inv = recv_data(client, 0x200, 0x225)
             par = recv_data(client, 0xE200, 0xE20F)
 
-            State.objects.create(
+            state = State(
                 timestamp=timezone.now(),
                 battery_level_soc=parse_int(con, 0x00),
                 battery_voltage=parse_float(con, 0x01),
@@ -128,7 +128,6 @@ class CaptureService:
                 charge_status=parse_charge_status(con, 0x0B),
                 load_on=parse_load_on(con, 0x0B),
                 controller_faults=parse_controller_faults(con, 0x0C),
-                charge_power=parse_signed_int(con, 0x0E),
                 inverter_faults=parse_inverter_faults(inv, 0x04),
                 current_time=parse_datetime(inv, 0x0C),
                 current_state=parse_int(inv, 0x10),
@@ -155,5 +154,10 @@ class CaptureService:
                 output_priority=parse_int(par, 0x04),
                 charge_priority=parse_int(par, 0x0F),
             )
+
+            state.battery_current = -state.battery_current
+            state.battery_apparent_power = int(state.battery_current * state.battery_voltage)
+
+            state.save()
 
             time.sleep(1.0)
