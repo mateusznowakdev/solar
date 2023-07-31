@@ -18,7 +18,7 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-const API_URL = "http://localhost:8000";
+import { getBackendURI } from "../utils.js";
 
 const OFFSETS = {
   "1m": 60,
@@ -188,13 +188,13 @@ export default function Charts() {
   }
 
   function getState() {
-    fetch(API_URL + "/api/state/")
+    fetch(getBackendURI() + "/api/state/")
       .then((response) => response.json())
       .then((json) => setState(json));
   }
 
   function getMeta() {
-    fetch(API_URL + "/api/meta/")
+    fetch(getBackendURI() + "/api/meta/")
       .then((response) => response.json())
       .then((json) => setMeta(json));
   }
@@ -210,7 +210,7 @@ export default function Charts() {
     const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
     if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
 
-    fetch(API_URL + "/api/series/?" + new URLSearchParams(params))
+    fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
       .then((response) => (response.ok ? response.json() : []))
       .then((json) => setSeries(json));
   }

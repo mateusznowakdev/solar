@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
 
-const API_URL = "http://localhost:8000";
+import { getBackendURI } from "../utils.js";
 
 const UPDATE_INTERVAL = 2500;
 const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
@@ -109,13 +109,13 @@ export default function Main() {
   const [counter, setCounter] = useState(0);
 
   function getState() {
-    fetch(API_URL + "/api/state/")
+    fetch(getBackendURI() + "/api/state/")
       .then((response) => (response.ok ? response.json() : {}))
       .then((json) => setState(json));
   }
 
   function getMeta() {
-    fetch(API_URL + "/api/meta/")
+    fetch(getBackendURI() + "/api/meta/")
       .then((response) => response.json())
       .then((json) => setMeta(json));
   }

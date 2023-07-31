@@ -1,7 +1,16 @@
 services:
-  web:
+  frontend:
     build:
-      dockerfile: config/web/Dockerfile
+      dockerfile: config/frontend/Dockerfile
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+    ports:
+      - 80:80
+  backend:
+    build:
+      dockerfile: config/backend/Dockerfile
     command: python manage.py runserver --noreload --nostatic 0.0.0.0:8000
     deploy:
       restart_policy:
@@ -12,10 +21,10 @@ services:
     environment:
       - POSTGRES_HOST=db
     ports:
-      - 80:8000
+      - 8000:8000
   capture:
     build:
-      dockerfile: config/web/Dockerfile
+      dockerfile: config/backend/Dockerfile
     command: python manage.py capture_data
     deploy:
       restart_policy:
@@ -30,7 +39,7 @@ services:
     privileged: true
   publish:
     build:
-      dockerfile: config/web/Dockerfile
+      dockerfile: config/backend/Dockerfile
     command: python manage.py publish_data
     deploy:
       restart_policy:

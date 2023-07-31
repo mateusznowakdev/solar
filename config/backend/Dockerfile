@@ -1,4 +1,5 @@
 FROM python:3.11-alpine AS intermediate
+WORKDIR /app
 
 RUN apk add poetry
 
@@ -10,12 +11,13 @@ RUN poetry export > requirements.txt
 # ---
 
 FROM python:3.11-alpine AS target
+WORKDIR /app
 
 RUN apk add bash curl
 
-COPY --from=intermediate requirements.txt /tmp/requirements.txt
+COPY --from=intermediate /app/requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
 WORKDIR /app
-COPY solar /app/solar
-COPY manage.py /app/manage.py
+COPY solar solar
+COPY manage.py .
