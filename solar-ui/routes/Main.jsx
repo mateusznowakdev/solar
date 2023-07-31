@@ -93,7 +93,7 @@ function StateListItem({ item, togglePinned }) {
 
 function StateList({ items, togglePinned }) {
   return (
-    <ListGroup>
+    <ListGroup variant="flush">
       {items.map((item) => (
         <StateListItem item={item} key={item.key} togglePinned={togglePinned} />
       ))}
