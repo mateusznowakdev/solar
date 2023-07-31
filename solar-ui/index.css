@@ -1,3 +1,18 @@
-body {
-  font-family: sans-serif;
+.btn-light {
+  border-color: var(--bs-btn-hover-border-color);
+}
+
+.date-time-input input[type="date"] {
+  min-width: 12rem;
+}
+
+.pin-icon {
+  cursor: pointer;
+  user-select: none;
+}
+
+.preset-buttons {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(5, 1fr);
 }

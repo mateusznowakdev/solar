@@ -1,4 +1,6 @@
-const { Fragment, createElement: c, useEffect, useState } = React;
+import { Fragment, createElement as c, useEffect, useState } from "react";
+
+const API_URL = "http://localhost:8000";
 
 const UPDATE_INTERVAL = 2500;
 const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
@@ -64,7 +66,7 @@ function StateListItem({ item, togglePinned }) {
     "a",
     {
       className: "d-flex justify-content-between list-group-item",
-      href: `/charts/?initial=${item.key}`,
+      href: `/#/charts/${item.key}`,
     },
     c(
       "div",
@@ -96,7 +98,7 @@ function StateList({ items, togglePinned }) {
   );
 }
 
-function App() {
+export default function Main() {
   const [state, setState] = useState({});
   const [meta, setMeta] = useState({});
   const [pinned, setPinned] = useState([]);
@@ -104,13 +106,13 @@ function App() {
   const [counter, setCounter] = useState(0);
 
   function getState() {
-    fetch("/api/state/")
+    fetch(API_URL + "/api/state/")
       .then((response) => (response.ok ? response.json() : {}))
       .then((json) => setState(json));
   }
 
   function getMeta() {
-    fetch("/api/meta/")
+    fetch(API_URL + "/api/meta/")
       .then((response) => response.json())
       .then((json) => setMeta(json));
   }
@@ -175,8 +177,3 @@ function App() {
     c(StateList, { items: mergeListData(), togglePinned }),
   );
 }
-
-const container = document.getElementById("root");
-const root = ReactDOM.createRoot(container);
-
-root.render(c(App));

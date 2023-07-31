@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
+
+import Charts from "./routes/Charts";
+import Main from "./routes/Main";
 
 export default function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>Solar</h1>
-      <button onClick={() => setCount((count) => count + 1)}>
-        count is {count}
-      </button>
-    </>
+    <HashRouter>
+      <Routes>
+        <Route element={<Main />} index />
+        <Route element={<Charts />} path="/charts/:choice" />
+      </Routes>
+    </HashRouter>
   );
 }

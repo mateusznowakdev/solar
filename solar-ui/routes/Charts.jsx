@@ -1,4 +1,17 @@
-const { Fragment, createElement: c, useEffect, useState } = React;
+import {
+  CategoryScale,
+  Chart,
+  Filler,
+  LinearScale,
+  LineController,
+  LineElement,
+  PointElement,
+} from "chart.js";
+import dayjs from "dayjs";
+import { Fragment, createElement as c, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+const API_URL = "http://localhost:8000";
 
 const OFFSETS = {
   "1m": 60,
@@ -12,6 +25,15 @@ const OFFSETS = {
   "1d": 60 * 60 * 24,
   "7d": 60 * 60 * 24 * 7,
 };
+
+Chart.register(
+  CategoryScale,
+  Filler,
+  LinearScale,
+  LineController,
+  LineElement,
+  PointElement,
+);
 
 function buildDateFromStrings(date, time) {
   return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
@@ -150,24 +172,28 @@ function SeriesChart({ data }) {
   );
 }
 
-function App() {
+export default function Charts() {
   const [state, setState] = useState({});
   const [meta, setMeta] = useState({});
 
   const [series, setSeries] = useState([]);
 
-  const [choice, setChoice] = useState(getInitialKey());
+  const { choice } = useParams();
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
 
+  function setChoice(choice) {
+    window.location = `/#/charts/${choice}`;
+  }
+
   function getState() {
-    fetch("/api/state/")
+    fetch(API_URL + "/api/state/")
       .then((response) => response.json())
       .then((json) => setState(json));
   }
 
   function getMeta() {
-    fetch("/api/meta/")
+    fetch(API_URL + "/api/meta/")
       .then((response) => response.json())
       .then((json) => setMeta(json));
   }
@@ -183,7 +209,7 @@ function App() {
     const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
     if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
 
-    fetch("/api/series/?" + new URLSearchParams(params))
+    fetch(API_URL + "/api/series/?" + new URLSearchParams(params))
       .then((response) => (response.ok ? response.json() : []))
       .then((json) => setSeries(json));
   }
@@ -226,8 +252,3 @@ function App() {
     c(SeriesChart, { data: series }),
   );
 }
-
-const container = document.getElementById("root");
-const root = ReactDOM.createRoot(container);
-
-root.render(c(App));
