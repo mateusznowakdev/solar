@@ -1,4 +1,4 @@
-import { Fragment, createElement as c, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const API_URL = "http://localhost:8000";
 
@@ -42,59 +42,60 @@ function IdleRefreshButton({ value }) {
   let stickyContent;
 
   if (value >= UPDATE_MAX_COUNT) {
-    stickyContent = c(
-      "button",
-      { className: "btn btn-light m-3", onClick: () => location.reload() },
-      "↻",
+    stickyContent = (
+      <button
+        className="btn btn-light m-3"
+        onClick={() => window.location.reload()}
+      >
+        ↻
+      </button>
     );
   } else {
-    stickyContent = c(
-      "div",
-      { className: "progress", style: { height: "2px" } },
-      c("div", {
-        className: "bg-danger progress-bar",
-        style: { width: `${100 - (value * 100) / UPDATE_MAX_COUNT}%` },
-      }),
+    stickyContent = (
+      <div className="progress" style={{ height: "2px" }}>
+        <div
+          className="bg-danger progress-bar"
+          style={{ width: `${100 - (value * 100) / UPDATE_MAX_COUNT}%` }}
+        ></div>
+      </div>
     );
   }
 
-  return c("div", { className: "sticky-top" }, stickyContent);
+  return <div className="sticky-top">{stickyContent}</div>;
 }
 
 function StateListItem({ item, togglePinned }) {
-  return c(
-    "a",
-    {
-      className: "d-flex justify-content-between list-group-item",
-      href: `/#/charts/${item.key}`,
-    },
-    c(
-      "div",
-      { className: "d-flex" },
-      c(
-        "div",
-        {
-          className: "me-2 pin-icon",
-          onClick: (e) => {
+  return (
+    <a
+      className="d-flex justify-content-between list-group-item"
+      href={`/#/charts/${item.key}`}
+    >
+      <div className="d-flex">
+        <div
+          className="me-2 pin-icon"
+          onClick={(e) => {
             togglePinned(item.key);
             e.preventDefault();
-          },
-        },
-        item.pin ? "🔴" : "⚪",
-      ),
-      c("div", { className: "me-2" }, item.description),
-    ),
-    c("div", null, `${item.value} ${item.unit}`),
+          }}
+        >
+          {item.pin ? "🔴" : "⚪"}
+        </div>
+        <div className="me-2">{item.description}</div>
+      </div>
+      <div>
+        {item.value} {item.unit}
+      </div>
+    </a>
   );
 }
 
 function StateList({ items, togglePinned }) {
-  return c(
-    "div",
-    { className: "list-group list-group-flush" },
-    items.map((item) =>
-      c(StateListItem, { item, key: item.key, togglePinned }),
-    ),
+  return (
+    <div className="list-group list-group-flush">
+      {items.map((item) => (
+        <StateListItem item={item} key={item.key} togglePinned={togglePinned} />
+      ))}
+    </div>
   );
 }
 
@@ -170,10 +171,10 @@ export default function Main() {
     return () => clearInterval(fn);
   }, []);
 
-  return c(
-    Fragment,
-    null,
-    c(IdleRefreshButton, { value: counter }),
-    c(StateList, { items: mergeListData(), togglePinned }),
+  return (
+    <>
+      <IdleRefreshButton value={counter} />
+      <StateList items={mergeListData()} togglePinned={togglePinned} />
+    </>
   );
 }

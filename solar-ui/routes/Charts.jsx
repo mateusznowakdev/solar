@@ -8,7 +8,7 @@ import {
   PointElement,
 } from "chart.js";
 import dayjs from "dayjs";
-import { Fragment, createElement as c, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const API_URL = "http://localhost:8000";
@@ -47,10 +47,6 @@ function getEmptyDateState() {
   return { date: "", time: "" };
 }
 
-function getInitialKey() {
-  return new URLSearchParams(location.search).get("initial");
-}
-
 function getPastDateState(offset) {
   const date = buildDateWithOffset(offset);
   return {
@@ -64,69 +60,67 @@ function sort(a, b) {
 }
 
 function SeriesSelect({ choices, current, setCurrent }) {
-  return c(
-    "div",
-    { className: "input-group" },
-    c(
-      "select",
-      {
-        className: "form-select mb-3 mx-3",
-        onChange: (e) => setCurrent(e.target.value),
-        value: current,
-      },
-      c("option", { key: "", value: "" }, "------"),
-      choices.map((item) =>
-        c("option", { key: item.key, value: item.key }, item.description),
-      ),
-    ),
+  return (
+    <div className="input-group">
+      <select
+        className="form-select mb-3 mx-3"
+        onChange={(e) => setCurrent(e.target.value)}
+        value={current}
+      >
+        <option key="" value="">
+          ------
+        </option>
+        {choices.map((item) => (
+          <option key={item.key} value={item.key}>
+            {item.description}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
 function PresetButtons({ setStartDate, setStopDate }) {
-  return c(
-    "div",
-    { className: "mb-3 mx-3 preset-buttons" },
-    Object.entries(OFFSETS).map(([label, offset]) =>
-      c(
-        "button",
-        {
-          className: "btn btn-light",
-          onClick: () => {
+  return (
+    <div className="mb-3 mx-3 preset-buttons">
+      {Object.entries(OFFSETS).map(([label, offset]) => (
+        <button
+          className="btn btn-light"
+          key={label}
+          onClick={() => {
             setStartDate(getPastDateState(offset));
             setStopDate(getEmptyDateState());
-          },
-          key: label,
-        },
-        label,
-      ),
-    ),
+          }}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
   );
 }
 
 function DateTimeInput({ current: { date, time }, setCurrent }) {
-  return c(
-    "div",
-    { className: "date-time-input input-group mb-3" },
-    c("input", {
-      className: "form-control ms-3",
-      onChange: (e) => setCurrent((c) => ({ ...c, date: e.target.value })),
-      type: "date",
-      value: date,
-    }),
-    c("input", {
-      className: "form-control",
-      onChange: (e) => setCurrent((c) => ({ ...c, time: e.target.value })),
-      type: "time",
-      value: time,
-    }),
-    c(
-      "button",
-      {
-        className: "btn btn-light me-3",
-        onClick: () => setCurrent(getEmptyDateState()),
-      },
-      "×",
-    ),
+  return (
+    <div className="date-time-input input-group mb-3">
+      <input
+        className="form-control ms-3"
+        onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
+        type="date"
+        value={date}
+      />
+      <input
+        className="form-control"
+        onChange={(e) => setCurrent((c) => ({ ...c, time: e.target.value }))}
+        type="time"
+        value={time}
+      />
+      <button
+        className="btn btn-light me-3"
+        onClick={() => setCurrent(getEmptyDateState())}
+      >
+        ×
+      </button>
+    </div>
   );
 }
 
@@ -165,10 +159,10 @@ function SeriesChart({ data }) {
     };
   }, [data]);
 
-  return c(
-    "div",
-    { className: "mx-3", id: "canvasWrapper" },
-    c("canvas", { height: "256px", id: "canvas" }),
+  return (
+    <div className="mx-3" id="canvasWrapper">
+      <canvas height="256px" id="canvas"></canvas>
+    </div>
   );
 }
 
@@ -233,22 +227,32 @@ export default function Charts() {
 
   useEffect(getSeries, [choice, startDate, stopDate]);
 
-  return c(
-    Fragment,
-    null,
-    c(
-      "button",
-      { className: "btn btn-light m-3", onClick: () => (location.href = "/") },
-      "←",
-    ),
-    c(SeriesSelect, {
-      choices: mergeSelectData(),
-      current: choice,
-      setCurrent: setChoice,
-    }),
-    c(PresetButtons, { setStartDate, setStopDate }),
-    c(DateTimeInput, { current: startDate, setCurrent: setStartDate }),
-    c(DateTimeInput, { current: stopDate, setCurrent: setStopDate }),
-    c(SeriesChart, { data: series }),
+  return (
+    <>
+      <button
+        className="btn btn-light m-3"
+        onClick={() => (window.location = "/#/")}
+      >
+        ←
+      </button>
+      <SeriesSelect
+        choices={mergeSelectData()}
+        current={choice}
+        setCurrent={setChoice}
+      />
+      <PresetButtons
+        setStartDate={setStartDate}
+        setStopDate={setStopDate}
+      ></PresetButtons>
+      <DateTimeInput
+        current={startDate}
+        setCurrent={setStartDate}
+      ></DateTimeInput>
+      <DateTimeInput
+        current={stopDate}
+        setCurrent={setStopDate}
+      ></DateTimeInput>
+      <SeriesChart data={series}></SeriesChart>
+    </>
   );
 }
