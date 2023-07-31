@@ -1,6 +1,7 @@
 services:
   web:
-    build: .
+    build:
+      dockerfile: config/web/Dockerfile
     command: python manage.py runserver --noreload --nostatic 0.0.0.0:8000
     deploy:
       restart_policy:
@@ -13,7 +14,8 @@ services:
     ports:
       - 80:8000
   capture:
-    build: .
+    build:
+      dockerfile: config/web/Dockerfile
     command: python manage.py capture_data
     deploy:
       restart_policy:
@@ -27,7 +29,8 @@ services:
       - POSTGRES_HOST=db
     privileged: true
   publish:
-    build: .
+    build:
+      dockerfile: config/web/Dockerfile
     command: python manage.py publish_data
     deploy:
       restart_policy:
@@ -57,4 +60,4 @@ services:
     ports:
       - 1883:1883
     volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./config/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
