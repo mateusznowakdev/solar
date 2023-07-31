@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
 
 const API_URL = "http://localhost:8000";
 
@@ -43,21 +44,21 @@ function IdleRefreshButton({ value }) {
 
   if (value >= UPDATE_MAX_COUNT) {
     stickyContent = (
-      <button
-        className="btn btn-light m-3"
+      <Button
+        className="m-3"
         onClick={() => window.location.reload()}
+        variant="light"
       >
         ↻
-      </button>
+      </Button>
     );
   } else {
     stickyContent = (
-      <div className="progress" style={{ height: "2px" }}>
-        <div
-          className="bg-danger progress-bar"
-          style={{ width: `${100 - (value * 100) / UPDATE_MAX_COUNT}%` }}
-        ></div>
-      </div>
+      <ProgressBar
+        now={100 - (value * 100) / UPDATE_MAX_COUNT}
+        style={{ height: "2px" }}
+        variant="danger"
+      />
     );
   }
 
@@ -66,9 +67,10 @@ function IdleRefreshButton({ value }) {
 
 function StateListItem({ item, togglePinned }) {
   return (
-    <a
+    <ListGroupItem
+      action
       className="d-flex justify-content-between list-group-item"
-      href={`/#/charts/${item.key}`}
+      href={"/#/charts/" + item.key}
     >
       <div className="d-flex">
         <div
@@ -85,17 +87,17 @@ function StateListItem({ item, togglePinned }) {
       <div>
         {item.value} {item.unit}
       </div>
-    </a>
+    </ListGroupItem>
   );
 }
 
 function StateList({ items, togglePinned }) {
   return (
-    <div className="list-group list-group-flush">
+    <ListGroup>
       {items.map((item) => (
         <StateListItem item={item} key={item.key} togglePinned={togglePinned} />
       ))}
-    </div>
+    </ListGroup>
   );
 }
 

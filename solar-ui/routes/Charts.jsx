@@ -9,6 +9,13 @@ import {
 } from "chart.js";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import {
+  Button,
+  Form,
+  FormControl,
+  FormSelect,
+  InputGroup,
+} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 const API_URL = "http://localhost:8000";
@@ -61,9 +68,9 @@ function sort(a, b) {
 
 function SeriesSelect({ choices, current, setCurrent }) {
   return (
-    <div className="input-group">
-      <select
-        className="form-select mb-3 mx-3"
+    <InputGroup>
+      <FormSelect
+        className="mb-3 mx-3"
         onChange={(e) => setCurrent(e.target.value)}
         value={current}
       >
@@ -75,8 +82,8 @@ function SeriesSelect({ choices, current, setCurrent }) {
             {item.description}
           </option>
         ))}
-      </select>
-    </div>
+      </FormSelect>
+    </InputGroup>
   );
 }
 
@@ -84,16 +91,16 @@ function PresetButtons({ setStartDate, setStopDate }) {
   return (
     <div className="mb-3 mx-3 preset-buttons">
       {Object.entries(OFFSETS).map(([label, offset]) => (
-        <button
-          className="btn btn-light"
+        <Button
           key={label}
           onClick={() => {
             setStartDate(getPastDateState(offset));
             setStopDate(getEmptyDateState());
           }}
+          variant="light"
         >
           {label}
-        </button>
+        </Button>
       ))}
     </div>
   );
@@ -101,26 +108,26 @@ function PresetButtons({ setStartDate, setStopDate }) {
 
 function DateTimeInput({ current: { date, time }, setCurrent }) {
   return (
-    <div className="date-time-input input-group mb-3">
-      <input
-        className="form-control ms-3"
+    <InputGroup className="date-time-input mb-3">
+      <FormControl
+        className="ms-3"
         onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
         type="date"
         value={date}
       />
-      <input
-        className="form-control"
+      <FormControl
         onChange={(e) => setCurrent((c) => ({ ...c, time: e.target.value }))}
         type="time"
         value={time}
       />
-      <button
-        className="btn btn-light me-3"
+      <Button
+        className="me-3"
         onClick={() => setCurrent(getEmptyDateState())}
+        variant="light"
       >
         ×
-      </button>
-    </div>
+      </Button>
+    </InputGroup>
   );
 }
 
@@ -235,23 +242,25 @@ export default function Charts() {
       >
         ←
       </button>
-      <SeriesSelect
-        choices={mergeSelectData()}
-        current={choice}
-        setCurrent={setChoice}
-      />
-      <PresetButtons
-        setStartDate={setStartDate}
-        setStopDate={setStopDate}
-      ></PresetButtons>
-      <DateTimeInput
-        current={startDate}
-        setCurrent={setStartDate}
-      ></DateTimeInput>
-      <DateTimeInput
-        current={stopDate}
-        setCurrent={setStopDate}
-      ></DateTimeInput>
+      <Form>
+        <SeriesSelect
+          choices={mergeSelectData()}
+          current={choice}
+          setCurrent={setChoice}
+        />
+        <PresetButtons
+          setStartDate={setStartDate}
+          setStopDate={setStopDate}
+        ></PresetButtons>
+        <DateTimeInput
+          current={startDate}
+          setCurrent={setStartDate}
+        ></DateTimeInput>
+        <DateTimeInput
+          current={stopDate}
+          setCurrent={setStopDate}
+        ></DateTimeInput>
+      </Form>
       <SeriesChart data={series}></SeriesChart>
     </>
   );
