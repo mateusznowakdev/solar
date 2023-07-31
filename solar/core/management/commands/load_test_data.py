@@ -46,7 +46,7 @@ keys = [
     "pv_voltage",
     "pv_current",
     "pv_power",
-    "charge_power",
+    "battery_apparent_power",
     "charge_status",
     "load_on",
     "current_time",

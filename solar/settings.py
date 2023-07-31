@@ -22,7 +22,6 @@ EXTRA_APPS = [
 ]
 CUSTOM_APPS = [
     "solar.core",
-    "solar.front",
 ]
 INSTALLED_APPS = MAIN_APPS + EXTRA_APPS + CUSTOM_APPS
 
