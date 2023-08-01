@@ -18,6 +18,7 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
+import { METADATA } from "../meta.js";
 import { getBackendURI } from "../utils.js";
 
 const OFFSETS = {
@@ -174,9 +175,6 @@ function SeriesChart({ data }) {
 }
 
 export default function Charts() {
-  const [state, setState] = useState({});
-  const [meta, setMeta] = useState({});
-
   const [series, setSeries] = useState([]);
 
   const { choice } = useParams();
@@ -185,18 +183,6 @@ export default function Charts() {
 
   function setChoice(choice) {
     window.location = `/#/charts/${choice}`;
-  }
-
-  function getState() {
-    fetch(getBackendURI() + "/api/state/")
-      .then((response) => response.json())
-      .then((json) => setState(json));
-  }
-
-  function getMeta() {
-    fetch(getBackendURI() + "/api/meta/")
-      .then((response) => response.json())
-      .then((json) => setMeta(json));
   }
 
   function getSeries() {
@@ -216,23 +202,17 @@ export default function Charts() {
   }
 
   function mergeSelectData() {
-    return Object.keys(state)
-      .map((key) => {
-        const keyMeta = meta[key] || {};
-
-        const unit = keyMeta["unit"];
-        let description = keyMeta["description"] || key;
-        if (unit) description += ` (${unit})`;
+    return Object.entries(METADATA)
+      .map(([key, meta]) => {
+        let description = meta.description;
+        if (meta.unit) description += ` (${meta.unit})`;
 
         return { description, key };
       })
       .sort(sort);
   }
 
-  useEffect(getState, []);
-  useEffect(getMeta, []);
-
-  useEffect(getSeries, [choice, startDate, stopDate]);
+  useEffect(getSeries, [startDate, stopDate]);
 
   return (
     <>

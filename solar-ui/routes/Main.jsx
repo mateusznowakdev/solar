@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
 
+import { METADATA } from "../meta.js";
 import { getBackendURI } from "../utils.js";
 
 const UPDATE_INTERVAL = 2500;
@@ -14,6 +15,10 @@ function isDate(value) {
 }
 
 function mapValue(value, choices) {
+  if (value === undefined) {
+    return value;
+  }
+
   if (choices) {
     return choices[value.toString()] || value;
   }
@@ -69,6 +74,7 @@ function StateListItem({ item, togglePinned }) {
   return (
     <ListGroupItem
       action
+      active={false}
       className="d-flex justify-content-between list-group-item"
       href={"/#/charts/" + item.key}
     >
@@ -103,7 +109,6 @@ function StateList({ items, togglePinned }) {
 
 export default function Main() {
   const [state, setState] = useState({});
-  const [meta, setMeta] = useState({});
   const [pinned, setPinned] = useState([]);
 
   const [counter, setCounter] = useState(0);
@@ -112,12 +117,6 @@ export default function Main() {
     fetch(getBackendURI() + "/api/state/")
       .then((response) => (response.ok ? response.json() : {}))
       .then((json) => setState(json));
-  }
-
-  function getMeta() {
-    fetch(getBackendURI() + "/api/meta/")
-      .then((response) => response.json())
-      .then((json) => setMeta(json));
   }
 
   function getPinned() {
@@ -138,17 +137,14 @@ export default function Main() {
   }
 
   function mergeListData() {
-    return Object.entries(state)
-      .map(([key, value]) => {
-        const keyMeta = meta[key] || {};
-        return {
-          key,
-          value: mapValue(value, keyMeta["choices"]),
-          pin: pinned.includes(key),
-          description: keyMeta["description"] || key,
-          unit: keyMeta["unit"] || "",
-        };
-      })
+    return Object.entries(METADATA)
+      .map(([key, meta]) => ({
+        description: meta.description,
+        key,
+        pin: pinned.includes(key),
+        unit: meta.unit,
+        value: mapValue(state[key], meta.choices),
+      }))
       .sort(sortByPinned);
   }
 
@@ -165,7 +161,6 @@ export default function Main() {
   }
 
   useEffect(getState, []);
-  useEffect(getMeta, []);
   useEffect(getPinned, []);
 
   useEffect(() => {

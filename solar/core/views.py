@@ -4,19 +4,12 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from solar.core.serializers import (
-    MetaResponseSerializer,
     NullSerializer,
     SeriesRequestSerializer,
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from solar.core.services import WebMetaService, WebSeriesService, WebStateService
-
-
-class MetaAPIView(views.APIView):
-    @extend_schema(responses={200: MetaResponseSerializer(many=True)})
-    def get(self, request: Request) -> Response:
-        return Response(data=WebMetaService.get_meta())
+from solar.core.services import WebSeriesService, WebStateService
 
 
 class SeriesAPIView(views.APIView):

@@ -1,4 +1,4 @@
-METADATA = {
+export const METADATA = {
     "ambient_temperature": {
         "description": "Temperatura otoczenia",
         "unit": "°C",

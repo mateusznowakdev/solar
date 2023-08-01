@@ -7,17 +7,10 @@ from django.db.models.expressions import RawSQL
 from django.http import Http404
 from django.utils import timezone
 
-from solar.core.const import METADATA
 from solar.core.models import State
 
 DATE_BIN = "DATE_BIN(%s, \"timestamp\", TIMESTAMP '2001-01-01 00:00:00')"
 DAYS_LIMIT = 7
-
-
-class WebMetaService:
-    @staticmethod
-    def get_meta() -> dict:
-        return METADATA
 
 
 class WebSeriesService:
