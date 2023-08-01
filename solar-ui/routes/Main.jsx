@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
 
-import { METADATA, defaultParser, defaultRenderer } from "../meta.js";
+import { STRINGS } from "../locale.js";
+import { METADATA } from "../meta.js";
 import { getBackendURI } from "../utils.js";
 
 const UPDATE_INTERVAL = 2500;
@@ -24,7 +25,7 @@ function IdleRefreshButton({ value }) {
         onClick={() => window.location.reload()}
         variant="light"
       >
-        ↻
+        ⭮ {STRINGS.REFRESH}
       </Button>
     );
   } else {

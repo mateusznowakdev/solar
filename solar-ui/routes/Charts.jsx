@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 
 import { METADATA } from "../meta.js";
 import { getBackendURI } from "../utils.js";
+import {STRINGS} from "../locale";
 
 const OFFSETS = {
   "1m": 60,
@@ -226,7 +227,7 @@ export default function Charts() {
         className="btn btn-light m-3"
         onClick={() => (window.location = "/#/")}
       >
-        ←
+        🡠 {STRINGS.BACK}
       </button>
       <Form>
         <SeriesSelect
