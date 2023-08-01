@@ -62,9 +62,9 @@ METADATA = {
             "11": "(11) Awaria",
         },
     },
-    # "current_time": {
-    #     "description": "Czas inwertera",
-    # },
+    "current_time": {
+        "description": "Czas inwertera",
+    },
     "dc_current": {
         "description": "Prąd DC",
         "unit": "A",

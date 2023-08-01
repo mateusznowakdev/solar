@@ -30,4 +30,4 @@ class StateResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = State
-        exclude = ("id", "current_time")
+        exclude = ("id",)
