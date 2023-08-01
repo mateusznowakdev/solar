@@ -1,41 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
 
-import { METADATA } from "../meta.js";
+import { METADATA, defaultParser, defaultRenderer } from "../meta.js";
 import { getBackendURI } from "../utils.js";
 
 const UPDATE_INTERVAL = 2500;
 const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
-
-function isDate(value) {
-  return value
-    .toString()
-    .substring(0, 10)
-    .match(/\d{4}-\d{2}-\d{2}/);
-}
-
-function mapValue(value, choices) {
-  if (value === undefined) {
-    return value;
-  }
-
-  if (choices) {
-    return choices[value.toString()] || value;
-  }
-
-  if (isDate(value)) {
-    return new Intl.DateTimeFormat(undefined, {
-      dateStyle: "short",
-      timeStyle: "medium",
-    }).format(new Date(value));
-  }
-
-  if (typeof value == "object") {
-    return JSON.stringify(value);
-  }
-
-  return value;
-}
 
 function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;
@@ -138,13 +108,18 @@ export default function Main() {
 
   function mergeListData() {
     return Object.entries(METADATA)
-      .map(([key, meta]) => ({
-        description: meta.description,
-        key,
-        pin: pinned.includes(key),
-        unit: meta.unit,
-        value: mapValue(state[key], meta.choices),
-      }))
+      .map(([key, meta]) => {
+        const parser = meta.parser || defaultParser;
+        const renderer = meta.renderer || defaultRenderer;
+
+        return {
+          description: meta.description,
+          key,
+          pin: pinned.includes(key),
+          unit: meta.unit,
+          value: renderer(parser(state[key])),
+        };
+      })
       .sort(sortByPinned);
   }
 

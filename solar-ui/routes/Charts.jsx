@@ -212,7 +212,7 @@ export default function Charts() {
       .sort(sort);
   }
 
-  useEffect(getSeries, [startDate, stopDate]);
+  useEffect(getSeries, [choice, startDate, stopDate]);
 
   return (
     <>
