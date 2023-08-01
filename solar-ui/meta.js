@@ -29,10 +29,10 @@ export const METADATA = {
     description: "Priorytet ładowania",
     renderer: (value) =>
       ({
-        0: "Preferuj PV",
+        0: "Preferuj panele",
         1: "Preferuj sieć",
         2: "Tryb mieszany",
-        3: "Tylko PV",
+        3: "Tylko panele",
       })[value] || value,
   },
   charge_status: {
@@ -49,6 +49,7 @@ export const METADATA = {
       })[value] || value,
   },
   controller_faults: {
+    chart: false,
     description: "Kody błędów sterownika",
     renderer: (value) => JSON.stringify(value),
   },
@@ -69,6 +70,7 @@ export const METADATA = {
       })[value] || value,
   },
   current_time: {
+    chart: false,
     description: "Czas inwertera",
     parser: (value) => new Date(value),
     renderer: renderDate,
@@ -118,6 +120,7 @@ export const METADATA = {
     unit: "mV",
   },
   inverter_faults: {
+    chart: false,
     description: "Kody błędów inwertera",
     renderer: (value) => JSON.stringify(value),
   },
@@ -142,6 +145,7 @@ export const METADATA = {
     unit: "A",
   },
   load_on: {
+    chart: false,
     description: "Obciążenie",
     renderer: (value) => (value ? "Tak" : "Nie"),
   },
@@ -186,6 +190,7 @@ export const METADATA = {
     unit: "V",
   },
   timestamp: {
+    chart: false,
     description: "Czas pomiaru",
     parser: (value) => new Date(value),
     renderer: renderDate,
@@ -206,5 +211,17 @@ export function defaultRenderer(value) {
     return renderNumber(asInt);
   } else {
     return renderNumber(asFloat);
+  }
+}
+
+for (const key in METADATA) {
+  if (METADATA[key].chart === undefined) {
+    METADATA[key].chart = true;
+  }
+  if (METADATA[key].parser === undefined) {
+    METADATA[key].parser = defaultParser;
+  }
+  if (METADATA[key].renderer === undefined) {
+    METADATA[key].renderer = defaultRenderer;
   }
 }

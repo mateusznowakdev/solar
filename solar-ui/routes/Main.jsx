@@ -108,18 +108,13 @@ export default function Main() {
 
   function mergeListData() {
     return Object.entries(METADATA)
-      .map(([key, meta]) => {
-        const parser = meta.parser || defaultParser;
-        const renderer = meta.renderer || defaultRenderer;
-
-        return {
-          description: meta.description,
-          key,
-          pin: pinned.includes(key),
-          unit: meta.unit,
-          value: renderer(parser(state[key])),
-        };
-      })
+      .map(([key, meta]) => ({
+        description: meta.description,
+        key,
+        pin: pinned.includes(key),
+        unit: meta.unit,
+        value: meta.renderer(meta.parser(state[key])),
+      }))
       .sort(sortByPinned);
   }
 

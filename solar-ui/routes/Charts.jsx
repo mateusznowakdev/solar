@@ -63,6 +63,10 @@ function getPastDateState(offset) {
   };
 }
 
+function shouldHaveChart(key) {
+  return (METADATA[key] || {}).chart;
+}
+
 function sort(a, b) {
   return a.description.localeCompare(b.description);
 }
@@ -186,6 +190,8 @@ export default function Charts() {
   }
 
   function getSeries() {
+    if (!shouldHaveChart(choice)) return;
+
     const params = {
       source: choice,
     };
@@ -241,7 +247,7 @@ export default function Charts() {
           setCurrent={setStopDate}
         ></DateTimeInput>
       </Form>
-      <SeriesChart data={series}></SeriesChart>
+      {shouldHaveChart(choice) && <SeriesChart data={series}></SeriesChart>}
     </>
   );
 }
