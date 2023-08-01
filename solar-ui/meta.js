@@ -1,3 +1,5 @@
+import { renderDate } from "./date.js";
+
 export const METADATA = {
   ambient_temperature: {
     description: "Temperatura otoczenia",
@@ -69,7 +71,7 @@ export const METADATA = {
   current_time: {
     description: "Czas inwertera",
     parser: (value) => new Date(value),
-    renderer: (value) => value.toString(),
+    renderer: renderDate,
   },
   dc_current: {
     description: "Prąd DC",
@@ -186,7 +188,7 @@ export const METADATA = {
   timestamp: {
     description: "Czas pomiaru",
     parser: (value) => new Date(value),
-    renderer: (value) => value.toString(),
+    renderer: renderDate,
   },
 };
 
