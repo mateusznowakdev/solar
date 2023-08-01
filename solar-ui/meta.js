@@ -7,7 +7,7 @@ export const METADATA = {
   },
   battery_apparent_power: {
     description: "Moc baterii (pozorna)",
-    unit: "W",
+    unit: "VA",
   },
   battery_current: {
     description: "Prąd baterii",
