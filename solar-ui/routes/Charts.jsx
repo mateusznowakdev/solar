@@ -20,7 +20,7 @@ import { useParams } from "react-router-dom";
 
 import { METADATA } from "../meta.js";
 import { getBackendURI } from "../utils.js";
-import {STRINGS} from "../locale";
+import { STRINGS } from "../locale";
 
 const OFFSETS = {
   "1m": 60,
@@ -223,12 +223,13 @@ export default function Charts() {
 
   return (
     <>
-      <button
-        className="btn btn-light m-3"
+      <Button
+        className="m-3"
         onClick={() => (window.location = "/#/")}
+        variant="light"
       >
         🡠 {STRINGS.BACK}
-      </button>
+      </Button>
       <Form>
         <SeriesSelect
           choices={mergeSelectData()}
