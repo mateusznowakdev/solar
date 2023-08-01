@@ -18,9 +18,9 @@ import {
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
+import { STRINGS } from "../locale.js";
 import { METADATA } from "../meta.js";
 import { getBackendURI } from "../utils.js";
-import { STRINGS } from "../locale";
 
 const OFFSETS = {
   "1m": 60,
@@ -137,7 +137,15 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
   );
 }
 
-function SeriesChart({ data }) {
+function SeriesChart({ choice, data }) {
+  if (!shouldHaveChart(choice)) {
+    return (
+      <div className="mx-3 text-center text-muted">
+        {STRINGS.INVALID_SERIES_HINT}
+      </div>
+    );
+  }
+
   useEffect(() => {
     const chart = new Chart(document.getElementById("canvas"), {
       type: "line",
@@ -173,7 +181,7 @@ function SeriesChart({ data }) {
   }, [data]);
 
   return (
-    <div className="mx-3" id="canvasWrapper">
+    <div className="mx-3">
       <canvas height="256px" id="canvas"></canvas>
     </div>
   );
@@ -249,7 +257,7 @@ export default function Charts() {
           setCurrent={setStopDate}
         ></DateTimeInput>
       </Form>
-      {shouldHaveChart(choice) && <SeriesChart data={series}></SeriesChart>}
+      <SeriesChart choice={choice} data={series}></SeriesChart>
     </>
   );
 }
