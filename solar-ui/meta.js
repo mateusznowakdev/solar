@@ -1,4 +1,4 @@
-import { renderDate } from "./date.js";
+import { renderDate, renderNumber } from "./render.js";
 
 export const METADATA = {
   ambient_temperature: {
@@ -197,5 +197,14 @@ export function defaultParser(value) {
 }
 
 export function defaultRenderer(value) {
-  return value;
+  const asInt = parseInt(value);
+  const asFloat = parseFloat(value);
+
+  if (isNaN(asFloat)) return value;
+
+  if (asInt === asFloat) {
+    return renderNumber(asInt);
+  } else {
+    return renderNumber(asFloat);
+  }
 }
