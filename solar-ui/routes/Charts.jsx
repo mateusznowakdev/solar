@@ -6,6 +6,7 @@ import {
   LineController,
   LineElement,
   PointElement,
+  Title,
   Tooltip,
 } from "chart.js";
 import dayjs from "dayjs";
@@ -44,6 +45,7 @@ Chart.register(
   LineController,
   LineElement,
   PointElement,
+  Title,
   Tooltip,
 );
 
@@ -149,6 +151,9 @@ function SeriesChart({ choice, data }) {
     );
   }
 
+  const dateFromString = renderDateTime(data.dateFrom);
+  const dateToString = renderDateTime(data.dateTo);
+
   useEffect(() => {
     const chart = new Chart(document.getElementById("canvas"), {
       type: "line",
@@ -157,11 +162,11 @@ function SeriesChart({ choice, data }) {
           {
             borderColor: "#ff0000",
             backgroundColor: "#ff000033",
-            data: data.map((row) => row[1]),
+            data: data.values.map((row) => row[1]),
             fill: true,
           },
         ],
-        labels: data.map((row) => row[0]),
+        labels: data.values.map((row) => row[0]),
       },
       options: {
         animation: false,
@@ -172,9 +177,14 @@ function SeriesChart({ choice, data }) {
         interaction: { intersect: false },
         maintainAspectRatio: false,
         plugins: {
+          title: {
+            display: true,
+            text: `${dateFromString} — ${dateToString}`,
+          },
           tooltip: {
             callbacks: {
-              title: (context) => renderDateTime(data[context[0].parsed.x][0]),
+              title: (context) =>
+                renderDateTime(data.values[context[0].parsed.x][0]),
             },
           },
         },
@@ -182,7 +192,7 @@ function SeriesChart({ choice, data }) {
         scales: {
           x: {
             ticks: {
-              callback: (value) => renderDate(data[value][0]),
+              callback: (value) => renderDate(data.values[value][0]),
             },
           },
         },
@@ -202,7 +212,7 @@ function SeriesChart({ choice, data }) {
 }
 
 export default function Charts() {
-  const [series, setSeries] = useState([]);
+  const [series, setSeries] = useState({ values: [] });
 
   const { choice } = useParams();
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
@@ -227,7 +237,14 @@ export default function Charts() {
 
     fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
       .then((response) => (response.ok ? response.json() : []))
-      .then((json) => setSeries(json.map(([x, y]) => [new Date(x), y])));
+      .then((json) => {
+        const jsonParsed = {
+          dateFrom: new Date(json.date_from),
+          dateTo: new Date(json.date_to),
+          values: json.values.map(([x, y]) => [new Date(x), y]),
+        };
+        setSeries(jsonParsed);
+      });
   }
 
   function mergeSelectData() {

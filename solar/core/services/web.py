@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Any
 
 from django.core.exceptions import FieldError
 from django.db.models import Avg
@@ -15,9 +14,7 @@ DAYS_LIMIT = 7
 
 class WebSeriesService:
     @staticmethod
-    def get_series(
-        *, source: str, date_from: str | None, date_to: str | None
-    ) -> list[list[Any]]:
+    def get_series(*, source: str, date_from: str | None, date_to: str | None) -> dict:
         try:
             date_from = datetime.fromisoformat(date_from)
         except TypeError:
@@ -56,7 +53,7 @@ class WebSeriesService:
         stride = max(1, int(stride))
 
         try:
-            return (
+            data = (
                 State.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
                 .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
                 .order_by("avg_timestamp")
@@ -64,7 +61,9 @@ class WebSeriesService:
                 .annotate(avg_value=Avg(source))
             )
         except FieldError:
-            return []
+            data = []
+
+        return {"date_from": date_from, "date_to": date_to, "values": data}
 
 
 class WebStateService:
