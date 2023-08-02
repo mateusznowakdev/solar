@@ -6,6 +6,7 @@ import {
   LineController,
   LineElement,
   PointElement,
+  Tooltip,
 } from "chart.js";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -42,6 +43,7 @@ Chart.register(
   LineController,
   LineElement,
   PointElement,
+  Tooltip,
 );
 
 function buildDateFromStrings(date, time) {
@@ -154,7 +156,7 @@ function SeriesChart({ choice, data }) {
           {
             borderColor: "#ff0000",
             backgroundColor: "#ff000033",
-            data: data.map((row) => parseFloat(row[1])),
+            data: data.map((row) => row[1]),
             fill: true,
           },
         ],
@@ -168,9 +170,6 @@ function SeriesChart({ choice, data }) {
         },
         interaction: { intersect: false },
         maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-        },
         responsive: true,
       },
     });
