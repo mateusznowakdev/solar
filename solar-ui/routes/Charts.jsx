@@ -21,6 +21,7 @@ import { useParams } from "react-router-dom";
 
 import { STRINGS } from "../locale.js";
 import { METADATA } from "../meta.js";
+import { renderDate, renderDateTime } from "../render.js";
 import { getBackendURI } from "../utils.js";
 
 const OFFSETS = {
@@ -160,7 +161,7 @@ function SeriesChart({ choice, data }) {
             fill: true,
           },
         ],
-        labels: data.map((row) => dayjs(row[0]).format("HH:mm:ss")),
+        labels: data.map((row) => row[0]),
       },
       options: {
         animation: false,
@@ -170,7 +171,21 @@ function SeriesChart({ choice, data }) {
         },
         interaction: { intersect: false },
         maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              title: (context) => renderDateTime(data[context[0].parsed.x][0]),
+            },
+          },
+        },
         responsive: true,
+        scales: {
+          x: {
+            ticks: {
+              callback: (value) => renderDate(data[value][0]),
+            },
+          },
+        },
       },
     });
 
@@ -212,7 +227,7 @@ export default function Charts() {
 
     fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
       .then((response) => (response.ok ? response.json() : []))
-      .then((json) => setSeries(json));
+      .then((json) => setSeries(json.map(([x, y]) => [new Date(x), y])));
   }
 
   function mergeSelectData() {

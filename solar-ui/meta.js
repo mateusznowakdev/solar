@@ -1,4 +1,4 @@
-import { renderDate, renderNumber } from "./render.js";
+import { renderDateTime, renderNumber } from "./render.js";
 
 export const METADATA = {
   ambient_temperature: {
@@ -73,7 +73,7 @@ export const METADATA = {
     chart: false,
     description: "Czas inwertera",
     parser: (value) => new Date(value),
-    renderer: renderDate,
+    renderer: renderDateTime,
   },
   dc_current: {
     description: "Prąd DC",
@@ -193,7 +193,7 @@ export const METADATA = {
     chart: false,
     description: "Czas pomiaru",
     parser: (value) => new Date(value),
-    renderer: renderDate,
+    renderer: renderDateTime,
   },
 };
 
