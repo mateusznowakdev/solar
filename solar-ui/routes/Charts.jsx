@@ -143,14 +143,6 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
 }
 
 function SeriesChart({ choice, data }) {
-  if (!shouldHaveChart(choice)) {
-    return (
-      <div className="mx-3 text-center text-muted">
-        {STRINGS.INVALID_SERIES_HINT}
-      </div>
-    );
-  }
-
   const dateFromString = renderDateTime(data.dateFrom);
   const dateToString = renderDateTime(data.dateTo);
 
@@ -211,11 +203,19 @@ function SeriesChart({ choice, data }) {
     };
   }, [data]);
 
-  return (
-    <div className="mx-3">
-      <canvas height="256px" id="canvas"></canvas>
-    </div>
-  );
+  if (shouldHaveChart(choice)) {
+    return (
+      <div className="mx-3">
+        <canvas height="256px" id="canvas"></canvas>
+      </div>
+    );
+  } else {
+    return (
+      <div className="mx-3 text-center text-muted">
+        {STRINGS.INVALID_SERIES_HINT}
+      </div>
+    );
+  }
 }
 
 export default function Charts() {
