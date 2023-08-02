@@ -195,6 +195,11 @@ function SeriesChart({ choice, data }) {
               callback: (value) => renderDate(data.values[value][0]),
             },
           },
+          y: {
+            ticks: {
+              precision: 0,
+            },
+          },
         },
       },
     });
