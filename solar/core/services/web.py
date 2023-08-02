@@ -58,7 +58,7 @@ class WebSeriesService:
                 .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
                 .order_by("avg_timestamp")
                 .values_list("avg_timestamp")
-                .annotate(avg_value=Avg(source))
+                .annotate(avg_value=Avg(source), avg_value2=Avg("pv_power"))
             )
         except FieldError:
             data = []

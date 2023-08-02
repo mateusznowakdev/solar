@@ -2,6 +2,7 @@ import {
   CategoryScale,
   Chart,
   Filler,
+  Legend,
   LinearScale,
   LineController,
   LineElement,
@@ -41,6 +42,7 @@ const OFFSETS = {
 Chart.register(
   CategoryScale,
   Filler,
+  Legend,
   LinearScale,
   LineController,
   LineElement,
@@ -152,10 +154,18 @@ function SeriesChart({ choice, data }) {
       data: {
         datasets: [
           {
-            borderColor: "#ff0000",
             backgroundColor: "#ff000033",
+            borderColor: "#ff0000",
             data: data.values.map((row) => row[1]),
-            fill: true,
+            label: METADATA[choice].description,
+            yAxisID: "y1",
+          },
+          {
+            backgroundColor: "#ffaa0033",
+            borderColor: "#ffaa00",
+            data: data.values.map((row) => row[2]),
+            label: METADATA["pv_power"].description,
+            yAxisID: "y2",
           },
         ],
         labels: data.values.map((row) => row[0]),
@@ -166,7 +176,10 @@ function SeriesChart({ choice, data }) {
           line: { borderWidth: 1 },
           point: { pointStyle: false },
         },
-        interaction: { intersect: false },
+        interaction: {
+          intersect: false,
+          mode: "index",
+        },
         maintainAspectRatio: false,
         plugins: {
           title: {
@@ -188,7 +201,21 @@ function SeriesChart({ choice, data }) {
               callback: (value) => renderDate(data.values[value][0]),
             },
           },
-          y: {
+          y1: {
+            grid: {
+              display: false,
+            },
+            position: "left",
+            ticks: {
+              callback: (value) => METADATA[choice].render(value),
+              precision: 0,
+            },
+          },
+          y2: {
+            grid: {
+              display: false,
+            },
+            position: "right",
             ticks: {
               callback: (value) => METADATA[choice].render(value),
               precision: 0,
@@ -248,7 +275,7 @@ export default function Charts() {
         const jsonParsed = {
           dateFrom: new Date(json.date_from),
           dateTo: new Date(json.date_to),
-          values: json.values.map(([x, y]) => [new Date(x), y]),
+          values: json.values.map(([x, y1, y2]) => [new Date(x), y1, y2]),
         };
         setSeries(jsonParsed);
       });
