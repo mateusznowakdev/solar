@@ -27,7 +27,7 @@ export const METADATA = {
   },
   charge_priority: {
     description: "Priorytet ładowania",
-    renderer: (value) =>
+    render: (value) =>
       ({
         0: "Preferuj panele",
         1: "Preferuj sieć",
@@ -37,7 +37,7 @@ export const METADATA = {
   },
   charge_status: {
     description: "Tryb ładowania",
-    renderer: (value) =>
+    render: (value) =>
       ({
         0: "Wyłączone",
         1: "Włączone",
@@ -51,11 +51,11 @@ export const METADATA = {
   controller_faults: {
     chart: false,
     description: "Kody błędów sterownika",
-    renderer: (value) => JSON.stringify(value),
+    render: (value) => JSON.stringify(value),
   },
   current_state: {
     description: "Tryb inwertera",
-    renderer: (value) =>
+    render: (value) =>
       ({
         0: "Opóźnienie po uruchomieniu",
         1: "Oczekiwanie",
@@ -72,8 +72,7 @@ export const METADATA = {
   current_time: {
     chart: false,
     description: "Czas inwertera",
-    parser: (value) => new Date(value),
-    renderer: renderDateTime,
+    render: (value) => renderDateTime(new Date(value)),
   },
   dc_current: {
     description: "Prąd DC",
@@ -122,7 +121,7 @@ export const METADATA = {
   inverter_faults: {
     chart: false,
     description: "Kody błędów inwertera",
-    renderer: (value) => JSON.stringify(value),
+    render: (value) => JSON.stringify(value),
   },
   inverter_frequency: {
     description: "Częstotliwość inwertera",
@@ -147,7 +146,7 @@ export const METADATA = {
   load_on: {
     chart: false,
     description: "Obciążenie",
-    renderer: (value) => (value ? "Tak" : "Nie"),
+    render: (value) => (value ? "Tak" : "Nie"),
   },
   load_pf: {
     description: "Współczynnik mocy obciążenia",
@@ -162,7 +161,7 @@ export const METADATA = {
   },
   output_priority: {
     description: "Priorytet wyjścia",
-    renderer: (value) =>
+    render: (value) =>
       ({
         0: "Panel",
         1: "Sieć",
@@ -192,14 +191,9 @@ export const METADATA = {
   timestamp: {
     chart: false,
     description: "Czas pomiaru",
-    parser: (value) => new Date(value),
-    renderer: renderDateTime,
+    render: (value) => renderDateTime(new Date(value)),
   },
 };
-
-export function defaultParser(value) {
-  return value;
-}
 
 export function defaultRenderer(value) {
   const asInt = parseInt(value);
@@ -218,10 +212,7 @@ for (const key in METADATA) {
   if (METADATA[key].chart === undefined) {
     METADATA[key].chart = true;
   }
-  if (METADATA[key].parser === undefined) {
-    METADATA[key].parser = defaultParser;
-  }
-  if (METADATA[key].renderer === undefined) {
-    METADATA[key].renderer = defaultRenderer;
+  if (METADATA[key].render === undefined) {
+    METADATA[key].render = defaultRenderer;
   }
 }

@@ -114,7 +114,7 @@ export default function Main() {
         key,
         pin: pinned.includes(key),
         unit: meta.unit,
-        value: meta.renderer(meta.parser(state[key])),
+        value: meta.render(state[key]),
       }))
       .sort(sortByPinned);
   }

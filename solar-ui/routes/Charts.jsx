@@ -185,6 +185,7 @@ function SeriesChart({ choice, data }) {
             callbacks: {
               title: (context) =>
                 renderDateTime(data.values[context[0].parsed.x][0]),
+              label: (context) => METADATA[choice].render(context.raw),
             },
           },
         },
@@ -197,6 +198,7 @@ function SeriesChart({ choice, data }) {
           },
           y: {
             ticks: {
+              callback: (value) => METADATA[choice].render(value),
               precision: 0,
             },
           },
