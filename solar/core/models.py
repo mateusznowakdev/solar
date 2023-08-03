@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import FloatField, IntegerField
 
 
 class State(models.Model):
@@ -48,3 +49,11 @@ class State(models.Model):
 
     output_priority = models.IntegerField()
     charge_priority = models.IntegerField()
+
+
+def get_numeric_field_names() -> list[str]:
+    return [
+        f.name
+        for f in State._meta.concrete_fields
+        if type(f) in (FloatField, IntegerField)
+    ]

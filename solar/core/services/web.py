@@ -14,7 +14,7 @@ DAYS_LIMIT = 7
 
 class WebSeriesService:
     @staticmethod
-    def get_series(*, source: str, date_from: str | None, date_to: str | None) -> dict:
+    def get_series(*, source1: str | None, source2: str | None, date_from: str | None, date_to: str | None) -> dict:
         try:
             date_from = datetime.fromisoformat(date_from)
         except TypeError:
@@ -52,16 +52,16 @@ class WebSeriesService:
         stride = delta.total_seconds() // 1000
         stride = max(1, int(stride))
 
-        try:
-            data = (
-                State.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
-                .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
-                .order_by("avg_timestamp")
-                .values_list("avg_timestamp")
-                .annotate(avg_value=Avg(source), avg_value2=Avg("pv_power"))
-            )
-        except FieldError:
-            data = []
+        data = (
+            State.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
+            .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
+            .order_by("avg_timestamp")
+            .values_list("avg_timestamp")
+            .annotate(avg_value1=Avg(source1))
+        )
+
+        if source2:
+            data = data.annotate(avg_value2=Avg(source2))
 
         return {"date_from": date_from, "date_to": date_to, "values": data}
 

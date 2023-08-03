@@ -1,7 +1,6 @@
-from django.db.models import FloatField, IntegerField
 from rest_framework import serializers
 
-from solar.core.models import State
+from solar.core.models import State, get_numeric_field_names
 
 
 class NullSerializer(serializers.Serializer):
@@ -9,13 +8,8 @@ class NullSerializer(serializers.Serializer):
 
 
 class SeriesRequestSerializer(serializers.Serializer):
-    source = serializers.ChoiceField(
-        choices=[
-            f.name
-            for f in State._meta.concrete_fields
-            if type(f) in (FloatField, IntegerField)
-        ]
-    )
+    source1 = serializers.ChoiceField(choices=get_numeric_field_names())
+    source2 = serializers.ChoiceField(choices=get_numeric_field_names(), required=False)
     date_from = serializers.DateTimeField(required=False)
     date_to = serializers.DateTimeField(required=False)
 

@@ -18,7 +18,8 @@ class SeriesAPIView(views.APIView):
         in_serializer.is_valid(raise_exception=True)
 
         out_data = WebSeriesService.get_series(
-            source=in_serializer.data.get("source"),
+            source1=in_serializer.data.get("source1"),
+            source2=in_serializer.data.get("source2"),
             date_from=in_serializer.data.get("date_from"),
             date_to=in_serializer.data.get("date_to"),
         )
