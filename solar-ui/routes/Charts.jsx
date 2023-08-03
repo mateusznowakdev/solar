@@ -28,15 +28,10 @@ import { getBackendURI } from "../utils.js";
 
 const OFFSETS = {
   "1m": 60,
-  "5m": 60 * 5,
-  "10m": 60 * 10,
-  "30m": 60 * 30,
+  "15m": 60 * 15,
   "1h": 60 * 60,
-  "2h": 60 * 60 * 2,
-  "4h": 60 * 60 * 4,
-  "12h": 60 * 60 * 12,
-  "1d": 60 * 60 * 24,
-  "7d": 60 * 60 * 24 * 7,
+  "8h": 60 * 60 * 8,
+  "24h": 60 * 60 * 24,
 };
 
 Chart.register(
@@ -110,6 +105,7 @@ function PresetButtons({ setStartDate, setStopDate }) {
             setStartDate(getPastDateState(offset));
             setStopDate(getEmptyDateState());
           }}
+          size="sm"
           variant="light"
         >
           {label}
@@ -261,7 +257,7 @@ export default function Charts() {
 
   const { choice } = useParams();
   const [choice2, setChoice2] = useState("");
-  const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
+  const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["15m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
 
   function setChoice(choice) {
@@ -328,10 +324,6 @@ export default function Charts() {
           current={choice2}
           setCurrent={setChoice2}
         />
-        <PresetButtons
-          setStartDate={setStartDate}
-          setStopDate={setStopDate}
-        ></PresetButtons>
         <DateTimeInput
           current={startDate}
           setCurrent={setStartDate}
@@ -340,6 +332,10 @@ export default function Charts() {
           current={stopDate}
           setCurrent={setStopDate}
         ></DateTimeInput>
+        <PresetButtons
+          setStartDate={setStartDate}
+          setStopDate={setStopDate}
+        ></PresetButtons>
       </Form>
       <SeriesChart
         choice={choice}
