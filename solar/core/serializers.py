@@ -1,3 +1,4 @@
+from django.db.models import FloatField, IntegerField
 from rest_framework import serializers
 
 from solar.core.models import State
@@ -8,7 +9,13 @@ class NullSerializer(serializers.Serializer):
 
 
 class SeriesRequestSerializer(serializers.Serializer):
-    source = serializers.RegexField(r"^[0-9a-z_]*$")
+    source = serializers.ChoiceField(
+        choices=[
+            f.name
+            for f in State._meta.concrete_fields
+            if type(f) in (FloatField, IntegerField)
+        ]
+    )
     date_from = serializers.DateTimeField(required=False)
     date_to = serializers.DateTimeField(required=False)
 
