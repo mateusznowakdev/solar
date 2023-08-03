@@ -1,9 +1,9 @@
 # Datalogger for solar inverter
 
 > This is EXPERIMENTAL SOFTWARE that is, and will be, optimized for one hardware
-> configuration, and uses Polish language for user interface. **DO NOT ASK FOR
-> ANY KIND OF HELP** even if you believe you have the same inverter model. I
-> don't have physical access to the device, let alone free time.
+> configuration and use Polish language for user interface. **DO NOT ASK FOR ANY
+> KIND OF HELP** even if you believe you have the same inverter model. I don't
+> have physical access to the device, let alone free time.
 
 | ![](assets/scr1.png) | ![](assets/scr2.png) |
 | :------------------: | :------------------: |
