@@ -78,7 +78,7 @@ function SeriesSelect({ choices, current, setCurrent }) {
   return (
     <InputGroup>
       <FormSelect
-        className="mb-3 mx-3"
+        className="mb-2 mx-3"
         onChange={(e) => setCurrent(e.target.value)}
         value={current}
       >
@@ -117,7 +117,7 @@ function PresetButtons({ setStartDate, setStopDate }) {
 
 function DateTimeInput({ current: { date, time }, setCurrent }) {
   return (
-    <InputGroup className="date-time-input mb-3">
+    <InputGroup className="date-time-input mb-2">
       <FormControl
         className="ms-3"
         onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
