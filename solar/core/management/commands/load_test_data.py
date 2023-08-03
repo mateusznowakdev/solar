@@ -8,10 +8,6 @@ from django.utils import timezone
 from solar.core.models import State
 
 
-def dt(*args):
-    return datetime.datetime(*args, tzinfo=datetime.timezone.utc)
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
         if not settings.DEBUG:
@@ -23,7 +19,7 @@ class Command(BaseCommand):
 
         for s, value in enumerate(reversed(values)):
             ms = random.randint(800_000, 1_200_000)
-            timestamp = base_timestamp - datetime.timedelta(seconds=s, microseconds=ms)
+            timestamp = base_timestamp - datetime.timedelta(seconds=60 * s, microseconds=ms)
 
             kwargs = dict(zip(keys, value))
             kwargs["timestamp"] = timestamp
