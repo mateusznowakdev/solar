@@ -69,11 +69,6 @@ export const METADATA = {
         11: "Awaria",
       })[value] || value,
   },
-  current_time: {
-    chart: false,
-    description: "Czas inwertera",
-    render: (value) => renderDateTime(new Date(value)),
-  },
   dc_current: {
     description: "Prąd DC",
     unit: "A",

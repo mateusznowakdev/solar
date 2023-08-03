@@ -68,16 +68,6 @@ def parse_inverter_faults(source: list[int], offset: int) -> list[int]:
     return [code for code in source[offset : offset + 4] if code]
 
 
-def parse_datetime(source: list[int], offset: int) -> datetime.datetime:
-    year, month = split_high_low(source[offset])
-    day, hour = split_high_low(source[offset + 1])
-    minute, second = split_high_low(source[offset + 2])
-
-    return datetime.datetime(
-        2000 + year, month, day, hour, minute, second, tzinfo=datetime.timezone.utc
-    )
-
-
 def recv_data(client: ModbusSerialClient, first_reg: int, last_reg: int) -> list:
     count = last_reg - first_reg + 1
     data = []
@@ -102,6 +92,7 @@ class CaptureService:
         # - battery temperature (0x103)
         # - brightness (0x10B)
         # - fault bits (0x200)
+        # - current time (0x20C)
         # - password protection (0x211)
 
         client = ModbusSerialClient(
@@ -129,7 +120,6 @@ class CaptureService:
                 load_on=parse_load_on(con, 0x0B),
                 controller_faults=parse_controller_faults(con, 0x0C),
                 inverter_faults=parse_inverter_faults(inv, 0x04),
-                current_time=parse_datetime(inv, 0x0C),
                 current_state=parse_int(inv, 0x10),
                 bus_voltage=parse_float(inv, 0x12),
                 grid_voltage=parse_float(inv, 0x13),
@@ -156,7 +146,9 @@ class CaptureService:
             )
 
             state.battery_current = -state.battery_current
-            state.battery_apparent_power = int(state.battery_current * state.battery_voltage)
+            state.battery_apparent_power = int(
+                state.battery_current * state.battery_voltage
+            )
 
             state.save()
 

@@ -21,7 +21,6 @@ class State(models.Model):
     charge_status = models.IntegerField()
     load_on = models.BooleanField()
 
-    current_time = models.DateTimeField()
     current_state = models.IntegerField()
     bus_voltage = models.FloatField()
     grid_voltage = models.FloatField()
