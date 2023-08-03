@@ -14,7 +14,9 @@ DAYS_LIMIT = 7
 
 class WebSeriesService:
     @staticmethod
-    def get_series(*, source1: str | None, source2: str | None, date_from: str | None, date_to: str | None) -> dict:
+    def get_series(
+        *, source1: str, source2: str | None, date_from: str | None, date_to: str | None
+    ) -> dict:
         try:
             date_from = datetime.fromisoformat(date_from)
         except TypeError:

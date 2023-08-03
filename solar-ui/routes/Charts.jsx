@@ -152,33 +152,14 @@ function SeriesChart({ choice, choice2, data }) {
   const choice2Valid = shouldHaveChart(choice2);
 
   useEffect(() => {
-    const chartData = {
-      datasets: [],
-      labels: data.values.map((row) => row[0]),
-    };
+    if (!choice1Valid) return;
 
-    if (choice1Valid) {
-      chartData.datasets.push({
-        backgroundColor: "#ff000033",
-        borderColor: "#ff0000",
-        data: data.values.map((row) => row[1]),
-        label: METADATA[choice].description,
-        yAxisID: "y1",
-      });
-    }
-    if (choice2Valid) {
-      chartData.datasets.push({
-        backgroundColor: "#ffaa0033",
-        borderColor: "#ffaa00",
-        data: data.values.map((row) => row[2]),
-        label: METADATA[choice2].description,
-        yAxisID: "y2",
-      });
-    }
-
-    const chart = new Chart(document.getElementById("canvas"), {
+    const chartOptions = {
       type: "line",
-      data: chartData,
+      data: {
+        datasets: [],
+        labels: data.values.map((row) => row[0]),
+      },
       options: {
         animation: false,
         elements: {
@@ -210,36 +191,57 @@ function SeriesChart({ choice, choice2, data }) {
               callback: (value) => renderDate(data.values[value][0]),
             },
           },
-          y1: {
-            grid: {
-              display: false,
-            },
-            position: "left",
-            ticks: {
-              callback: (value) => METADATA[choice].render(value),
-              precision: 0,
-            },
-          },
-          y2: {
-            grid: {
-              display: false,
-            },
-            position: "right",
-            ticks: {
-              callback: (value) => METADATA[choice].render(value),
-              precision: 0,
-            },
-          },
         },
       },
-    });
+    };
+
+    if (choice1Valid) {
+      chartOptions.data.datasets.push({
+        backgroundColor: "#ff000033",
+        borderColor: "#ff0000",
+        data: data.values.map((row) => row[1]),
+        label: METADATA[choice].description,
+        yAxisID: "y1",
+      });
+      chartOptions.options.scales.y1 = {
+        grid: {
+          display: false,
+        },
+        position: "left",
+        ticks: {
+          callback: (value) => METADATA[choice].render(value),
+          precision: 0,
+        },
+      };
+    }
+    if (choice2Valid) {
+      chartOptions.data.datasets.push({
+        backgroundColor: "#ffaa0033",
+        borderColor: "#ffaa00",
+        data: data.values.map((row) => row[2]),
+        label: METADATA[choice2].description,
+        yAxisID: "y2",
+      });
+      chartOptions.options.scales.y2 = {
+        grid: {
+          display: false,
+        },
+        position: "right",
+        ticks: {
+          callback: (value) => METADATA[choice].render(value),
+          precision: 0,
+        },
+      };
+    }
+
+    const chart = new Chart(document.getElementById("canvas"), chartOptions);
 
     return () => {
       if (chart) chart.destroy();
     };
   }, [data]);
 
-  if (choice1Valid || choice2Valid) {
+  if (choice1Valid) {
     return (
       <div className="mx-3">
         <canvas height="256px" id="canvas"></canvas>
@@ -272,7 +274,7 @@ export default function Charts() {
     if (shouldHaveChart(choice)) params.source1 = choice;
     if (shouldHaveChart(choice2)) params.source2 = choice2;
 
-    if (Object.keys(params).length < 1) return;
+    if (!params.source1) return;
 
     const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
     if (!isNaN(startDateObj)) params.date_from = startDateObj.toISOString();
