@@ -228,7 +228,7 @@ function SeriesChart({ choice, choice2, data }) {
         },
         position: "right",
         ticks: {
-          callback: (value) => METADATA[choice].render(value),
+          callback: (value) => METADATA[choice2].render(value),
           precision: 0,
         },
       };
