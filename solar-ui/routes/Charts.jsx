@@ -144,32 +144,41 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
   );
 }
 
-function SeriesChart({ choice, data }) {
+function SeriesChart({ choice, choice2, data }) {
   const dateFromString = renderDateTime(data.dateFrom);
   const dateToString = renderDateTime(data.dateTo);
 
+  const choice1Valid = shouldHaveChart(choice);
+  const choice2Valid = shouldHaveChart(choice2);
+
   useEffect(() => {
+    const chartData = {
+      datasets: [],
+      labels: data.values.map((row) => row[0]),
+    };
+
+    if (choice1Valid) {
+      chartData.datasets.push({
+        backgroundColor: "#ff000033",
+        borderColor: "#ff0000",
+        data: data.values.map((row) => row[1]),
+        label: METADATA[choice].description,
+        yAxisID: "y1",
+      });
+    }
+    if (choice2Valid) {
+      chartData.datasets.push({
+        backgroundColor: "#ffaa0033",
+        borderColor: "#ffaa00",
+        data: data.values.map((row) => row[2]),
+        label: METADATA[choice2].description,
+        yAxisID: "y2",
+      });
+    }
+
     const chart = new Chart(document.getElementById("canvas"), {
       type: "line",
-      data: {
-        datasets: [
-          {
-            backgroundColor: "#ff000033",
-            borderColor: "#ff0000",
-            data: data.values.map((row) => row[1]),
-            label: METADATA[choice].description,
-            yAxisID: "y1",
-          },
-          {
-            backgroundColor: "#ffaa0033",
-            borderColor: "#ffaa00",
-            data: data.values.map((row) => row[2]),
-            label: METADATA["pv_power"].description,
-            yAxisID: "y2",
-          },
-        ],
-        labels: data.values.map((row) => row[0]),
-      },
+      data: chartData,
       options: {
         animation: false,
         elements: {
@@ -230,7 +239,7 @@ function SeriesChart({ choice, data }) {
     };
   }, [data]);
 
-  if (shouldHaveChart(choice)) {
+  if (choice1Valid || choice2Valid) {
     return (
       <div className="mx-3">
         <canvas height="256px" id="canvas"></canvas>
@@ -249,6 +258,7 @@ export default function Charts() {
   const [series, setSeries] = useState({ values: [] });
 
   const { choice } = useParams();
+  const [choice2, setChoice2] = useState("");
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["5m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
 
@@ -257,11 +267,12 @@ export default function Charts() {
   }
 
   function getSeries() {
-    if (!shouldHaveChart(choice)) return;
+    const params = {};
 
-    const params = {
-      source: choice,
-    };
+    if (shouldHaveChart(choice)) params.source1 = choice;
+    if (shouldHaveChart(choice2)) params.source2 = choice2;
+
+    if (Object.keys(params).length < 1) return;
 
     const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
     if (!isNaN(startDateObj)) params.date_from = startDateObj.toISOString();
@@ -283,6 +294,7 @@ export default function Charts() {
 
   function mergeSelectData() {
     return Object.entries(METADATA)
+      .filter(([key]) => shouldHaveChart(key))
       .map(([key, meta]) => {
         let description = meta.description;
         if (meta.unit) description += ` (${meta.unit})`;
@@ -292,7 +304,7 @@ export default function Charts() {
       .sort(sort);
   }
 
-  useEffect(getSeries, [choice, startDate, stopDate]);
+  useEffect(getSeries, [choice, choice2, startDate, stopDate]);
 
   return (
     <>
@@ -309,6 +321,11 @@ export default function Charts() {
           current={choice}
           setCurrent={setChoice}
         />
+        <SeriesSelect
+          choices={mergeSelectData()}
+          current={choice2}
+          setCurrent={setChoice2}
+        />
         <PresetButtons
           setStartDate={setStartDate}
           setStopDate={setStopDate}
@@ -322,7 +339,11 @@ export default function Charts() {
           setCurrent={setStopDate}
         ></DateTimeInput>
       </Form>
-      <SeriesChart choice={choice} data={series}></SeriesChart>
+      <SeriesChart
+        choice={choice}
+        choice2={choice2}
+        data={series}
+      ></SeriesChart>
     </>
   );
 }
