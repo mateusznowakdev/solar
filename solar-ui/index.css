@@ -1,3 +1,10 @@
+.btn {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
 .btn-light {
   border-color: var(--bs-btn-hover-border-color);
 }

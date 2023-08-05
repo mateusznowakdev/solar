@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
+import { ArrowClockwise } from "react-bootstrap-icons";
 
 import { STRINGS } from "../locale.js";
 import { METADATA } from "../meta.js";
@@ -25,7 +26,7 @@ function IdleRefreshButton({ value }) {
         onClick={() => window.location.reload()}
         variant="light"
       >
-        ⭮ {STRINGS.REFRESH}
+        <ArrowClockwise />{STRINGS.REFRESH}
       </Button>
     );
   } else {

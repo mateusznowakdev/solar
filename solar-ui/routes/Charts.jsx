@@ -19,6 +19,7 @@ import {
   FormSelect,
   InputGroup,
 } from "react-bootstrap";
+import { ArrowLeft } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
 
 import { STRINGS } from "../locale.js";
@@ -311,7 +312,7 @@ export default function Charts() {
         onClick={() => (window.location = "/#/")}
         variant="light"
       >
-        🡠 {STRINGS.BACK}
+        <ArrowLeft />{STRINGS.BACK}
       </Button>
       <Form>
         <SeriesSelect
