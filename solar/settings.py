@@ -7,7 +7,7 @@ DEBUG = bool(int(os.environ.get("DJANGO_DEBUG", "0")))
 SECRET_KEY = "devsecretkey" if DEBUG else os.environ.get("DJANGO_SECRET_KEY")
 
 ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h]
-CORS_ALLOWED_ORIGINS = list(ALLOWED_HOSTS)
+CORS_ALLOWED_ORIGINS = [f"http://{h}" for h in ALLOWED_HOSTS]
 
 MAIN_APPS = [
     "django.contrib.admin",
