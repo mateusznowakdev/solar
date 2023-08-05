@@ -26,7 +26,8 @@ function IdleRefreshButton({ value }) {
         onClick={() => window.location.reload()}
         variant="light"
       >
-        <ArrowClockwise />{STRINGS.REFRESH}
+        <ArrowClockwise />
+        {STRINGS.REFRESH}
       </Button>
     );
   } else {
@@ -141,9 +142,9 @@ export default function Main() {
   }, []);
 
   return (
-    <>
+    <div>
       <IdleRefreshButton value={counter} />
       <StateList items={mergeListData()} togglePinned={togglePinned} />
-    </>
+    </div>
   );
 }

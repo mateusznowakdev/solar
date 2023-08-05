@@ -77,9 +77,9 @@ function sort(a, b) {
 
 function SeriesSelect({ choices, current, setCurrent }) {
   return (
-    <InputGroup>
+    <InputGroup className="my-2">
       <FormSelect
-        className="mb-2 mx-3"
+        className="mx-3"
         onChange={(e) => setCurrent(e.target.value)}
         value={current}
       >
@@ -96,29 +96,9 @@ function SeriesSelect({ choices, current, setCurrent }) {
   );
 }
 
-function PresetButtons({ setStartDate, setStopDate }) {
-  return (
-    <div className="mb-3 mx-3 preset-buttons">
-      {Object.entries(OFFSETS).map(([label, offset]) => (
-        <Button
-          key={label}
-          onClick={() => {
-            setStartDate(getPastDateState(offset));
-            setStopDate(getEmptyDateState());
-          }}
-          size="sm"
-          variant="light"
-        >
-          {label}
-        </Button>
-      ))}
-    </div>
-  );
-}
-
 function DateTimeInput({ current: { date, time }, setCurrent }) {
   return (
-    <InputGroup className="date-time-input mb-2">
+    <InputGroup className="date-time-input my-2">
       <FormControl
         className="ms-3"
         onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
@@ -138,6 +118,26 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
         ×
       </Button>
     </InputGroup>
+  );
+}
+
+function PresetButtons({ setStartDate, setStopDate }) {
+  return (
+    <div className="my-2 mx-3 preset-buttons">
+      {Object.entries(OFFSETS).map(([label, offset]) => (
+        <Button
+          key={label}
+          onClick={() => {
+            setStartDate(getPastDateState(offset));
+            setStopDate(getEmptyDateState());
+          }}
+          size="sm"
+          variant="light"
+        >
+          {label}
+        </Button>
+      ))}
+    </div>
   );
 }
 
@@ -306,15 +306,8 @@ export default function Charts() {
   useEffect(getSeries, [choice, choice2, startDate, stopDate]);
 
   return (
-    <>
-      <Button
-        className="m-3"
-        onClick={() => (window.location = "/#/")}
-        variant="light"
-      >
-        <ArrowLeft />{STRINGS.BACK}
-      </Button>
-      <Form>
+    <div>
+      <Form className="my-3">
         <SeriesSelect
           choices={mergeSelectData()}
           current={choice}
@@ -343,6 +336,6 @@ export default function Charts() {
         choice2={choice2}
         data={series}
       ></SeriesChart>
-    </>
+    </div>
   );
 }
