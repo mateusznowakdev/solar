@@ -77,9 +77,9 @@ function sort(a, b) {
 
 function SeriesSelect({ choices, current, setCurrent }) {
   return (
-    <InputGroup className="my-2">
+    <InputGroup>
       <FormSelect
-        className="mx-3"
+        className="mx-3 my-1"
         onChange={(e) => setCurrent(e.target.value)}
         value={current}
       >
@@ -98,20 +98,21 @@ function SeriesSelect({ choices, current, setCurrent }) {
 
 function DateTimeInput({ current: { date, time }, setCurrent }) {
   return (
-    <InputGroup className="date-time-input my-2">
+    <InputGroup className="date-time-input">
       <FormControl
-        className="ms-3"
+        className="ms-3 my-1"
         onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
         type="date"
         value={date}
       />
       <FormControl
+        className="my-1"
         onChange={(e) => setCurrent((c) => ({ ...c, time: e.target.value }))}
         type="time"
         value={time}
       />
       <Button
-        className="me-3"
+        className="me-3 my-1"
         onClick={() => setCurrent(getEmptyDateState())}
         variant="light"
       >
@@ -123,9 +124,10 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
 
 function PresetButtons({ setStartDate, setStopDate }) {
   return (
-    <div className="my-2 mx-3 preset-buttons">
+    <div className="mx-3 preset-buttons">
       {Object.entries(OFFSETS).map(([label, offset]) => (
         <Button
+          className="my-1"
           key={label}
           onClick={() => {
             setStartDate(getPastDateState(offset));
