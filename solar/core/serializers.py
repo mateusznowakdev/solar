@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from solar.core.models import State, get_numeric_field_names
+from solar.core.models import ControlLog, State, get_numeric_field_names
+
+
+class ControlLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ControlLog
+        fields = "__all__"
 
 
 class NullSerializer(serializers.Serializer):

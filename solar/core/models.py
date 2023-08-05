@@ -51,6 +51,9 @@ class State(models.Model):
 
 
 class ControlLog(models.Model):
+    class Meta:
+        ordering = ("-timestamp",)
+
     timestamp = models.DateTimeField()
 
     field_name = models.CharField(max_length=50)

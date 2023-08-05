@@ -1,5 +1,6 @@
 import Nav from "react-bootstrap/Nav";
 import NavLink from "react-bootstrap/NavLink";
+import ClockHistory from "react-bootstrap-icons/dist/icons/clock-history";
 import GraphUp from "react-bootstrap-icons/dist/icons/graph-up";
 import Sun from "react-bootstrap-icons/dist/icons/sun";
 
@@ -11,6 +12,7 @@ import {
 } from "react-router-dom";
 
 import Charts from "./routes/Charts";
+import Log from "./routes/Log";
 import Main from "./routes/Main";
 
 function AppMenu() {
@@ -24,6 +26,10 @@ function AppMenu() {
         <GraphUp size={24} />
         Wykresy
       </NavLink>
+      <NavLink as={RRNavLink} to="/log">
+        <ClockHistory size={24} />
+        Dziennik
+      </NavLink>
     </Nav>
   );
 }
@@ -36,6 +42,7 @@ export default function App() {
         <Route element={<Charts />} path="/charts">
           <Route element={<Charts />} path=":choice" />
         </Route>
+        <Route element={<Log />} path="/log" />
       </Routes>
       <AppMenu />
     </HashRouter>
