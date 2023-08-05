@@ -14,7 +14,9 @@ MQTT_TOPICS = settings.MQTT_TOPICS
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
-            PublishService.publish_data(broker=MQTT_BROKER, port=MQTT_PORT, topics=MQTT_TOPICS)
+            PublishService(
+                broker=MQTT_BROKER, port=MQTT_PORT, topics=MQTT_TOPICS
+            ).publish()
         except Exception as e:
             traceback.print_exception(e)
 

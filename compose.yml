@@ -22,10 +22,10 @@ services:
       - POSTGRES_HOST=db
     ports:
       - 8000:8000
-  capture:
+  control:
     build:
       dockerfile: config/backend/Dockerfile
-    command: python manage.py capture
+    command: python manage.py control
     deploy:
       restart_policy:
         condition: any
