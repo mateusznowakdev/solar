@@ -25,7 +25,7 @@ services:
   capture:
     build:
       dockerfile: config/backend/Dockerfile
-    command: python manage.py capture_data
+    command: python manage.py capture
     deploy:
       restart_policy:
         condition: any
@@ -40,7 +40,7 @@ services:
   publish:
     build:
       dockerfile: config/backend/Dockerfile
-    command: python manage.py publish_data
+    command: python manage.py publish
     deploy:
       restart_policy:
         condition: any
