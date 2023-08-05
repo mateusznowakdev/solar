@@ -16,4 +16,5 @@ RUN npm run build
 FROM nginx:stable-alpine AS target
 WORKDIR /app
 
-COPY --from=intermediate /app/solar-ui/dist /usr/share/nginx/html
+COPY config/frontend/nginx.conf /etc/nginx/nginx.conf
+COPY --from=intermediate /app/solar-ui/dist .
