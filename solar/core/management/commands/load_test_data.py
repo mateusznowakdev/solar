@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.management import BaseCommand
 from django.utils import timezone
 
-from solar.core.models import State
+from solar.core.models import ControlLog, State
 
 
 class Command(BaseCommand):
@@ -14,22 +14,35 @@ class Command(BaseCommand):
             print("Cannot run this command in production environment")
             return
 
-        objects = []
+        state_objects = []
+        log_objects = []
+
         base_timestamp = timezone.now()
 
-        for s, value in enumerate(reversed(values)):
+        for s, value in enumerate(reversed(state_values)):
             ms = random.randint(800_000, 1_200_000)
             timestamp = base_timestamp - datetime.timedelta(seconds=60 * s, microseconds=ms)
 
-            kwargs = dict(zip(keys, value))
-            kwargs["timestamp"] = timestamp
-            objects.append(State(**kwargs))
+            state_kwargs = dict(zip(state_keys, value))
+            state_kwargs["timestamp"] = timestamp
+            state_objects.append(State(**state_kwargs))
 
-        count = State.objects.bulk_create(objects)
-        print(f"Created {len(count)} new entries.")
+            log_kwargs = {
+                "timestamp": timestamp,
+                "field_name": "output_priority",
+                "old_value": random.randint(0, 2),
+                "new_value": random.randint(0, 2),
+            }
+            log_objects.append(ControlLog(**log_kwargs))
+
+        state_count = State.objects.bulk_create(state_objects)
+        print(f"Created {len(state_count)} new state entries.")
+
+        log_count = ControlLog.objects.bulk_create(log_objects)
+        print(f"Created {len(log_count)} new log entries.")
 
 
-keys = [
+state_keys = [
     "controller_faults",
     "inverter_faults",
     "timestamp",
@@ -71,7 +84,7 @@ keys = [
 ]
 
 # fmt:off
-values = (
+state_values = (
     ([], [], None, 60, 53.4, -4.2, 0, 0, 0, 226, 2.1, 474, 474, 1, False, 5, 404.7, 231.2, 0, 50.02, 229.8, 2.7, 50.01, 2, 0, 385, 435, 0, 0, 8, 31.8, 35.4, 45, 43.9, 0, 394.1, 0, 0),
     ([], [], None, 60, 52.1, -1.2, 0, 0, 0, 227.3, 2.1, 477, 477, 1, False, 5, 399.1, 230.5, 0, 50.02, 229.9, 3.9, 50.03, 3.3, 0, 412, 485, 0, 0, 9, 31.8, 35.4, 45, 43.9, 0, 400.4, 0, 0),
     ([], [], None, 60, 52.9, 0.3, 0, 0, 0, 229, 2.1, 480, 480, 1, False, 5, 397.3, 230.4, 0, 50.03, 230.1, 3.2, 50.03, 3, 0, 622, 692, 0, 0, 13, 31.8, 35.4, 45, 43.9, 0, 393.4, 0, 0),
