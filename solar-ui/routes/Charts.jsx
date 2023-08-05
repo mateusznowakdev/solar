@@ -10,15 +10,14 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Form,
-  FormControl,
-  FormSelect,
-  InputGroup,
-} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
+import FormSelect from "react-bootstrap/FormSelect";
+import InputGroup from "react-bootstrap/InputGroup";
 import { useParams } from "react-router-dom";
 
 import { STRINGS } from "../locale.js";
