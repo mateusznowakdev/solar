@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import ArrowClockwise from "react-bootstrap-icons/dist/icons/arrow-clockwise";
 
@@ -48,7 +47,7 @@ function IdleRefreshButton({ value }) {
 
 function StateListItem({ item, togglePinned }) {
   return (
-    <ListGroupItem
+    <ListGroup.Item
       action
       active={false}
       className="d-flex justify-content-between list-group-item"
@@ -69,7 +68,7 @@ function StateListItem({ item, togglePinned }) {
       <div>
         {item.value} {item.unit}
       </div>
-    </ListGroupItem>
+    </ListGroup.Item>
   );
 }
 

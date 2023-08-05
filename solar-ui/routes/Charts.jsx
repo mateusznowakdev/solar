@@ -15,8 +15,6 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
-import FormSelect from "react-bootstrap/FormSelect";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useParams } from "react-router-dom";
 
@@ -76,7 +74,7 @@ function sort(a, b) {
 function SeriesSelect({ choices, current, setCurrent }) {
   return (
     <InputGroup>
-      <FormSelect
+      <Form.Select
         className="mx-3 my-1"
         onChange={(e) => setCurrent(e.target.value)}
         value={current}
@@ -89,7 +87,7 @@ function SeriesSelect({ choices, current, setCurrent }) {
             {item.description}
           </option>
         ))}
-      </FormSelect>
+      </Form.Select>
     </InputGroup>
   );
 }
@@ -97,13 +95,13 @@ function SeriesSelect({ choices, current, setCurrent }) {
 function DateTimeInput({ current: { date, time }, setCurrent }) {
   return (
     <InputGroup className="date-time-input">
-      <FormControl
+      <Form.Control
         className="ms-3 my-1"
         onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
         type="date"
         value={date}
       />
-      <FormControl
+      <Form.Control
         className="my-1"
         onChange={(e) => setCurrent((c) => ({ ...c, time: e.target.value }))}
         type="time"

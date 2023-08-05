@@ -1,15 +1,8 @@
 import Nav from "react-bootstrap/Nav";
-import NavLink from "react-bootstrap/NavLink";
 import ClockHistory from "react-bootstrap-icons/dist/icons/clock-history";
 import GraphUp from "react-bootstrap-icons/dist/icons/graph-up";
 import Sun from "react-bootstrap-icons/dist/icons/sun";
-
-import {
-  HashRouter,
-  NavLink as RRNavLink,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
 
 import Charts from "./routes/Charts";
 import Log from "./routes/Log";
@@ -18,18 +11,18 @@ import Main from "./routes/Main";
 function AppMenu() {
   return (
     <Nav justify>
-      <NavLink as={RRNavLink} to="/">
+      <Nav.Link as={NavLink} to="/">
         <Sun size={24} />
         Podsumowanie
-      </NavLink>
-      <NavLink as={RRNavLink} to="/charts">
+      </Nav.Link>
+      <Nav.Link as={NavLink} to="/charts">
         <GraphUp size={24} />
         Wykresy
-      </NavLink>
-      <NavLink as={RRNavLink} to="/log">
+      </Nav.Link>
+      <Nav.Link as={NavLink} to="/log">
         <ClockHistory size={24} />
         Dziennik
-      </NavLink>
+      </Nav.Link>
     </Nav>
   );
 }
