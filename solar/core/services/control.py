@@ -1,5 +1,5 @@
-import datetime
 import time
+from datetime import datetime, timedelta
 from typing import NoReturn
 
 from django.utils import timezone
@@ -8,6 +8,7 @@ from pymodbus.client import ModbusSerialClient
 from solar.core.models import State
 
 CHUNK_SIZE = 32
+SCAN_DELTA = timedelta(seconds=10)
 
 
 def convert_to_signed(value: int) -> int:
@@ -83,12 +84,18 @@ def recv_data(client: ModbusSerialClient, first_reg: int, last_reg: int) -> list
     return data
 
 
+def send_data(client: ModbusSerialClient, reg: int, value: int) -> None:
+    client.write_register(reg, value, 1)
+
+
 class ControlService:
     def __init__(self, *, device: str) -> None:
         self.client = ModbusSerialClient(
             port=device, baudrate=9600, bytesize=8, method="rtu", stopbits=1, parity="N"
         )
         self.client.connect()
+
+        self.act_after = datetime.now()
 
     def control(self) -> NoReturn:
         while True:
@@ -161,4 +168,26 @@ class ControlService:
         return state
 
     def set_state(self, state: State) -> None:
-        ...
+        current_time = datetime.now()
+        if current_time < self.act_after:
+            return
+
+        if state.pv_voltage < 200 and state.output_priority != 1:
+            # switch to grid
+            new_output_priority = 1
+            send_data(self.client, 0xE204, 1)
+            self.act_after = current_time + timedelta(minutes=5)
+        elif state.pv_voltage > 250 and state.output_priority != 0:
+            # switch to PV
+            new_output_priority = 0
+            send_data(self.client, 0xE204, 0)
+            self.act_after = current_time + timedelta(seconds=30)
+        else:
+            # do nothing
+            new_output_priority = None
+
+        if new_output_priority:
+            print(
+                f"Priority has changed: "
+                "{current_time} {state.output_priority} {new_output_priority}"
+            )
