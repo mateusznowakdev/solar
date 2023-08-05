@@ -15,7 +15,7 @@ export default function Log() {
   }, []);
 
   return (
-    <div className="m-3">
+    <div className="p-3">
       {state.map((entry) => (
         <Card className="mt-1 mb-2" key={entry.timestamp}>
           <Card.Body>
