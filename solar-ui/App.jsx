@@ -1,5 +1,6 @@
 import { Nav } from "react-bootstrap";
-import { GraphUp, Sun } from "react-bootstrap-icons";
+import GraphUp from "react-bootstrap-icons/dist/icons/graph-up";
+import Sun from "react-bootstrap-icons/dist/icons/sun";
 import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
 
 import Charts from "./routes/Charts";

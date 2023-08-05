@@ -19,7 +19,6 @@ import {
   FormSelect,
   InputGroup,
 } from "react-bootstrap";
-import { ArrowLeft } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
 
 import { STRINGS } from "../locale.js";

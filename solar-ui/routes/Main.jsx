@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, ListGroup, ListGroupItem, ProgressBar } from "react-bootstrap";
-import { ArrowClockwise } from "react-bootstrap-icons";
+import ArrowClockwise from "react-bootstrap-icons/dist/icons/arrow-clockwise";
 
 import { STRINGS } from "../locale.js";
 import { METADATA } from "../meta.js";
