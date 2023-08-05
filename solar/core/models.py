@@ -50,6 +50,14 @@ class State(models.Model):
     charge_priority = models.IntegerField()
 
 
+class ControlLog(models.Model):
+    timestamp = models.DateTimeField()
+
+    field_name = models.CharField(max_length=50)
+    old_value = models.FloatField()
+    new_value = models.FloatField()
+
+
 def get_numeric_field_names() -> list[str]:
     return [
         f.name

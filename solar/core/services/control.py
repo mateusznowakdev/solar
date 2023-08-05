@@ -1,11 +1,11 @@
 import time
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import NoReturn
 
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from solar.core.models import State
+from solar.core.models import ControlLog, State
 
 CHUNK_SIZE = 32
 SCAN_DELTA = timedelta(seconds=10)
@@ -95,7 +95,7 @@ class ControlService:
         )
         self.client.connect()
 
-        self.act_after = datetime.now()
+        self.act_after = timezone.now()
 
     def control(self) -> NoReturn:
         while True:
@@ -168,7 +168,7 @@ class ControlService:
         return state
 
     def set_state(self, state: State) -> None:
-        current_time = datetime.now()
+        current_time = timezone.now()
         if current_time < self.act_after:
             return
 
@@ -183,11 +183,14 @@ class ControlService:
             send_data(self.client, 0xE204, 0)
             self.act_after = current_time + timedelta(seconds=30)
         else:
-            # do nothing
+            # do nothing, cooldown
             new_output_priority = None
+            self.act_after = current_time + timedelta(seconds=10)
 
         if new_output_priority:
-            print(
-                f"Priority has changed: "
-                "{current_time} {state.output_priority} {new_output_priority}"
+            ControlLog.objects.create(
+                timestamp=current_time,
+                field_name="output_priority",
+                old_value=state.output_priority,
+                new_value=new_output_priority,
             )
