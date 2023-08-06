@@ -16,5 +16,5 @@ class PublishService:
         self.client.loop_start()
 
     def publish(self, *, state: State) -> None:
-        for topic, message in model_to_dict(state):
+        for topic, message in model_to_dict(state).items():
             self.client.publish(MQTT_TOPIC_PREFIX + topic, str(message))
