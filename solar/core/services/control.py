@@ -1,3 +1,4 @@
+import collections
 from datetime import timedelta
 
 from django.utils import timezone
@@ -93,6 +94,7 @@ class ControlService:
         )
         self.client.connect()
 
+        self.past_pv_voltages = collections.deque(maxlen=60)
         self.act_after = timezone.now()
 
     def get_state(self) -> State:
@@ -159,16 +161,19 @@ class ControlService:
         return state
 
     def change_state(self, *, state: State) -> None:
+        self.past_pv_voltages.append(state.pv_voltage)
+        avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
+
         current_time = timezone.now()
         if current_time < self.act_after:
             return
 
-        if state.pv_voltage < 110 and state.output_priority != 1:
+        if avg_pv_voltage < 200 and state.output_priority != 1:
             # switch to grid
             new_output_priority = 1
             send_data(self.client, 0xE204, new_output_priority)
             self.act_after = current_time + timedelta(minutes=5)
-        elif state.pv_voltage > 220 and state.output_priority != 0:
+        elif avg_pv_voltage > 220 and state.output_priority != 0:
             # switch to PV
             new_output_priority = 0
             send_data(self.client, 0xE204, new_output_priority)
