@@ -187,7 +187,7 @@ class ControlService:
             new_output_priority = None
             self.act_after = current_time + SCAN_DELTA
 
-        if new_output_priority:
+        if new_output_priority is not None:
             ControlLog.objects.create(
                 timestamp=current_time,
                 field_name="output_priority",
