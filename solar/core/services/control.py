@@ -1,6 +1,4 @@
-import time
 from datetime import timedelta
-from typing import NoReturn
 
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient

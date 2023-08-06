@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-from django.core.exceptions import FieldError
 from django.db.models import Avg
 from django.db.models.expressions import RawSQL
 from django.http import Http404
