@@ -163,16 +163,16 @@ class ControlService:
         if current_time < self.act_after:
             return
 
-        if state.pv_voltage < 125 and state.output_priority != 1:
+        if state.pv_voltage < 110 and state.output_priority != 1:
             # switch to grid
             new_output_priority = 1
             send_data(self.client, 0xE204, new_output_priority)
             self.act_after = current_time + timedelta(minutes=5)
-        elif state.pv_voltage > 225 and state.output_priority != 0:
+        elif state.pv_voltage > 220 and state.output_priority != 0:
             # switch to PV
             new_output_priority = 0
             send_data(self.client, 0xE204, new_output_priority)
-            self.act_after = current_time + timedelta(seconds=30)
+            self.act_after = current_time + SCAN_DELTA
         else:
             # do nothing, cooldown
             new_output_priority = None
