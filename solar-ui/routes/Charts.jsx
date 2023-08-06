@@ -143,6 +143,8 @@ function SeriesChart({ choice, choice2, data }) {
   const dateFromString = renderDateTime(data.dateFrom);
   const dateToString = renderDateTime(data.dateTo);
 
+  const choiceArray = [choice, choice2];
+
   const choice1Valid = shouldHaveChart(choice);
   const choice2Valid = shouldHaveChart(choice2);
 
@@ -175,7 +177,8 @@ function SeriesChart({ choice, choice2, data }) {
             callbacks: {
               title: (context) =>
                 renderDateTime(data.values[context[0].parsed.x][0]),
-              label: (context) => METADATA[choice].render(context.raw),
+              label: (context) =>
+                METADATA[choiceArray[context.datasetIndex]].render(context.raw),
             },
           },
         },
