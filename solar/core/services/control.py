@@ -185,7 +185,7 @@ class ControlService:
         else:
             # do nothing, cooldown
             new_output_priority = None
-            self.act_after = current_time + timedelta(seconds=10)
+            self.act_after = current_time + SCAN_DELTA
 
         if new_output_priority:
             ControlLog.objects.create(
