@@ -104,4 +104,4 @@ SPECTACULAR_SETTINGS = {
 }
 
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
-MQTT_TOPICS = [t for t in os.environ.get("MQTT_TOPICS", "").split(",") if t]
+MQTT_PORT = os.environ.get("MQTT_PORT", 1883)

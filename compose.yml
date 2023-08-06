@@ -22,10 +22,10 @@ services:
       - POSTGRES_HOST=db
     ports:
       - 8000:8000
-  control:
+  tasks:
     build:
       dockerfile: config/backend/Dockerfile
-    command: python manage.py control
+    command: python manage.py run_tasks
     deploy:
       restart_policy:
         condition: any
@@ -35,21 +35,9 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_HOST=db
-    privileged: true
-  publish:
-    build:
-      dockerfile: config/backend/Dockerfile
-    command: python manage.py publish
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-    env_file:
-      - .env
-    environment:
       - MQTT_BROKER=mqtt
       - POSTGRES_HOST=db
+    privileged: true
   db:
     image: postgres:15-alpine
     deploy:

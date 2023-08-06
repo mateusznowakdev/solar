@@ -97,13 +97,6 @@ class ControlService:
 
         self.act_after = timezone.now()
 
-    def control(self) -> NoReturn:
-        while True:
-            state = self.get_state()
-            self.set_state(state)
-
-            time.sleep(0.5)
-
     def get_state(self) -> State:
         # These variables are not implemented because I can't test them
         #
@@ -167,7 +160,7 @@ class ControlService:
 
         return state
 
-    def set_state(self, state: State) -> None:
+    def change_state(self, *, state: State) -> None:
         current_time = timezone.now()
         if current_time < self.act_after:
             return

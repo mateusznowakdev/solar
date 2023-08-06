@@ -10,8 +10,6 @@
 - Create new file `.env` in project directory, add these environment variables:
   - `DJANGO_ALLOWED_HOSTS` (example value: `localhost,solar.local`)
   - `DJANGO_SECRET_KEY`
-  - `MQTT_TOPICS` (optional, example value:
-    `battery_voltage,grid_frequency,pv_power`)
   - `POSTGRES_PASSWORD`
 - Create new directory `/var/lib/solar/postgresql/data`
 - Run `./update.sh` script to get new changes, rebuild images and apply
