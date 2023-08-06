@@ -16,6 +16,6 @@ class Command(BaseCommand):
                 ControlService(device=device).control()
             except Exception as e:
                 traceback.print_exception(e)
-                time.sleep(1.5)
+                time.sleep(2.5)
 
         sys.exit(1)

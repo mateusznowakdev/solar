@@ -19,6 +19,7 @@ class PublishService:
         if len(self.topics) == 0:
             print("MQTT_TOPICS environment variable not set, no data will be sent")
             while True:
+                # while True: pass would result in 100% CPU usage
                 time.sleep(100.0)
 
         client = Client(f"publisher-{random.randint(0, 9999):04d}")

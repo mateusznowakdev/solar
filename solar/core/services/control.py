@@ -102,7 +102,7 @@ class ControlService:
             state = self.get_state()
             self.set_state(state)
 
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     def get_state(self) -> State:
         # These variables are not implemented because I can't test them
