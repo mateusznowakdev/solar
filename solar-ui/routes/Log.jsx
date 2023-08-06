@@ -24,8 +24,9 @@ export default function Log() {
             </Card.Title>
             <Card.Text>
               {METADATA[entry.field_name].description}
-              <br />
-              {METADATA[entry.field_name].render(entry.old_value)} &rarr;{" "}
+              {": "}
+              {METADATA[entry.field_name].render(entry.old_value)}
+              {" → "}
               {METADATA[entry.field_name].render(entry.new_value)}
             </Card.Text>
           </Card.Body>

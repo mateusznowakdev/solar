@@ -27,6 +27,10 @@ body {
   border-color: var(--bs-btn-hover-border-color);
 }
 
+.card-text {
+  font-size: 0.75rem;
+}
+
 .date-time-input input[type="date"] {
   min-width: 12rem;
 }
