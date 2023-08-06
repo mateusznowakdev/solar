@@ -10,7 +10,7 @@ export default function Log() {
 
   useEffect(() => {
     fetch(getBackendURI() + "/api/log/")
-      .then((response) => (response.ok ? response.json() : {}))
+      .then((response) => (response.ok ? response.json() : []))
       .then((json) => setState(json));
   }, []);
 
