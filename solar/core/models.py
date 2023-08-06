@@ -50,7 +50,7 @@ class State(models.Model):
     charge_priority = models.IntegerField()
 
 
-class ControlLog(models.Model):
+class LogEntry(models.Model):
     class Meta:
         ordering = ("-timestamp",)
 

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.management import BaseCommand
 from django.utils import timezone
 
-from solar.core.models import ControlLog, State
+from solar.core.models import LogEntry, State
 
 
 class Command(BaseCommand):
@@ -33,12 +33,12 @@ class Command(BaseCommand):
                 "old_value": random.randint(0, 2),
                 "new_value": random.randint(0, 2),
             }
-            log_objects.append(ControlLog(**log_kwargs))
+            log_objects.append(LogEntry(**log_kwargs))
 
         state_count = State.objects.bulk_create(state_objects)
         print(f"Created {len(state_count)} new state entries.")
 
-        log_count = ControlLog.objects.bulk_create(log_objects)
+        log_count = LogEntry.objects.bulk_create(log_objects)
         print(f"Created {len(log_count)} new log entries.")
 
 

@@ -5,7 +5,7 @@ from typing import NoReturn
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from solar.core.models import ControlLog, State
+from solar.core.models import LogEntry, State
 
 CHUNK_SIZE = 32
 SCAN_DELTA = timedelta(seconds=10)
@@ -188,7 +188,7 @@ class ControlService:
             self.act_after = current_time + SCAN_DELTA
 
         if new_output_priority is not None:
-            ControlLog.objects.create(
+            LogEntry.objects.create(
                 timestamp=current_time,
                 field_name="output_priority",
                 old_value=state.output_priority,

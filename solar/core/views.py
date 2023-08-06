@@ -4,23 +4,22 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from solar.core.serializers import (
-    ControlLogSerializer,
+    LogEntrySerializer,
     NullSerializer,
     SeriesRequestSerializer,
     StateRequestSerializer,
     StateResponseSerializer,
 )
-from solar.core.services import ControlLogService, WebSeriesService, WebStateService
+from solar.core.services import LogService, WebSeriesService, WebStateService
 
 
-class ControlLogAPIView(views.APIView):
-    @extend_schema(responses={200: ControlLogSerializer(many=True)})
+class LogEntryAPIView(views.APIView):
+    @extend_schema(responses={200: LogEntrySerializer(many=True)})
     def get(self, request: Request) -> Response:
-        out_data = ControlLogService.get_logs()
-        out_serializer = ControlLogSerializer(instance=out_data, many=True)
+        out_data = LogService.get_logs()
+        out_serializer = LogEntrySerializer(instance=out_data, many=True)
 
         return Response(data=out_serializer.data)
-
 
 
 class SeriesAPIView(views.APIView):

@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from solar.core.models import ControlLog, State, get_numeric_field_names
+from solar.core.models import LogEntry, State, get_numeric_field_names
 
 
-class ControlLogSerializer(serializers.ModelSerializer):
+class LogEntrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = ControlLog
+        model = LogEntry
         fields = "__all__"
 
 
