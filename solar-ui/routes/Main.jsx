@@ -4,9 +4,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import ArrowClockwise from "react-bootstrap-icons/dist/icons/arrow-clockwise";
 
-import { STRINGS } from "../locale.js";
-import { METADATA } from "../meta.js";
-import { getBackendURI } from "../utils.js";
+import { STRINGS } from "../locale";
+import { METADATA } from "../meta";
+import { getBackendURI } from "../utils";
 
 const UPDATE_INTERVAL = 2500;
 const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}

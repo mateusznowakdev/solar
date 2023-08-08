@@ -18,10 +18,10 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useParams } from "react-router-dom";
 
-import { STRINGS } from "../locale.js";
-import { METADATA } from "../meta.js";
-import { renderTime, renderDateTime } from "../render.js";
-import { getBackendURI } from "../utils.js";
+import { STRINGS } from "../locale";
+import { METADATA } from "../meta";
+import { renderDateTime, renderTime } from "../render";
+import { getBackendURI } from "../utils";
 
 const OFFSETS = {
   "1m": 60,

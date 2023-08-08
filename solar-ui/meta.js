@@ -1,4 +1,4 @@
-import { renderDateTime, renderNumber } from "./render.js";
+import { renderDateTime, renderNumber } from "./render";
 
 export const METADATA = {
   ambient_temperature: {
