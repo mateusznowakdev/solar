@@ -4,7 +4,7 @@ export function renderNumber(number) {
   return new Intl.NumberFormat(undefined).format(number);
 }
 
-export function renderDate(date) {
+export function renderTime(date) {
   if (isNaN(date)) return "";
 
   return new Intl.DateTimeFormat(undefined, {

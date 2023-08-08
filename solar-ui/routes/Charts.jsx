@@ -20,7 +20,7 @@ import { useParams } from "react-router-dom";
 
 import { STRINGS } from "../locale.js";
 import { METADATA } from "../meta.js";
-import { renderDate, renderDateTime } from "../render.js";
+import { renderTime, renderDateTime } from "../render.js";
 import { getBackendURI } from "../utils.js";
 
 const OFFSETS = {
@@ -186,7 +186,7 @@ function SeriesChart({ choice, choice2, data }) {
         scales: {
           x: {
             ticks: {
-              callback: (value) => renderDate(data.values[value][0]),
+              callback: (value) => renderTime(data.values[value][0]),
             },
           },
         },
