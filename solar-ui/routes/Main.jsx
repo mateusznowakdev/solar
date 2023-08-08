@@ -52,7 +52,7 @@ function StateListItem({ item, togglePinned }) {
     <ListGroup.Item
       action
       active={false}
-      className="align-items-center d-flex justify-content-between list-group-item"
+      className="align-items-center d-flex justify-content-between"
       href={"/#/charts/" + item.key}
     >
       <div

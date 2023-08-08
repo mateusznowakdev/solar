@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
 import { METADATA } from "../meta";
 import { renderDateTime } from "../render";
@@ -15,23 +15,19 @@ export default function Log() {
   }, []);
 
   return (
-    <div className="p-3">
+    <ListGroup variant="flush">
       {state.map((entry) => (
-        <Card className="mt-1 mb-2" key={entry.timestamp}>
-          <Card.Body>
-            <Card.Title as="h6">
-              {renderDateTime(new Date(entry.timestamp))}
-            </Card.Title>
-            <Card.Text>
-              {METADATA[entry.field_name].description}
-              {": "}
-              {METADATA[entry.field_name].render(entry.old_value)}
-              {" → "}
-              {METADATA[entry.field_name].render(entry.new_value)}
-            </Card.Text>
-          </Card.Body>
-        </Card>
+        <ListGroup.Item key={entry.timestamp}>
+          <div className="pt-2 px-3">
+            {METADATA[entry.field_name].description}
+            {": "}
+            {METADATA[entry.field_name].render(entry.new_value)}
+          </div>
+          <div className="pb-2 px-3 text-small">
+            {renderDateTime(new Date(entry.timestamp))}
+          </div>
+        </ListGroup.Item>
       ))}
-    </div>
+    </ListGroup>
   );
 }
