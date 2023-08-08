@@ -4,6 +4,7 @@ import GraphUp from "react-bootstrap-icons/dist/icons/graph-up";
 import Sun from "react-bootstrap-icons/dist/icons/sun";
 import { HashRouter, NavLink, Route, Routes } from "react-router-dom";
 
+import { STRINGS } from "./locale";
 import Charts from "./routes/Charts";
 import Log from "./routes/Log";
 import Main from "./routes/Main";
@@ -13,15 +14,15 @@ function AppMenu() {
     <Nav justify>
       <Nav.Link as={NavLink} to="/">
         <Sun size={24} />
-        Podsumowanie
+        {STRINGS.MENU_MAIN}
       </Nav.Link>
       <Nav.Link as={NavLink} to="/charts">
         <GraphUp size={24} />
-        Wykresy
+        {STRINGS.MENU_CHARTS}
       </Nav.Link>
       <Nav.Link as={NavLink} to="/log">
         <ClockHistory size={24} />
-        Dziennik
+        {STRINGS.MENU_LOG}
       </Nav.Link>
     </Nav>
   );
