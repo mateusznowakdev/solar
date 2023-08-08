@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import ArrowClockwise from "react-bootstrap-icons/dist/icons/arrow-clockwise";
+import Pin from "react-bootstrap-icons/dist/icons/pin";
+import PinFill from "react-bootstrap-icons/dist/icons/pin-fill";
 
 import { STRINGS } from "../locale";
 import { METADATA } from "../meta";
@@ -50,22 +52,20 @@ function StateListItem({ item, togglePinned }) {
     <ListGroup.Item
       action
       active={false}
-      className="d-flex justify-content-between list-group-item"
+      className="align-items-center d-flex justify-content-between list-group-item"
       href={"/#/charts/" + item.key}
     >
-      <div className="d-flex">
-        <div
-          className="me-2 pin-icon"
-          onClick={(e) => {
-            togglePinned(item.key);
-            e.preventDefault();
-          }}
-        >
-          {item.pin ? "🔴" : "⚪"}
-        </div>
-        <div className="me-2">{item.description}</div>
+      <div
+        className="pin-icon"
+        onClick={(e) => {
+          togglePinned(item.key);
+          e.preventDefault();
+        }}
+      >
+        {item.pin ? <PinFill /> : <Pin />}
       </div>
-      <div>
+      <div className="flex-grow-1 me-2">{item.description}</div>
+      <div className="me-3">
         {item.value} {item.unit}
       </div>
     </ListGroup.Item>

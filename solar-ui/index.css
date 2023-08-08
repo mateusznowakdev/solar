@@ -35,6 +35,10 @@ body {
   min-width: 12rem;
 }
 
+.list-group-item {
+  padding: 0;
+}
+
 .nav-link {
   align-items: center;
   color: #000;
@@ -49,6 +53,7 @@ body {
 
 .pin-icon {
   cursor: pointer;
+  padding: 0.5rem 1rem;
   user-select: none;
 }
 
