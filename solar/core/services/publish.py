@@ -1,3 +1,4 @@
+import json
 import random
 
 from django.conf import settings
@@ -5,6 +6,7 @@ from django.forms import model_to_dict
 from paho.mqtt.client import Client
 
 from solar.core.models import State
+from solar.core.serializers import StateResponseSerializer
 
 MQTT_TOPIC_PREFIX = "solar/"
 
@@ -18,3 +20,6 @@ class PublishService:
     def publish(self, *, state: State) -> None:
         for topic, message in model_to_dict(state).items():
             self.client.publish(MQTT_TOPIC_PREFIX + topic, str(message))
+
+        serializer = StateResponseSerializer(instance=state)
+        self.client.publish(MQTT_TOPIC_PREFIX + "json", json.dumps(serializer.data))

@@ -1,17 +1,15 @@
+import mqtt from "mqtt/dist/mqtt";
 import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import ArrowClockwise from "react-bootstrap-icons/dist/icons/arrow-clockwise";
 import Pin from "react-bootstrap-icons/dist/icons/pin";
 import PinFill from "react-bootstrap-icons/dist/icons/pin-fill";
 
 import { STRINGS } from "../locale";
 import { METADATA } from "../meta";
-import { getBackendURI } from "../utils";
+import { getBrokerURI } from "../utils";
 
-const UPDATE_INTERVAL = 2500;
-const UPDATE_MAX_COUNT = 120; // {# 2.5s x 120 = 5min #}
+const MQTT_JSON_TOPIC = "solar/json";
 
 function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;
@@ -20,31 +18,16 @@ function sortByPinned(a, b) {
   return a.description.localeCompare(b.description);
 }
 
-function IdleRefreshButton({ value }) {
-  let stickyContent;
+function RefreshPrompt({ show }) {
+  if (!show) return;
 
-  if (value >= UPDATE_MAX_COUNT) {
-    stickyContent = (
-      <Button
-        className="m-3"
-        onClick={() => window.location.reload()}
-        variant="light"
-      >
-        <ArrowClockwise />
-        {STRINGS.REFRESH}
-      </Button>
-    );
-  } else {
-    stickyContent = (
-      <ProgressBar
-        now={100 - (value * 100) / UPDATE_MAX_COUNT}
-        style={{ height: "2px" }}
-        variant="danger"
-      />
-    );
-  }
-
-  return <div className="sticky-top">{stickyContent}</div>;
+  return (
+    <div className="sticky-top">
+      <Alert className="m-3 p-1 text-center" variant="warning">
+        {STRINGS.PULL_TO_REFRESH}
+      </Alert>
+    </div>
+  );
 }
 
 function StateListItem({ item, togglePinned }) {
@@ -86,19 +69,36 @@ export default function Main() {
   const [state, setState] = useState({});
   const [pinned, setPinned] = useState([]);
 
-  const [counter, setCounter] = useState(0);
-
-  function getState() {
-    fetch(getBackendURI() + "/api/state/")
-      .then((response) => (response.ok ? response.json() : {}))
-      .then((json) => setState(json));
-  }
+  const [isLive, setLive] = useState(true);
 
   function getPinned() {
     const pinned = JSON.parse(
       localStorage.getItem("pinned") || '["timestamp"]',
     );
     setPinned(pinned);
+  }
+
+  function getMQTTClient() {
+    const client = mqtt.connect(getBrokerURI());
+
+    client.on("connect", () => {
+      client.subscribe(MQTT_JSON_TOPIC, (err) => {
+        if (!err) console.log("Connected");
+      });
+    });
+
+    client.on("message", (topic, message) => {
+      setLive(true);
+      setState(JSON.parse(message.toString()));
+    });
+
+    client.on("error", () => setLive(false));
+    client.on("close", () => setLive(false));
+    client.on("disconnect", () => setLive(false));
+
+    return () => {
+      if (client) client.end();
+    };
   }
 
   function togglePinned(key) {
@@ -123,29 +123,12 @@ export default function Main() {
       .sort(sortByPinned);
   }
 
-  function updateCounter() {
-    // {# This is counter-intuitive, but updated state would not be accessible #}
-    setCounter((c) => {
-      if (c < UPDATE_MAX_COUNT) {
-        getState();
-        return c + 1;
-      } else {
-        return c;
-      }
-    });
-  }
-
-  useEffect(getState, []);
   useEffect(getPinned, []);
-
-  useEffect(() => {
-    const fn = setInterval(updateCounter, UPDATE_INTERVAL);
-    return () => clearInterval(fn);
-  }, []);
+  useEffect(getMQTTClient, []);
 
   return (
     <div>
-      <IdleRefreshButton value={counter} />
+      <RefreshPrompt show={!isLive} />
       <StateList items={mergeListData()} togglePinned={togglePinned} />
     </div>
   );
