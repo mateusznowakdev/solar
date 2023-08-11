@@ -5,6 +5,21 @@ import { METADATA } from "../meta";
 import { renderDateTime } from "../render";
 import { getBackendURI } from "../utils";
 
+function LogItem({ data }) {
+  return (
+    <ListGroup.Item key={data.timestamp}>
+      <div className="pt-2 px-3">
+        {METADATA[data.field_name].description}
+        {": "}
+        {METADATA[data.field_name].render(data.new_value)}
+      </div>
+      <div className="pb-2 px-3 text-small">
+        {renderDateTime(new Date(data.timestamp))}
+      </div>
+    </ListGroup.Item>
+  );
+}
+
 export default function Log() {
   const [state, setState] = useState([]);
 
@@ -17,16 +32,7 @@ export default function Log() {
   return (
     <ListGroup variant="flush">
       {state.map((entry) => (
-        <ListGroup.Item key={entry.timestamp}>
-          <div className="pt-2 px-3">
-            {METADATA[entry.field_name].description}
-            {": "}
-            {METADATA[entry.field_name].render(entry.new_value)}
-          </div>
-          <div className="pb-2 px-3 text-small">
-            {renderDateTime(new Date(entry.timestamp))}
-          </div>
-        </ListGroup.Item>
+        <LogItem data={entry} />
       ))}
     </ListGroup>
   );
