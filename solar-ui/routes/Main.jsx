@@ -55,10 +55,20 @@ function StateListItem({ item, togglePinned }) {
   );
 }
 
-function StateList({ items, togglePinned }) {
+function StateList({ data, pinned, togglePinned }) {
+  const finalData = Object.entries(METADATA)
+    .map(([key, meta]) => ({
+      description: meta.description,
+      key,
+      pin: pinned.includes(key),
+      unit: meta.unit,
+      value: meta.render(data[key]),
+    }))
+    .sort(sortByPinned);
+
   return (
     <ListGroup variant="flush">
-      {items.map((item) => (
+      {finalData.map((item) => (
         <StateListItem item={item} key={item.key} togglePinned={togglePinned} />
       ))}
     </ListGroup>
@@ -111,25 +121,13 @@ export default function Main() {
     localStorage.setItem("pinned", JSON.stringify(pinnedCopy));
   }
 
-  function mergeListData() {
-    return Object.entries(METADATA)
-      .map(([key, meta]) => ({
-        description: meta.description,
-        key,
-        pin: pinned.includes(key),
-        unit: meta.unit,
-        value: meta.render(state[key]),
-      }))
-      .sort(sortByPinned);
-  }
-
   useEffect(getPinned, []);
   useEffect(getMQTTClient, []);
 
   return (
     <div>
       <RefreshPrompt show={!isLive} />
-      <StateList items={mergeListData()} togglePinned={togglePinned} />
+      <StateList data={state} pinned={pinned} togglePinned={togglePinned} />
     </div>
   );
 }
