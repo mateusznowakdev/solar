@@ -118,7 +118,7 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
   );
 }
 
-function PresetButtons({ setStartDate, setStopDate }) {
+function PresetButtons({ setStartDate, setStopDate, submitButton }) {
   return (
     <div className="mx-3 preset-buttons">
       {Object.entries(OFFSETS).map(([label, offset]) => (
@@ -135,6 +135,7 @@ function PresetButtons({ setStartDate, setStopDate }) {
           {label}
         </Button>
       ))}
+      {submitButton}
     </div>
   );
 }
@@ -304,7 +305,13 @@ export default function Charts() {
       .sort(sort);
   }
 
-  useEffect(getSeries, [choice, choice2, startDate, stopDate]);
+  useEffect(getSeries, []);
+
+  const submitButton = (
+    <Button onClick={getSeries} variant="light">
+      OK
+    </Button>
+  );
 
   return (
     <div>
@@ -330,6 +337,7 @@ export default function Charts() {
         <PresetButtons
           setStartDate={setStartDate}
           setStopDate={setStopDate}
+          submitButton={submitButton}
         ></PresetButtons>
       </Form>
       <SeriesChart
