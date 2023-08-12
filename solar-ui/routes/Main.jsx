@@ -108,7 +108,13 @@ export default function Main() {
     });
 
     return () => {
-      if (client) client.disconnect();
+      if (client) {
+        try {
+          client.disconnect();
+        } catch {
+          /* "Invalid state not connecting or connected" */
+        }
+      }
     };
   }
 
