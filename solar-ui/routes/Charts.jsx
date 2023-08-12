@@ -230,27 +230,21 @@ export default function Charts() {
   const [seriesA, setSeriesA] = useState(location.state?.choice || "");
   const [seriesB, setSeriesB] = useState("");
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["15m"]));
-  const [stopDate, setStopDate] = useState(getEmptyDateState());
+  const [stopDate, setStopDate] = useState(getPastDateState(0));
 
   function getSeries() {
-    const params = {};
-
-    if (seriesA && seriesB) {
-      params.source1 = seriesA;
-      params.source2 = seriesB;
-    } else if (seriesA) {
-      params.source1 = seriesA;
-    } else if (seriesB) {
-      params.source1 = seriesB;
-    } else {
-      return;
-    }
+    if (!seriesA && !seriesB) return;
 
     const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
-    if (!isNaN(startDateObj)) params.date_from = startDateObj.toISOString();
-
     const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
-    if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
+
+    const params = [
+      ["date_from", startDateObj.toISOString()],
+      ["date_to", stopDateObj.toISOString()],
+    ];
+
+    if (seriesA) params.push(["field", seriesA]);
+    if (seriesB) params.push(["field", seriesB]);
 
     fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
       .then((response) => (response.ok ? response.json() : {}))
@@ -280,7 +274,17 @@ export default function Charts() {
   useEffect(getSeries, []);
 
   const submitButton = (
-    <Button disabled={!seriesA && !seriesB} onClick={getSeries} variant="light">
+    <Button
+      disabled={
+        !startDate.date ||
+        !startDate.time ||
+        !stopDate.date ||
+        !stopDate.time ||
+        (!seriesA && !seriesB)
+      }
+      onClick={getSeries}
+      variant="light"
+    >
       OK
     </Button>
   );

@@ -14,10 +14,13 @@ class NullSerializer(serializers.Serializer):
 
 
 class SeriesRequestSerializer(serializers.Serializer):
-    source1 = serializers.ChoiceField(choices=get_numeric_field_names())
-    source2 = serializers.ChoiceField(choices=get_numeric_field_names(), required=False)
-    date_from = serializers.DateTimeField(required=False)
-    date_to = serializers.DateTimeField(required=False)
+    field = serializers.ListField(
+        child=serializers.ChoiceField(choices=get_numeric_field_names()),
+        min_length=1,
+        max_length=2,
+    )
+    date_from = serializers.DateTimeField()
+    date_to = serializers.DateTimeField()
 
 
 class StateRequestSerializer(serializers.Serializer):
