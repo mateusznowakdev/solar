@@ -42,20 +42,19 @@ Chart.register(
   Tooltip,
 );
 
-function buildDateFromStrings(date, time) {
+function buildDateFromStrings({ date, time }) {
   return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
 }
 
-function buildDateWithOffset(offset) {
-  return dayjs().subtract(offset, "seconds");
-}
-
-function getPastDateState(offset) {
-  const date = buildDateWithOffset(offset);
+function buildStringsFromDate(date) {
   return {
     date: dayjs(date).format("YYYY-MM-DD"),
     time: dayjs(date).format("HH:mm"),
   };
+}
+
+function buildStringsFromOffsetDate(date, offset) {
+  return buildStringsFromDate(dayjs().subtract(offset, "seconds"));
 }
 
 function shouldHaveChart(key) {
@@ -121,8 +120,8 @@ function PresetButtons({ setStartDate, setStopDate, submitButton }) {
           className="my-1"
           key={label}
           onClick={() => {
-            setStartDate(getPastDateState(offset));
-            setStopDate(getPastDateState(0));
+            setStartDate(buildStringsFromOffsetDate(new Date(), offset));
+            setStopDate(buildStringsFromDate(new Date()));
           }}
           size="sm"
           variant="light"
@@ -220,18 +219,20 @@ function SeriesChart({ column, data }) {
 export default function Charts() {
   const location = useLocation();
 
-  const [data, setData] = useState({ values: [] });
+  const [data, setData] = useState(null);
 
   const [seriesA, setSeriesA] = useState(location.state?.choice || "");
   const [seriesB, setSeriesB] = useState("");
-  const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["15m"]));
-  const [stopDate, setStopDate] = useState(getPastDateState(0));
+  const [startDate, setStartDate] = useState(
+    buildStringsFromOffsetDate(new Date(), OFFSETS["15m"]),
+  );
+  const [stopDate, setStopDate] = useState(buildStringsFromDate(new Date()));
 
   function getSeries() {
     if (!seriesA && !seriesB) return;
 
-    const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
-    const stopDateObj = buildDateFromStrings(stopDate.date, stopDate.time);
+    const startDateObj = buildDateFromStrings(startDate);
+    const stopDateObj = buildDateFromStrings(stopDate);
 
     const params = [
       ["date_from", startDateObj.toISOString()],
@@ -244,13 +245,21 @@ export default function Charts() {
     fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
       .then((response) => (response.ok ? response.json() : {}))
       .then((json) => {
-        const jsonParsed = {
-          dateFrom: new Date(json.date_from),
-          dateTo: new Date(json.date_to),
-          fields: json.fields,
-          values: json.values.map(([x, y1, y2]) => [new Date(x), y1, y2]),
-        };
-        setData(jsonParsed);
+        if (!json.values) {
+          setData(null);
+          return;
+        }
+
+        const dateFrom = new Date(json.date_from);
+        const dateTo = new Date(json.date_to);
+        const fields = json.fields;
+        const values = json.values.map(([x, y1, y2]) => [new Date(x), y1, y2]);
+
+        setSeriesA(fields[0] || fields[0]);
+        setSeriesB(fields[1] || "");
+        setStartDate(buildStringsFromDate(dateFrom));
+        setStopDate(buildStringsFromDate(dateTo));
+        setData({ dateFrom, dateTo, fields, values });
       });
   }
 
@@ -311,10 +320,8 @@ export default function Charts() {
           submitButton={submitButton}
         ></PresetButtons>
       </Form>
-      {data.fields && <SeriesChart column={0} data={data} />}
-      {data.fields && data.fields.length > 1 && (
-        <SeriesChart column={1} data={data} />
-      )}
+      {data && <SeriesChart column={0} data={data} />}
+      {data && data.fields.length > 1 && <SeriesChart column={1} data={data} />}
     </div>
   );
 }
