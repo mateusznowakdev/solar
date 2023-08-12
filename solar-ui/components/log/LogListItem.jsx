@@ -1,0 +1,19 @@
+import ListGroup from "react-bootstrap/ListGroup";
+
+import { METADATA } from "../../meta";
+import { renderDateTime } from "../../render";
+
+export default function LogListItem({ data }) {
+  return (
+    <ListGroup.Item key={data.timestamp}>
+      <div className="pt-2">
+        {METADATA[data.field_name].description}
+        {": "}
+        {METADATA[data.field_name].render(data.new_value)}
+      </div>
+      <div className="pb-2 text-small">
+        {renderDateTime(new Date(data.timestamp))}
+      </div>
+    </ListGroup.Item>
+  );
+}
