@@ -18,7 +18,6 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useLocation } from "react-router-dom";
 
-import { STRINGS } from "../locale";
 import { METADATA } from "../meta";
 import { renderDateTime, renderTime } from "../render";
 import { getBackendURI } from "../utils";
@@ -49,10 +48,6 @@ function buildDateFromStrings(date, time) {
 
 function buildDateWithOffset(offset) {
   return dayjs().subtract(offset, "seconds");
-}
-
-function getEmptyDateState() {
-  return { date: "", time: "" };
 }
 
 function getPastDateState(offset) {
@@ -127,7 +122,7 @@ function PresetButtons({ setStartDate, setStopDate, submitButton }) {
           key={label}
           onClick={() => {
             setStartDate(getPastDateState(offset));
-            setStopDate(getEmptyDateState());
+            setStopDate(getPastDateState(0));
           }}
           size="sm"
           variant="light"
