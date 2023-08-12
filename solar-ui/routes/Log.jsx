@@ -32,7 +32,7 @@ export default function Log() {
   return (
     <ListGroup variant="flush">
       {state.map((entry) => (
-        <LogItem data={entry} />
+        <LogItem data={entry} key={entry.timestamp} />
       ))}
     </ListGroup>
   );

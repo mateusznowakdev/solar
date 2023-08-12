@@ -4,6 +4,7 @@ import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 import Pin from "react-bootstrap-icons/dist/icons/pin";
 import PinFill from "react-bootstrap-icons/dist/icons/pin-fill";
+import LinkContainer from "react-router-bootstrap/LinkContainer";
 
 import { STRINGS } from "../locale";
 import { METADATA } from "../meta";
@@ -22,7 +23,7 @@ function RefreshPrompt({ show }) {
   if (!show) return;
 
   return (
-    <div className="p-3 sticky-top">
+    <div className="p-2 sticky-top">
       <Alert className="m-0 p-1 text-center" variant="warning">
         {STRINGS.PULL_TO_REFRESH}
       </Alert>
@@ -32,26 +33,27 @@ function RefreshPrompt({ show }) {
 
 function StateListItem({ item, togglePinned }) {
   return (
-    <ListGroup.Item
-      action
-      active={false}
-      className="align-items-center d-flex justify-content-between"
-      href={"/#/charts/" + item.key}
-    >
-      <div
-        className="pin-icon"
-        onClick={(e) => {
-          togglePinned(item.key);
-          e.preventDefault();
-        }}
+    <LinkContainer state={{ choice: item.key }} to="/charts">
+      <ListGroup.Item
+        action
+        active={false}
+        className="align-items-center d-flex justify-content-between"
       >
-        {item.pin ? <PinFill /> : <Pin />}
-      </div>
-      <div className="flex-grow-1 me-2">{item.description}</div>
-      <div>
-        {item.value} {item.unit}
-      </div>
-    </ListGroup.Item>
+        <div
+          className="pin-icon"
+          onClick={(e) => {
+            togglePinned(item.key);
+            e.preventDefault();
+          }}
+        >
+          {item.pin ? <PinFill /> : <Pin />}
+        </div>
+        <div className="flex-grow-1 me-2">{item.description}</div>
+        <div>
+          {item.value} {item.unit}
+        </div>
+      </ListGroup.Item>
+    </LinkContainer>
   );
 }
 

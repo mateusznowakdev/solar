@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { STRINGS } from "../locale";
 import { METADATA } from "../meta";
@@ -256,16 +256,14 @@ function SeriesChart({ choice, choice2, data }) {
 }
 
 export default function Charts() {
+  const location = useLocation();
+
   const [series, setSeries] = useState({ values: [] });
 
-  const { choice } = useParams();
+  const [choice, setChoice] = useState(location.state?.choice || "");
   const [choice2, setChoice2] = useState("");
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["15m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
-
-  function setChoice(choice) {
-    window.location = `/#/charts/${choice}`;
-  }
 
   function getSeries() {
     const params = {};
