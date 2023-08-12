@@ -22,8 +22,8 @@ function RefreshPrompt({ show }) {
   if (!show) return;
 
   return (
-    <div className="sticky-top">
-      <Alert className="m-3 p-1 text-center" variant="warning">
+    <div className="p-3 sticky-top">
+      <Alert className="m-0 p-1 text-center" variant="warning">
         {STRINGS.PULL_TO_REFRESH}
       </Alert>
     </div>
@@ -48,7 +48,7 @@ function StateListItem({ item, togglePinned }) {
         {item.pin ? <PinFill /> : <Pin />}
       </div>
       <div className="flex-grow-1 me-2">{item.description}</div>
-      <div className="me-3">
+      <div>
         {item.value} {item.unit}
       </div>
     </ListGroup.Item>

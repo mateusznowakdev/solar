@@ -75,7 +75,7 @@ function SeriesSelect({ choices, current, setCurrent }) {
   return (
     <InputGroup>
       <Form.Select
-        className="mx-3 my-1"
+        className="my-1"
         onChange={(e) => setCurrent(e.target.value)}
         value={current}
       >
@@ -96,7 +96,7 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
   return (
     <InputGroup className="date-time-input">
       <Form.Control
-        className="ms-3 my-1"
+        className="my-1"
         onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
         type="date"
         value={date}
@@ -108,7 +108,7 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
         value={time}
       />
       <Button
-        className="me-3 my-1"
+        className="my-1"
         onClick={() => setCurrent(getEmptyDateState())}
         variant="light"
       >
@@ -120,7 +120,7 @@ function DateTimeInput({ current: { date, time }, setCurrent }) {
 
 function PresetButtons({ setStartDate, setStopDate, submitButton }) {
   return (
-    <div className="mx-3 preset-buttons">
+    <div className="preset-buttons">
       {Object.entries(OFFSETS).map(([label, offset]) => (
         <Button
           className="my-1"
@@ -242,13 +242,13 @@ function SeriesChart({ choice, choice2, data }) {
 
   if (choice1Valid) {
     return (
-      <div className="mx-3">
+      <div>
         <canvas height="256px" id="canvas"></canvas>
       </div>
     );
   } else {
     return (
-      <div className="mx-3 text-center text-muted">
+      <div className="text-center text-muted">
         {STRINGS.INVALID_SERIES_HINT}
       </div>
     );
@@ -315,7 +315,7 @@ export default function Charts() {
 
   return (
     <div>
-      <Form className="my-3">
+      <Form className="my-2">
         <SeriesSelect
           choices={mergeSelectData()}
           current={choice}

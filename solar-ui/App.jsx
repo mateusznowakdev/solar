@@ -11,7 +11,7 @@ import Main from "./routes/Main";
 
 function AppMenu() {
   return (
-    <Nav justify>
+    <Nav className="bg-white fixed-bottom" justify>
       <Nav.Link as={NavLink} to="/">
         <Sun size={24} />
         {STRINGS.MENU_MAIN}
