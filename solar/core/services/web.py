@@ -15,6 +15,9 @@ class WebSeriesService:
     def get_series(
         *, fields: list[str], date_from: datetime, date_to: datetime
     ) -> dict:
+        if date_from > date_to:
+            date_from, date_to = date_to, date_from
+
         date_to = min(date_to, date_from + timedelta(days=3))
 
         delta = date_to - date_from
