@@ -140,7 +140,7 @@ function PresetButtons({ setStartDate, setStopDate, submitButton }) {
   );
 }
 
-function SeriesChart({ data }) {
+function SeriesChart({ column, data }) {
   const dateFromString = renderDateTime(data.dateFrom);
   const dateToString = renderDateTime(data.dateTo);
 
@@ -171,8 +171,8 @@ function SeriesChart({ data }) {
             callbacks: {
               title: (context) =>
                 renderDateTime(data.values[context[0].parsed.x][0]),
-              // label: (context) =>
-              //  METADATA[choiceArray[context.datasetIndex]].render(context.raw),
+              label: (context) =>
+                METADATA[data.fields[column]].render(context.raw),
             },
           },
         },
@@ -190,8 +190,8 @@ function SeriesChart({ data }) {
     chartOptions.data.datasets.push({
       backgroundColor: "#ff000033",
       borderColor: "#ff0000",
-      data: data.values.map((row) => row[1]),
-      // label: METADATA[choice].description,
+      data: data.values.map((row) => row[column + 1]),
+      label: METADATA[data.fields[column]].description,
       yAxisID: "y1",
     });
     chartOptions.options.scales.y1 = {
@@ -200,29 +200,15 @@ function SeriesChart({ data }) {
       },
       position: "left",
       ticks: {
-        // callback: (value) => METADATA[choice].render(value),
-        precision: 0,
-      },
-    };
-    chartOptions.data.datasets.push({
-      backgroundColor: "#ffaa0033",
-      borderColor: "#ffaa00",
-      data: data.values.map((row) => row[2]),
-      // label: METADATA[choice2].description,
-      yAxisID: "y2",
-    });
-    chartOptions.options.scales.y2 = {
-      grid: {
-        display: false,
-      },
-      position: "right",
-      ticks: {
-        // callback: (value) => METADATA[choice2].render(value),
+        callback: (value) => METADATA[data.fields[column]].render(value),
         precision: 0,
       },
     };
 
-    const chart = new Chart(document.getElementById("canvas"), chartOptions);
+    const chart = new Chart(
+      document.getElementById("canvas" + column),
+      chartOptions,
+    );
 
     return () => {
       if (chart) chart.destroy();
@@ -231,7 +217,7 @@ function SeriesChart({ data }) {
 
   return (
     <div>
-      <canvas height="256px" id="canvas"></canvas>
+      <canvas height="256px" id={"canvas" + column}></canvas>
     </div>
   );
 }
@@ -267,11 +253,12 @@ export default function Charts() {
     if (!isNaN(stopDateObj)) params.date_to = stopDateObj.toISOString();
 
     fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
-      .then((response) => (response.ok ? response.json() : []))
+      .then((response) => (response.ok ? response.json() : {}))
       .then((json) => {
         const jsonParsed = {
           dateFrom: new Date(json.date_from),
           dateTo: new Date(json.date_to),
+          fields: json.fields,
           values: json.values.map(([x, y1, y2]) => [new Date(x), y1, y2]),
         };
         setData(jsonParsed);
@@ -325,7 +312,10 @@ export default function Charts() {
           submitButton={submitButton}
         ></PresetButtons>
       </Form>
-      <SeriesChart data={data} />
+      {data.fields && <SeriesChart column={0} data={data} />}
+      {data.fields && data.fields.length > 1 && (
+        <SeriesChart column={1} data={data} />
+      )}
     </div>
   );
 }

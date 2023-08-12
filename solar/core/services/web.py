@@ -64,7 +64,12 @@ class WebSeriesService:
         if source2:
             data = data.annotate(avg_value2=Avg(source2))
 
-        return {"date_from": date_from, "date_to": date_to, "values": data}
+        return {
+            "date_from": date_from,
+            "date_to": date_to,
+            "fields": [source1, source2] if source2 else [source1],
+            "values": data,
+        }
 
 
 class WebStateService:
