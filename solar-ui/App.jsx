@@ -33,9 +33,7 @@ export default function App() {
     <HashRouter>
       <Routes>
         <Route element={<Main />} index />
-        <Route element={<Charts />} path="/charts">
-          <Route element={<Charts />} path=":choice" />
-        </Route>
+        <Route element={<Charts />} path="/charts" />
         <Route element={<Log />} path="/log" />
       </Routes>
       <AppMenu />
