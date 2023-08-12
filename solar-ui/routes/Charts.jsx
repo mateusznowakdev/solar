@@ -140,18 +140,11 @@ function PresetButtons({ setStartDate, setStopDate, submitButton }) {
   );
 }
 
-function SeriesChart({ choice, choice2, data }) {
+function SeriesChart({ data }) {
   const dateFromString = renderDateTime(data.dateFrom);
   const dateToString = renderDateTime(data.dateTo);
 
-  const choiceArray = [choice, choice2];
-
-  const choice1Valid = shouldHaveChart(choice);
-  const choice2Valid = shouldHaveChart(choice2);
-
   useEffect(() => {
-    if (!choice1Valid) return;
-
     const chartOptions = {
       type: "line",
       data: {
@@ -178,8 +171,8 @@ function SeriesChart({ choice, choice2, data }) {
             callbacks: {
               title: (context) =>
                 renderDateTime(data.values[context[0].parsed.x][0]),
-              label: (context) =>
-                METADATA[choiceArray[context.datasetIndex]].render(context.raw),
+              // label: (context) =>
+              //  METADATA[choiceArray[context.datasetIndex]].render(context.raw),
             },
           },
         },
@@ -194,44 +187,40 @@ function SeriesChart({ choice, choice2, data }) {
       },
     };
 
-    if (choice1Valid) {
-      chartOptions.data.datasets.push({
-        backgroundColor: "#ff000033",
-        borderColor: "#ff0000",
-        data: data.values.map((row) => row[1]),
-        label: METADATA[choice].description,
-        yAxisID: "y1",
-      });
-      chartOptions.options.scales.y1 = {
-        grid: {
-          display: false,
-        },
-        position: "left",
-        ticks: {
-          callback: (value) => METADATA[choice].render(value),
-          precision: 0,
-        },
-      };
-    }
-    if (choice2Valid) {
-      chartOptions.data.datasets.push({
-        backgroundColor: "#ffaa0033",
-        borderColor: "#ffaa00",
-        data: data.values.map((row) => row[2]),
-        label: METADATA[choice2].description,
-        yAxisID: "y2",
-      });
-      chartOptions.options.scales.y2 = {
-        grid: {
-          display: false,
-        },
-        position: "right",
-        ticks: {
-          callback: (value) => METADATA[choice2].render(value),
-          precision: 0,
-        },
-      };
-    }
+    chartOptions.data.datasets.push({
+      backgroundColor: "#ff000033",
+      borderColor: "#ff0000",
+      data: data.values.map((row) => row[1]),
+      // label: METADATA[choice].description,
+      yAxisID: "y1",
+    });
+    chartOptions.options.scales.y1 = {
+      grid: {
+        display: false,
+      },
+      position: "left",
+      ticks: {
+        // callback: (value) => METADATA[choice].render(value),
+        precision: 0,
+      },
+    };
+    chartOptions.data.datasets.push({
+      backgroundColor: "#ffaa0033",
+      borderColor: "#ffaa00",
+      data: data.values.map((row) => row[2]),
+      // label: METADATA[choice2].description,
+      yAxisID: "y2",
+    });
+    chartOptions.options.scales.y2 = {
+      grid: {
+        display: false,
+      },
+      position: "right",
+      ticks: {
+        // callback: (value) => METADATA[choice2].render(value),
+        precision: 0,
+      },
+    };
 
     const chart = new Chart(document.getElementById("canvas"), chartOptions);
 
@@ -240,38 +229,36 @@ function SeriesChart({ choice, choice2, data }) {
     };
   }, [data]);
 
-  if (choice1Valid) {
-    return (
-      <div>
-        <canvas height="256px" id="canvas"></canvas>
-      </div>
-    );
-  } else {
-    return (
-      <div className="text-center text-muted">
-        {STRINGS.INVALID_SERIES_HINT}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <canvas height="256px" id="canvas"></canvas>
+    </div>
+  );
 }
 
 export default function Charts() {
   const location = useLocation();
 
-  const [series, setSeries] = useState({ values: [] });
+  const [data, setData] = useState({ values: [] });
 
-  const [choice, setChoice] = useState(location.state?.choice || "");
-  const [choice2, setChoice2] = useState("");
+  const [seriesA, setSeriesA] = useState(location.state?.choice || "");
+  const [seriesB, setSeriesB] = useState("");
   const [startDate, setStartDate] = useState(getPastDateState(OFFSETS["15m"]));
   const [stopDate, setStopDate] = useState(getEmptyDateState());
 
   function getSeries() {
     const params = {};
 
-    if (shouldHaveChart(choice)) params.source1 = choice;
-    if (shouldHaveChart(choice2)) params.source2 = choice2;
-
-    if (!params.source1) return;
+    if (seriesA && seriesB) {
+      params.source1 = seriesA;
+      params.source2 = seriesB;
+    } else if (seriesA) {
+      params.source1 = seriesA;
+    } else if (seriesB) {
+      params.source1 = seriesB;
+    } else {
+      return;
+    }
 
     const startDateObj = buildDateFromStrings(startDate.date, startDate.time);
     if (!isNaN(startDateObj)) params.date_from = startDateObj.toISOString();
@@ -287,7 +274,7 @@ export default function Charts() {
           dateTo: new Date(json.date_to),
           values: json.values.map(([x, y1, y2]) => [new Date(x), y1, y2]),
         };
-        setSeries(jsonParsed);
+        setData(jsonParsed);
       });
   }
 
@@ -306,7 +293,7 @@ export default function Charts() {
   useEffect(getSeries, []);
 
   const submitButton = (
-    <Button onClick={getSeries} variant="light">
+    <Button disabled={!seriesA && !seriesB} onClick={getSeries} variant="light">
       OK
     </Button>
   );
@@ -316,13 +303,13 @@ export default function Charts() {
       <Form className="my-2">
         <SeriesSelect
           choices={mergeSelectData()}
-          current={choice}
-          setCurrent={setChoice}
+          current={seriesA}
+          setCurrent={setSeriesA}
         />
         <SeriesSelect
           choices={mergeSelectData()}
-          current={choice2}
-          setCurrent={setChoice2}
+          current={seriesB}
+          setCurrent={setSeriesB}
         />
         <DateTimeInput
           current={startDate}
@@ -338,11 +325,7 @@ export default function Charts() {
           submitButton={submitButton}
         ></PresetButtons>
       </Form>
-      <SeriesChart
-        choice={choice}
-        choice2={choice2}
-        data={series}
-      ></SeriesChart>
+      <SeriesChart data={data} />
     </div>
   );
 }
