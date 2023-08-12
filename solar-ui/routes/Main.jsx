@@ -1,4 +1,4 @@
-import mqtt from "mqtt/dist/mqtt";
+import { Client } from "paho-mqtt/paho-mqtt";
 import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -8,7 +8,6 @@ import LinkContainer from "react-router-bootstrap/LinkContainer";
 
 import { STRINGS } from "../locale";
 import { METADATA } from "../meta";
-import { getBrokerURI } from "../utils";
 
 const MQTT_JSON_TOPIC = "solar/json";
 
@@ -91,25 +90,25 @@ export default function Main() {
   }
 
   function getMQTTClient() {
-    const client = mqtt.connect(getBrokerURI());
+    const clientName = "sub" + Math.floor(Math.random() * 1000000);
+    const client = new Client(window.location.hostname, 8883, "/", clientName);
 
-    client.on("connect", () => {
-      client.subscribe(MQTT_JSON_TOPIC, (err) => {
-        if (!err) console.log("Connected");
-      });
-    });
-
-    client.on("message", (topic, message) => {
+    client.onMessageArrived = (message) => {
       setLive(true);
-      setState(JSON.parse(message.toString()));
-    });
+      setState(JSON.parse(message.payloadString));
+    };
+    client.onConnectionLost = () => {
+      setLive(false);
+    };
 
-    client.on("error", () => setLive(false));
-    client.on("close", () => setLive(false));
-    client.on("disconnect", () => setLive(false));
+    client.connect({
+      onSuccess: () => {
+        client.subscribe(MQTT_JSON_TOPIC, {});
+      },
+    });
 
     return () => {
-      if (client) client.end();
+      if (client) client.disconnect();
     };
   }
 
