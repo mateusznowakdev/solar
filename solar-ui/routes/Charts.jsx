@@ -54,8 +54,8 @@ export default function Charts() {
         setData(json);
         setSeriesA(json.values[0]?.field || "");
         setSeriesB(json.values[1]?.field || "");
-        setStartDate(json.dateFrom);
-        setStopDate(json.dateTo);
+        setStartDate(json.date_from);
+        setStopDate(json.date_to);
       });
   }
 
