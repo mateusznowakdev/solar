@@ -100,7 +100,10 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
+    "TITLE": "Solar",
+    "DESCRIPTION": "The datalogger for solar inverter",
     "COMPONENT_SPLIT_PATCH": False,
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
