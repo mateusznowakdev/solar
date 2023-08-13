@@ -1,16 +1,3 @@
-import {
-  CategoryScale,
-  Chart,
-  Filler,
-  Legend,
-  LinearScale,
-  LineController,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-} from "chart.js";
-
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -18,8 +5,9 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useLocation } from "react-router-dom";
 
+import Chart from "../components/charts/Chart";
+
 import { METADATA } from "../meta";
-import { renderDateTime, renderTime } from "../render";
 import { getBackendURI } from "../utils";
 
 const OFFSETS = {
@@ -29,18 +17,6 @@ const OFFSETS = {
   "8h": 60 * 60 * 8,
   "24h": 60 * 60 * 24,
 };
-
-Chart.register(
-  CategoryScale,
-  Filler,
-  Legend,
-  LinearScale,
-  LineController,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-);
 
 function buildDateFromStrings({ date, time }) {
   return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
@@ -130,88 +106,6 @@ function PresetButtons({ setStartDate, setStopDate, submitButton }) {
         </Button>
       ))}
       {submitButton}
-    </div>
-  );
-}
-
-function SeriesChart({ column, data }) {
-  const dateFromString = renderDateTime(data.dateFrom);
-  const dateToString = renderDateTime(data.dateTo);
-
-  useEffect(() => {
-    const chartOptions = {
-      type: "line",
-      data: {
-        datasets: [],
-        labels: data.values.map((row) => row[0]),
-      },
-      options: {
-        animation: false,
-        elements: {
-          line: { borderWidth: 1 },
-          point: { pointStyle: false },
-        },
-        interaction: {
-          intersect: false,
-          mode: "index",
-        },
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: `${dateFromString} — ${dateToString}`,
-          },
-          tooltip: {
-            callbacks: {
-              title: (context) =>
-                renderDateTime(data.values[context[0].parsed.x][0]),
-              label: (context) =>
-                METADATA[data.fields[column]].render(context.raw),
-            },
-          },
-        },
-        responsive: true,
-        scales: {
-          x: {
-            ticks: {
-              callback: (value) => renderTime(data.values[value][0]),
-            },
-          },
-        },
-      },
-    };
-
-    chartOptions.data.datasets.push({
-      backgroundColor: "#ff000033",
-      borderColor: "#ff0000",
-      data: data.values.map((row) => row[column + 1]),
-      label: METADATA[data.fields[column]].description,
-      yAxisID: "y1",
-    });
-    chartOptions.options.scales.y1 = {
-      grid: {
-        display: false,
-      },
-      position: "left",
-      ticks: {
-        callback: (value) => METADATA[data.fields[column]].render(value),
-        precision: 0,
-      },
-    };
-
-    const chart = new Chart(
-      document.getElementById("canvas" + column),
-      chartOptions,
-    );
-
-    return () => {
-      if (chart) chart.destroy();
-    };
-  }, [data]);
-
-  return (
-    <div>
-      <canvas height="256px" id={"canvas" + column}></canvas>
     </div>
   );
 }
@@ -320,8 +214,8 @@ export default function Charts() {
           submitButton={submitButton}
         ></PresetButtons>
       </Form>
-      {data && <SeriesChart column={0} data={data} />}
-      {data && data.fields.length > 1 && <SeriesChart column={1} data={data} />}
+      {data && <Chart column={0} data={data} />}
+      {data && data.fields.length > 1 && <Chart column={1} data={data} />}
     </div>
   );
 }
