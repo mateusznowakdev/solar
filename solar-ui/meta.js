@@ -1,5 +1,10 @@
 import { renderDateTime, renderNumber } from "./render";
 
+export const COLORS = {
+  PRIMARY: "#198754", // --bs-green
+  PRIMARY_TRANSLUCENT: "#19875433",
+};
+
 export const METADATA = {
   ambient_temperature: {
     description: "Temperatura otoczenia",

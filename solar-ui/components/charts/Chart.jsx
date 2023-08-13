@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { useEffect } from "react";
 
-import { METADATA } from "../../meta";
+import { COLORS, METADATA } from "../../meta";
 import { renderDateTime, renderTime } from "../../render";
 
 BaseChart.register(
@@ -33,8 +33,8 @@ export default function Chart({ column, data }) {
       data: {
         datasets: [
           {
-            backgroundColor: "#ff000033",
-            borderColor: "#ff0000",
+            backgroundColor: COLORS.PRIMARY_TRANSLUCENT,
+            borderColor: COLORS.PRIMARY,
             data: data.values.map((row) => row[column + 1]),
             fill: true,
             label: METADATA[data.fields[column]].description,

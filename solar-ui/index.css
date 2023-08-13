@@ -53,7 +53,7 @@
 }
 
 .nav-link.active {
-  color: #f00;
+  color: var(--bs-green);
 }
 
 .pin-icon {
