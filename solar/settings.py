@@ -107,4 +107,4 @@ SPECTACULAR_SETTINGS = {
 }
 
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
-MQTT_PORT = os.environ.get("MQTT_PORT", 1883)
+MQTT_PORT = 1883
