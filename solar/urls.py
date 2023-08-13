@@ -6,6 +6,6 @@ from solar.core.views import LogAPIView, SeriesAPIView
 urlpatterns = [
     path("api/log/", LogAPIView.as_view(), name="api-log"),
     path("api/series/", SeriesAPIView.as_view(), name="api-series"),
-    path("api/_schema/", SpectacularAPIView.as_view(), name="api--schema"),
-    path("api/_schema/ui/", SpectacularSwaggerView.as_view(), name="api--schema-ui"),
+    path("api/_schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/_schema/ui/", SpectacularSwaggerView.as_view(), name="schema-ui"),
 ]
