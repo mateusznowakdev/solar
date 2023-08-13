@@ -39,4 +39,6 @@ class SeriesAPIView(views.APIView):
             date_from=in_serializer.validated_data.get("date_from"),
             date_to=in_serializer.validated_data.get("date_to"),
         )
-        return Response(data=out_data)
+        out_serializer = SeriesResponseSerializer(out_data)
+
+        return Response(data=out_serializer.data)
