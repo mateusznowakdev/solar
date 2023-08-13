@@ -1,9 +1,9 @@
-# Datalogger for solar inverter
+# Solar
 
-> This is EXPERIMENTAL SOFTWARE that is, and will be, optimized for one hardware
-> configuration and use Polish language for user interface. **DO NOT ASK FOR ANY
-> KIND OF HELP** even if you believe you have the same inverter model. I don't
-> have physical access to the device, let alone free time.
+The datalogger for solar inverter, based on reverse engineering result.
+
+> This is an EXPERIMENTAL SOFTWARE. Do not ask for technical support. See
+> [license](LICENSE.md).
 
 | ![](assets/scr1.png) | ![](assets/scr2.png) |
 | :------------------: | :------------------: |
@@ -16,6 +16,7 @@
 - Send current inverter state to built-in MQTT broker
 - Display current inverter state, pin parameters to the top
 - Display charts for each inverter parameter
+- Change parameters based on current state (experimental)
 
 This software is tested with Raspberry Pi 3A and Debian 12 in UEFI mode:
 
