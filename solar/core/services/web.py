@@ -27,7 +27,13 @@ class SeriesService:
 
         delta = date_to - date_from
         stride = delta.total_seconds() // 1000
-        stride = max(1, int(stride))
+
+        if delta > timedelta(hours=3):
+            # round to 5 seconds
+            stride = stride // 5 * 5
+        else:
+            # too few data, use calculated stride value
+            stride = max(1, int(stride))
 
         data = (
             State.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
