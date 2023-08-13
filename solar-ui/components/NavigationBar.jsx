@@ -1,5 +1,6 @@
 import Nav from "react-bootstrap/Nav";
 import ClockHistory from "react-bootstrap-icons/dist/icons/clock-history";
+import ExclamationCircle from "react-bootstrap-icons/dist/icons/exclamation-circle";
 import GraphUp from "react-bootstrap-icons/dist/icons/graph-up";
 import Sun from "react-bootstrap-icons/dist/icons/sun";
 import { NavLink } from "react-router-dom";
@@ -20,6 +21,10 @@ export default function NavigationBar() {
       <Nav.Link as={NavLink} to="/log">
         <ClockHistory size={24} />
         {STRINGS.MENU_LOG}
+      </Nav.Link>
+      <Nav.Link as={NavLink} to="/about">
+        <ExclamationCircle className="rotate-180" size={24} />
+        {STRINGS.MENU_ABOUT}
       </Nav.Link>
     </Nav>
   );
