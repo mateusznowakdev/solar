@@ -37,11 +37,15 @@ class WebSeriesService:
         except IndexError:
             pass
 
+        data = list(data)
+
         return {
             "date_from": date_from,
             "date_to": date_to,
-            "fields": fields,
-            "values": data,
+            "values": [
+                {"field": f, "x": [d[0] for d in data], "y": [d[idx + 1] for d in data]}
+                for idx, f in enumerate(fields)
+            ],
         }
 
 

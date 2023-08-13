@@ -27,7 +27,7 @@ BaseChart.register(
   Tooltip,
 );
 
-export default function Chart({ column, data }) {
+export default function Chart({ data }) {
   useEffect(() => {
     const chartOptions = {
       data: {
@@ -35,12 +35,12 @@ export default function Chart({ column, data }) {
           {
             backgroundColor: COLORS.PRIMARY_TRANSLUCENT,
             borderColor: COLORS.PRIMARY,
-            data: data.values.map((row) => row[column + 1]),
+            data: data.y,
             fill: true,
-            label: METADATA[data.fields[column]].description,
+            label: METADATA[data.field].description,
           },
         ],
-        labels: data.values.map((row) => row[0]),
+        labels: data.x,
       },
       options: {
         animation: false,
@@ -58,14 +58,12 @@ export default function Chart({ column, data }) {
           },
           title: {
             display: true,
-            text: METADATA[data.fields[column]].description,
+            text: METADATA[data.field].description,
           },
           tooltip: {
             callbacks: {
-              title: (context) =>
-                renderDateTime(data.values[context[0].parsed.x][0]),
-              label: (context) =>
-                METADATA[data.fields[column]].render(context.raw),
+              title: (context) => renderDateTime(data.x[context[0].parsed.x]),
+              label: (context) => METADATA[data.field].render(context.raw),
             },
           },
         },
@@ -73,12 +71,12 @@ export default function Chart({ column, data }) {
         scales: {
           x: {
             ticks: {
-              callback: (value) => renderTime(data.values[value][0]),
+              callback: (value) => renderTime(data.x[value]),
             },
           },
           y: {
             ticks: {
-              callback: (value) => METADATA[data.fields[column]].render(value),
+              callback: (value) => METADATA[data.field].render(value),
               precision: 0,
             },
           },
@@ -88,7 +86,7 @@ export default function Chart({ column, data }) {
     };
 
     const chart = new BaseChart(
-      document.getElementById("canvas" + column),
+      document.getElementById("canvas-" + data.field),
       chartOptions,
     );
 
@@ -99,7 +97,7 @@ export default function Chart({ column, data }) {
 
   return (
     <div>
-      <canvas height="256px" id={"canvas" + column}></canvas>
+      <canvas height="256px" id={"canvas-" + data.field}></canvas>
     </div>
   );
 }

@@ -51,14 +51,17 @@ export default function Charts() {
 
         const dateFrom = new Date(json.date_from);
         const dateTo = new Date(json.date_to);
-        const fields = json.fields;
-        const values = json.values.map(([x, y1, y2]) => [new Date(x), y1, y2]);
+        const values = json.values.map(({ field, x, y }) => ({
+          field,
+          x: x.map((xx) => new Date(xx)),
+          y,
+        }));
 
-        setSeriesA(fields[0] || fields[0]);
-        setSeriesB(fields[1] || "");
+        setSeriesA(values[0]?.field || "");
+        setSeriesB(values[1]?.field || "");
         setStartDate(dateFrom);
         setStopDate(dateTo);
-        setData({ dateFrom, dateTo, fields, values });
+        setData({ dateFrom, dateTo, values });
       });
   }
 
@@ -89,8 +92,8 @@ export default function Charts() {
           submitButton={submitButton}
         />
       </Form>
-      {data && <Chart column={0} data={data} />}
-      {data && data.fields.length > 1 && <Chart column={1} data={data} />}
+      {data && data.values.length > 0 && <Chart data={data.values[0]} />}
+      {data && data.values.length > 1 && <Chart data={data.values[1]} />}
     </div>
   );
 }
