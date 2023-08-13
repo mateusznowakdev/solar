@@ -14,7 +14,11 @@ export default function About() {
         {STRINGS.ABOUT_VERSION} {getVersion()}
       </p>
       <p className="text-muted text-small">{STRINGS.ABOUT_LICENSE}</p>
-      <a href="https://github.com/mateusznowakdev/solar" target="_blank">
+      <a
+        className="link-success"
+        href="https://github.com/mateusznowakdev/solar"
+        target="_blank"
+      >
         {STRINGS.ABOUT_SOURCE_CODE}
       </a>
     </div>
