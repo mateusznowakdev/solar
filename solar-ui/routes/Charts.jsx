@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
+import ChartPresetButtons from "../components/charts/ChartPresetButtons";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 
 import { getBackendURI } from "../utils";
@@ -17,28 +18,6 @@ const OFFSETS = {
   "8h": 60 * 60 * 8,
   "24h": 60 * 60 * 24,
 };
-
-function PresetButtons({ setStartDate, setStopDate, submitButton }) {
-  return (
-    <div className="preset-buttons">
-      {Object.entries(OFFSETS).map(([label, offset]) => (
-        <Button
-          className="my-1"
-          key={label}
-          onClick={() => {
-            setStartDate(dayjs().subtract(offset, "seconds"));
-            setStopDate(dayjs());
-          }}
-          size="sm"
-          variant="light"
-        >
-          {label}
-        </Button>
-      ))}
-      {submitButton}
-    </div>
-  );
-}
 
 export default function Charts() {
   const location = useLocation();
@@ -87,6 +66,7 @@ export default function Charts() {
 
   const submitButton = (
     <Button
+      className="w-100"
       disabled={!startDate || !stopDate || (!seriesA && !seriesB)}
       onClick={getSeries}
       variant="light"
@@ -102,11 +82,12 @@ export default function Charts() {
         <ChartSeriesPicker setValue={setSeriesB} value={seriesB} />
         <ChartDateTimePicker setValue={setStartDate} value={startDate} />
         <ChartDateTimePicker setValue={setStopDate} value={stopDate} />
-        <PresetButtons
+        <ChartPresetButtons
+          offsets={OFFSETS}
           setStartDate={setStartDate}
           setStopDate={setStopDate}
           submitButton={submitButton}
-        ></PresetButtons>
+        />
       </Form>
       {data && <Chart column={0} data={data} />}
       {data && data.fields.length > 1 && <Chart column={1} data={data} />}
