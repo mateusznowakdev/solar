@@ -19,6 +19,18 @@ class SeriesRequestSerializer(serializers.Serializer):
     date_to = serializers.DateTimeField()
 
 
+class SingleSeriesResponseSerializer(serializers.Serializer):
+    field = serializers.CharField()
+    x = serializers.ListField(child=serializers.DateTimeField())
+    y = serializers.ListField(child=serializers.FloatField())
+
+
+class SeriesResponseSerializer(serializers.Serializer):
+    date_from = serializers.DateTimeField()
+    date_to = serializers.DateTimeField()
+    values = SingleSeriesResponseSerializer(many=True)
+
+
 class StateSerializer(serializers.ModelSerializer):
     controller_faults = serializers.ListField(child=serializers.IntegerField())
     inverter_faults = serializers.ListField(child=serializers.IntegerField())

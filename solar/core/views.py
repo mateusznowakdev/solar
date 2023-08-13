@@ -1,9 +1,14 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from solar.core.serializers import LogEntrySerializer, SeriesRequestSerializer
+from solar.core.serializers import (
+    LogEntrySerializer,
+    SeriesRequestSerializer,
+    SeriesResponseSerializer,
+)
 from solar.core.services import LogService, SeriesService
 
 
@@ -17,6 +22,14 @@ class LogAPIView(views.APIView):
 
 
 class SeriesAPIView(views.APIView):
+    field = OpenApiParameter("field", type=OpenApiTypes.STR, required=True, many=True)
+    date_from = OpenApiParameter("date_from", type=OpenApiTypes.DATETIME, required=True)
+    date_to = OpenApiParameter("date_to", type=OpenApiTypes.DATETIME, required=True)
+
+    @extend_schema(
+        parameters=[field, date_from, date_to],
+        responses={200: SeriesResponseSerializer()},
+    )
     def get(self, request: Request) -> Response:
         in_serializer = SeriesRequestSerializer(data=self.request.query_params)
         in_serializer.is_valid(raise_exception=True)
