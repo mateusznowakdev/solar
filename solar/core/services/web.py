@@ -1,16 +1,21 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Avg
+from django.db.models import Avg, QuerySet
 from django.db.models.expressions import RawSQL
-from django.http import Http404
 
-from solar.core.models import State
+from solar.core.models import LogEntry, State
 
 DATE_BIN = "DATE_BIN(%s, \"timestamp\", TIMESTAMP '2001-01-01 00:00:00')"
 DAYS_LIMIT = 7
 
 
-class WebSeriesService:
+class LogService:
+    @staticmethod
+    def get_logs() -> QuerySet[LogEntry]:
+        return LogEntry.objects.all()[:100]
+
+
+class SeriesService:
     @staticmethod
     def get_series(
         *, fields: list[str], date_from: datetime, date_to: datetime
@@ -47,24 +52,3 @@ class WebSeriesService:
                 for idx, f in enumerate(fields)
             ],
         }
-
-
-class WebStateService:
-    @staticmethod
-    def get_state() -> State:
-        state = State.objects.last()
-
-        if not state:
-            raise Http404()
-
-        return state
-
-    @staticmethod
-    def patch_state(*, data: dict) -> None:
-        output_priority = data.get("output_priority")
-        if output_priority is not None:
-            print(f"Changing output priority to {output_priority}")
-
-        charge_priority = data.get("charge_priority")
-        if charge_priority is not None:
-            print(f"Changing charge priority to {charge_priority}")

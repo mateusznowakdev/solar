@@ -9,10 +9,6 @@ class LogEntrySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class NullSerializer(serializers.Serializer):
-    pass
-
-
 class SeriesRequestSerializer(serializers.Serializer):
     field = serializers.ListField(
         child=serializers.ChoiceField(choices=get_numeric_field_names()),
@@ -23,12 +19,7 @@ class SeriesRequestSerializer(serializers.Serializer):
     date_to = serializers.DateTimeField()
 
 
-class StateRequestSerializer(serializers.Serializer):
-    output_priority = serializers.IntegerField(required=False)
-    charge_priority = serializers.IntegerField(required=False)
-
-
-class StateResponseSerializer(serializers.ModelSerializer):
+class StateSerializer(serializers.ModelSerializer):
     controller_faults = serializers.ListField(child=serializers.IntegerField())
     inverter_faults = serializers.ListField(child=serializers.IntegerField())
 

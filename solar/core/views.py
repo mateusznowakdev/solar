@@ -3,17 +3,11 @@ from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from solar.core.serializers import (
-    LogEntrySerializer,
-    NullSerializer,
-    SeriesRequestSerializer,
-    StateRequestSerializer,
-    StateResponseSerializer,
-)
-from solar.core.services import LogService, WebSeriesService, WebStateService
+from solar.core.serializers import LogEntrySerializer, SeriesRequestSerializer
+from solar.core.services import LogService, SeriesService
 
 
-class LogEntryAPIView(views.APIView):
+class LogAPIView(views.APIView):
     @extend_schema(responses={200: LogEntrySerializer(many=True)})
     def get(self, request: Request) -> Response:
         out_data = LogService.get_logs()
@@ -27,27 +21,9 @@ class SeriesAPIView(views.APIView):
         in_serializer = SeriesRequestSerializer(data=self.request.query_params)
         in_serializer.is_valid(raise_exception=True)
 
-        out_data = WebSeriesService.get_series(
+        out_data = SeriesService.get_series(
             fields=in_serializer.validated_data.get("field"),
             date_from=in_serializer.validated_data.get("date_from"),
             date_to=in_serializer.validated_data.get("date_to"),
         )
         return Response(data=out_data)
-
-
-class StateAPIView(views.APIView):
-    @extend_schema(responses={200: StateResponseSerializer})
-    def get(self, request: Request) -> Response:
-        out_data = WebStateService.get_state()
-        out_serializer = StateResponseSerializer(instance=out_data)
-
-        return Response(data=out_serializer.data)
-
-    @extend_schema(request=StateRequestSerializer, responses={204: NullSerializer})
-    def patch(self, request: Request) -> Response:
-        in_serializer = StateRequestSerializer(data=request.data)
-        in_serializer.is_valid(raise_exception=True)
-
-        WebStateService.patch_state(data=in_serializer.data)
-
-        return Response(status=204)
