@@ -191,7 +191,7 @@ export const METADATA = {
   timestamp: {
     chart: false,
     description: "Czas pomiaru",
-    render: (value) => renderDateTime(new Date(value)),
+    render: (value) => renderDateTime(value),
   },
 };
 

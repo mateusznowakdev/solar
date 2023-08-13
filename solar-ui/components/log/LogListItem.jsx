@@ -11,9 +11,7 @@ export default function LogListItem({ data }) {
         {": "}
         {METADATA[data.field_name].render(data.new_value)}
       </div>
-      <div className="pb-2 text-small">
-        {renderDateTime(new Date(data.timestamp))}
-      </div>
+      <div className="pb-2 text-small">{renderDateTime(data.timestamp)}</div>
     </ListGroup.Item>
   );
 }

@@ -9,7 +9,7 @@ import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtons from "../components/charts/ChartPresetButtons";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 
-import { getBackendURI } from "../utils";
+import { dateReviver, getBackendURI } from "../utils";
 
 const OFFSETS = {
   "1m": 60,
@@ -42,26 +42,20 @@ export default function Charts() {
     if (seriesB) params.push(["field", seriesB]);
 
     fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
-      .then((response) => (response.ok ? response.json() : {}))
-      .then((json) => {
+      .then((response) => (response.ok ? response.text() : "{}"))
+      .then((text) => {
+        const json = JSON.parse(text, dateReviver);
+
         if (!json.values) {
           setData(null);
           return;
         }
 
-        const dateFrom = new Date(json.date_from);
-        const dateTo = new Date(json.date_to);
-        const values = json.values.map(({ field, x, y }) => ({
-          field,
-          x: x.map((xx) => new Date(xx)),
-          y,
-        }));
-
-        setSeriesA(values[0]?.field || "");
-        setSeriesB(values[1]?.field || "");
-        setStartDate(dateFrom);
-        setStopDate(dateTo);
-        setData({ dateFrom, dateTo, values });
+        setData(json);
+        setSeriesA(json.values[0]?.field || "");
+        setSeriesB(json.values[1]?.field || "");
+        setStartDate(json.dateFrom);
+        setStopDate(json.dateTo);
       });
   }
 

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import ParameterList from "../components/parameters/ParameterList";
 import RefreshPrompt from "../components/parameters/RefreshPrompt";
 
+import { dateReviver } from "../utils";
+
 const MQTT_JSON_TOPIC = "solar/json";
 
 export default function Parameters() {
@@ -25,7 +27,7 @@ export default function Parameters() {
 
     client.onMessageArrived = (message) => {
       setLive(true);
-      setData(JSON.parse(message.payloadString));
+      setData(JSON.parse(message.payloadString, dateReviver));
     };
     client.onConnectionLost = () => {
       setLive(false);
