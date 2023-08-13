@@ -13,7 +13,7 @@ import {
 import { useEffect } from "react";
 
 import { COLORS, METADATA } from "../../meta";
-import { renderDateTime, renderTime } from "../../render";
+import { renderDateTime, renderTime } from "../../utils";
 
 BaseChart.register(
   CategoryScale,

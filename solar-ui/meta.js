@@ -1,4 +1,4 @@
-import { renderDateTime, renderNumber } from "./render";
+import { renderDateTime, renderNumber } from "./utils";
 
 export const COLORS = {
   PRIMARY: "#198754", // --bs-green

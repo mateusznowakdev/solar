@@ -1,7 +1,7 @@
 import ListGroup from "react-bootstrap/ListGroup";
 
 import { METADATA } from "../../meta";
-import { renderDateTime } from "../../render";
+import { renderDateTime } from "../../utils";
 
 export default function LogListItem({ data }) {
   return (
