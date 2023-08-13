@@ -2,13 +2,12 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import { useLocation } from "react-router-dom";
 
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
+import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 
-import { METADATA } from "../meta";
 import { getBackendURI } from "../utils";
 
 const OFFSETS = {
@@ -18,35 +17,6 @@ const OFFSETS = {
   "8h": 60 * 60 * 8,
   "24h": 60 * 60 * 24,
 };
-
-function shouldHaveChart(key) {
-  return (METADATA[key] || {}).chart;
-}
-
-function sort(a, b) {
-  return a.description.localeCompare(b.description);
-}
-
-function SeriesSelect({ choices, current, setCurrent }) {
-  return (
-    <InputGroup>
-      <Form.Select
-        className="my-1"
-        onChange={(e) => setCurrent(e.target.value)}
-        value={current}
-      >
-        <option key="" value="">
-          ------
-        </option>
-        {choices.map((item) => (
-          <option key={item.key} value={item.key}>
-            {item.description}
-          </option>
-        ))}
-      </Form.Select>
-    </InputGroup>
-  );
-}
 
 function PresetButtons({ setStartDate, setStopDate, submitButton }) {
   return (
@@ -113,18 +83,6 @@ export default function Charts() {
       });
   }
 
-  function mergeSelectData() {
-    return Object.entries(METADATA)
-      .filter(([key]) => shouldHaveChart(key))
-      .map(([key, meta]) => {
-        let description = meta.description;
-        if (meta.unit) description += ` (${meta.unit})`;
-
-        return { description, key };
-      })
-      .sort(sort);
-  }
-
   useEffect(getSeries, []);
 
   const submitButton = (
@@ -139,19 +97,11 @@ export default function Charts() {
 
   return (
     <div>
-      <Form className="my-2">
-        <SeriesSelect
-          choices={mergeSelectData()}
-          current={seriesA}
-          setCurrent={setSeriesA}
-        />
-        <SeriesSelect
-          choices={mergeSelectData()}
-          current={seriesB}
-          setCurrent={setSeriesB}
-        />
-        <ChartDateTimePicker date={startDate} setDate={setStartDate} />
-        <ChartDateTimePicker date={stopDate} setDate={setStopDate} />
+      <Form className="my-3">
+        <ChartSeriesPicker setValue={setSeriesA} value={seriesA} />
+        <ChartSeriesPicker setValue={setSeriesB} value={seriesB} />
+        <ChartDateTimePicker setValue={setStartDate} value={startDate} />
+        <ChartDateTimePicker setValue={setStopDate} value={stopDate} />
         <PresetButtons
           setStartDate={setStartDate}
           setStopDate={setStopDate}
