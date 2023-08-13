@@ -25,7 +25,7 @@ export default function ChartDateTimePicker({ date, setDate }) {
         <ChartDateTimeStepper
           decValue={() => setDate(dayjs(date).subtract(1, "hour"))}
           incValue={() => setDate(dayjs(date).add(1, "hour"))}
-          setValue={() => setDate(dayjs(date).hour(e.target.value))}
+          setValue={(h) => setDate(dayjs(date).hour(h))}
           value={new Intl.DateTimeFormat(undefined, {
             hour: "2-digit",
           }).format(date)}
@@ -35,7 +35,7 @@ export default function ChartDateTimePicker({ date, setDate }) {
         <ChartDateTimeStepper
           decValue={() => setDate(dayjs(date).subtract(1, "minute"))}
           incValue={() => setDate(dayjs(date).add(1, "minute"))}
-          setValue={() => setDate(dayjs(date).minute(e.target.value))}
+          setValue={(m) => setDate(dayjs(date).minute(m))}
           value={new Intl.DateTimeFormat(undefined, {
             minute: "2-digit",
           }).format(date)}
@@ -45,7 +45,7 @@ export default function ChartDateTimePicker({ date, setDate }) {
         <ChartDateTimeStepper
           decValue={() => setDate(dayjs(date).subtract(1, "second"))}
           incValue={() => setDate(dayjs(date).add(1, "second"))}
-          setValue={() => setDate(dayjs(date).second(e.target.value))}
+          setValue={(s) => setDate(dayjs(date).second(s))}
           value={new Intl.DateTimeFormat(undefined, {
             second: "2-digit",
           }).format(date)}

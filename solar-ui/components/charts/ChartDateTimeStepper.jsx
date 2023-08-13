@@ -15,7 +15,11 @@ export default function ChartDateTimeStepper({
       <Button onClick={incValue} variant="light">
         <ChevronUp />
       </Button>
-      <Form.Control className="p-0" onChange={setValue} value={value} />
+      <Form.Control
+        className="p-0"
+        onChange={(e) => setValue(e.target.value)}
+        value={value}
+      />
       <Button onClick={decValue} variant="light">
         <ChevronDown />
       </Button>
