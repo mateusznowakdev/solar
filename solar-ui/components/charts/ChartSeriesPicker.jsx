@@ -8,7 +8,7 @@ function shouldHaveChart(key) {
   return (METADATA[key] || {}).chart;
 }
 
-function sort(a, b) {
+function sortByDescription(a, b) {
   return a.description.localeCompare(b.description);
 }
 
@@ -21,7 +21,7 @@ export default function ChartSeriesPicker({ setValue, value }) {
 
       return { description, key };
     })
-    .sort(sort);
+    .sort(sortByDescription);
 
   return (
     <Form.Group as={Row} className="mb-2">
