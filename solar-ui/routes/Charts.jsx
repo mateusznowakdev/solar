@@ -6,6 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { useLocation } from "react-router-dom";
 
 import Chart from "../components/charts/Chart";
+import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 
 import { METADATA } from "../meta";
 import { getBackendURI } from "../utils";
@@ -17,21 +18,6 @@ const OFFSETS = {
   "8h": 60 * 60 * 8,
   "24h": 60 * 60 * 24,
 };
-
-function buildDateFromStrings({ date, time }) {
-  return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
-}
-
-function buildStringsFromDate(date) {
-  return {
-    date: dayjs(date).format("YYYY-MM-DD"),
-    time: dayjs(date).format("HH:mm"),
-  };
-}
-
-function buildStringsFromOffsetDate(date, offset) {
-  return buildStringsFromDate(dayjs().subtract(offset, "seconds"));
-}
 
 function shouldHaveChart(key) {
   return (METADATA[key] || {}).chart;
@@ -62,32 +48,6 @@ function SeriesSelect({ choices, current, setCurrent }) {
   );
 }
 
-function DateTimeInput({ current: { date, time }, setCurrent }) {
-  return (
-    <InputGroup className="date-time-input">
-      <Form.Control
-        className="my-1"
-        onChange={(e) => setCurrent((c) => ({ ...c, date: e.target.value }))}
-        type="date"
-        value={date}
-      />
-      <Form.Control
-        className="my-1"
-        onChange={(e) => setCurrent((c) => ({ ...c, time: e.target.value }))}
-        type="time"
-        value={time}
-      />
-      <Button
-        className="my-1"
-        onClick={() => setCurrent(getEmptyDateState())}
-        variant="light"
-      >
-        ×
-      </Button>
-    </InputGroup>
-  );
-}
-
 function PresetButtons({ setStartDate, setStopDate, submitButton }) {
   return (
     <div className="preset-buttons">
@@ -96,8 +56,8 @@ function PresetButtons({ setStartDate, setStopDate, submitButton }) {
           className="my-1"
           key={label}
           onClick={() => {
-            setStartDate(buildStringsFromOffsetDate(new Date(), offset));
-            setStopDate(buildStringsFromDate(new Date()));
+            setStartDate(dayjs().subtract(offset, "seconds"));
+            setStopDate(dayjs());
           }}
           size="sm"
           variant="light"
@@ -118,21 +78,17 @@ export default function Charts() {
   const [seriesA, setSeriesA] = useState(location.state?.choice || "");
   const [seriesB, setSeriesB] = useState("");
   const [startDate, setStartDate] = useState(
-    buildStringsFromOffsetDate(new Date(), OFFSETS["15m"]),
+    dayjs().subtract(OFFSETS["15m"], "seconds"),
   );
-  const [stopDate, setStopDate] = useState(buildStringsFromDate(new Date()));
+  const [stopDate, setStopDate] = useState(dayjs());
 
   function getSeries() {
-    if (!seriesA && !seriesB) return;
-
-    const startDateObj = buildDateFromStrings(startDate);
-    const stopDateObj = buildDateFromStrings(stopDate);
-
     const params = [
-      ["date_from", startDateObj.toISOString()],
-      ["date_to", stopDateObj.toISOString()],
+      ["date_from", startDate.toISOString()],
+      ["date_to", stopDate.toISOString()],
     ];
 
+    if (!seriesA && !seriesB) return;
     if (seriesA) params.push(["field", seriesA]);
     if (seriesB) params.push(["field", seriesB]);
 
@@ -151,8 +107,8 @@ export default function Charts() {
 
         setSeriesA(fields[0] || fields[0]);
         setSeriesB(fields[1] || "");
-        setStartDate(buildStringsFromDate(dateFrom));
-        setStopDate(buildStringsFromDate(dateTo));
+        setStartDate(dateFrom);
+        setStopDate(dateTo);
         setData({ dateFrom, dateTo, fields, values });
       });
   }
@@ -173,13 +129,7 @@ export default function Charts() {
 
   const submitButton = (
     <Button
-      disabled={
-        !startDate.date ||
-        !startDate.time ||
-        !stopDate.date ||
-        !stopDate.time ||
-        (!seriesA && !seriesB)
-      }
+      disabled={!startDate || !stopDate || (!seriesA && !seriesB)}
       onClick={getSeries}
       variant="light"
     >
@@ -200,14 +150,8 @@ export default function Charts() {
           current={seriesB}
           setCurrent={setSeriesB}
         />
-        <DateTimeInput
-          current={startDate}
-          setCurrent={setStartDate}
-        ></DateTimeInput>
-        <DateTimeInput
-          current={stopDate}
-          setCurrent={setStopDate}
-        ></DateTimeInput>
+        <ChartDateTimePicker date={startDate} setDate={setStartDate} />
+        <ChartDateTimePicker date={stopDate} setDate={setStopDate} />
         <PresetButtons
           setStartDate={setStartDate}
           setStopDate={setStopDate}

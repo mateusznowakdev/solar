@@ -13,8 +13,29 @@
   border-color: var(--bs-btn-hover-border-color);
 }
 
-.date-time-input input[type="date"] {
-  min-width: 12rem;
+.input-group.vertical {
+  flex-direction: column;
+}
+
+.input-group.vertical .form-control[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-group.vertical > * {
+  background-color: #fff;
+  margin: -1px 0 0 0 !important;
+  text-align: center;
+  width: 100%;
+}
+
+.input-group.vertical > :first-child {
+  border-bottom-color: #eee;
+  border-radius: 6px 6px 0 0 !important;
+}
+
+.input-group.vertical > :last-child {
+  border-radius: 0 0 6px 6px !important;
+  border-top-color: #eee;
 }
 
 .list-group-item {
