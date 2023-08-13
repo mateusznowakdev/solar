@@ -8,7 +8,7 @@ export default function RefreshPrompt({ show }) {
   return (
     <div className="p-2 sticky-top">
       <Alert className="m-0 p-1 text-center" variant="warning">
-        {STRINGS.PULL_TO_REFRESH}
+        {STRINGS.PARAMETERS_REFRESH_PROMPT}
       </Alert>
     </div>
   );
