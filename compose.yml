@@ -6,6 +6,8 @@ services:
       restart_policy:
         condition: any
         delay: 5s
+    logging:
+      driver: journald
     ports:
       - 80:80
   backend:
@@ -20,6 +22,8 @@ services:
       - .env
     environment:
       - POSTGRES_HOST=db
+    logging:
+      driver: journald
     ports:
       - 8000:8000
   tasks:
@@ -37,6 +41,8 @@ services:
     environment:
       - MQTT_BROKER=mqtt
       - POSTGRES_HOST=db
+    logging:
+      driver: journald
     privileged: true
   db:
     image: postgres:15-alpine
@@ -46,6 +52,8 @@ services:
         delay: 5s
     env_file:
       - .env
+    logging:
+      driver: journald
     volumes:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
   mqtt:
@@ -54,6 +62,8 @@ services:
       restart_policy:
         condition: any
         delay: 5s
+    logging:
+      driver: journald
     ports:
       - 1883:1883
       - 8883:8883

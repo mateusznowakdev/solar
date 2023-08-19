@@ -3,12 +3,16 @@ services:
     image: postgres:15-alpine
     env_file:
       - .env
+    logging:
+      driver: journald
     ports:
       - 5432:5432
     volumes:
       - ./config/db/data:/var/lib/postgresql/data
   mqtt:
     image: eclipse-mosquitto:2
+    logging:
+      driver: journald
     ports:
       - 1883:1883
       - 8883:8883
