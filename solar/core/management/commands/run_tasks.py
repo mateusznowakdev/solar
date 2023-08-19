@@ -16,7 +16,7 @@ def run_tasks(control_service, publish_service):
 
         publish_service.publish(state=state)
 
-        time.sleep(0.5)
+        time.sleep(0.75)
 
 
 class Command(BaseCommand):
