@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export function dateReviver(key, value) {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value))
     return new Date(value);
@@ -7,6 +9,13 @@ export function dateReviver(key, value) {
 
 export function getBackendURI() {
   return `${window.location.protocol}//${window.location.hostname}:8000`;
+}
+
+export function getDatesForOffset(value) {
+  const stopDate = dayjs().second(0).millisecond(0).add(1, "minute");
+  const startDate = stopDate.subtract(value, "seconds");
+
+  return [startDate, stopDate];
 }
 
 export function getVersion() {

@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,30 +5,30 @@ import { useLocation } from "react-router-dom";
 
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
-import ChartPresetButtons from "../components/charts/ChartPresetButtons";
+import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 
-import { dateReviver, getBackendURI } from "../utils";
+import { dateReviver, getBackendURI, getDatesForOffset } from "../utils";
 
 const OFFSETS = {
-  "1m": 60,
-  "15m": 60 * 15,
+  "10m": 60 * 10,
+  "30m": 60 * 30,
   "1h": 60 * 60,
   "8h": 60 * 60 * 8,
   "24h": 60 * 60 * 24,
 };
 
 export default function Charts() {
+  const [initialStartDate, initialStopDate] = getDatesForOffset(OFFSETS["10m"]);
+
   const location = useLocation();
 
   const [data, setData] = useState(null);
 
   const [seriesA, setSeriesA] = useState(location.state?.choice || "");
   const [seriesB, setSeriesB] = useState("");
-  const [startDate, setStartDate] = useState(
-    dayjs().subtract(OFFSETS["15m"], "seconds"),
-  );
-  const [stopDate, setStopDate] = useState(dayjs());
+  const [startDate, setStartDate] = useState(initialStartDate);
+  const [stopDate, setStopDate] = useState(initialStopDate);
 
   function getSeries() {
     const params = [
@@ -79,7 +78,7 @@ export default function Charts() {
         <ChartSeriesPicker setValue={setSeriesB} value={seriesB} />
         <ChartDateTimePicker setValue={setStartDate} value={startDate} />
         <ChartDateTimePicker setValue={setStopDate} value={stopDate} />
-        <ChartPresetButtons
+        <ChartPresetButtonGroup
           offsets={OFFSETS}
           setStartDate={setStartDate}
           setStopDate={setStopDate}
