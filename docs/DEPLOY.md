@@ -1,6 +1,8 @@
 ### Deployment
 
 - Set up OS on ARM64 Raspberry Pi
+  - Make sure there is at least 1GB of RAM and swap combined, otherwise you may
+    run out of memory during kernel updates
 - Install SSH server, disable password auth, add SSH key and change other
   options
 - Install `avahi-daemon` for mDNS support
@@ -11,17 +13,9 @@
   - `DJANGO_ALLOWED_HOSTS` (example value: `localhost,solar.local`)
   - `DJANGO_SECRET_KEY`
   - `POSTGRES_PASSWORD`
-- Create new directory `/var/lib/solar/postgresql/data`
-- Run `./update.sh` script to get new changes, rebuild images and apply
-  migrations
-- Run `docker exec -it solar-backend-1 curl http://localhost:8000/api/state/`,
-  should return valid JSON data
+- Run the `./update.sh` script
 
 ### Updates
 
 - Make sure .env file has all the required variables
-- Update the repository
-- Run `./update.sh` script to get new changes, rebuild images and apply
-  migrations
-- Run `docker exec -it solar-backend-1 curl http://localhost:8000/api/state/`,
-  should return valid JSON data
+- Run the `./update.sh` script
