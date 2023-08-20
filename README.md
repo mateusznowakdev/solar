@@ -5,9 +5,9 @@ The datalogger for solar inverter, based on reverse engineering result.
 This is an EXPERIMENTAL SOFTWARE. Do not ask for technical support. See
 [license](LICENSE.md).
 
-| ![](assets/scr1.png) | ![](assets/scr2.png) |
-| :------------------: | :------------------: |
 |    Parameter list    |   Parameter charts   |
+| :------------------: | :------------------: |
+| ![](assets/scr1.png) | ![](assets/scr2.png) |
 
 ## Features
 
