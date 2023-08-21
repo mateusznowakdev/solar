@@ -1,8 +1,8 @@
 from django.core.management import BaseCommand
 
-from solar.core.etl import get_count_to_insert
+from solar.core.etl import process_data
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        get_count_to_insert()
+        process_data()
