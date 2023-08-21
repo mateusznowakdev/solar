@@ -7,7 +7,7 @@ class StateBase(models.Model):
         abstract = True
         ordering = ("timestamp",)
 
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(primary_key=True)
 
     battery_level_soc = models.IntegerField()
     battery_voltage = models.FloatField()
