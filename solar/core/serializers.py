@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from solar.core.models import LogEntry, State, get_numeric_field_names
+from solar.core.models import LogEntry, StateBase, get_numeric_field_names
 
 
 class LogEntrySerializer(serializers.ModelSerializer):
@@ -36,5 +36,5 @@ class StateSerializer(serializers.ModelSerializer):
     inverter_faults = serializers.ListField(child=serializers.IntegerField())
 
     class Meta:
-        model = State
+        model = StateBase
         exclude = ("id",)

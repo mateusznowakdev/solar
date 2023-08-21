@@ -2,8 +2,9 @@ from django.db import models
 from django.db.models import FloatField, IntegerField
 
 
-class State(models.Model):
+class StateBase(models.Model):
     class Meta:
+        abstract = True
         ordering = ("timestamp",)
 
     timestamp = models.DateTimeField()
@@ -50,6 +51,31 @@ class State(models.Model):
     charge_priority = models.IntegerField()
 
 
+class State(StateBase):
+    # staging
+    pass
+
+
+class StateT1(StateBase):
+    # every 5s
+    pass
+
+
+class StateT2(StateBase):
+    # every 15s
+    pass
+
+
+class StateT3(StateBase):
+    # every 1min
+    pass
+
+
+class StateT4(StateBase):
+    # every 3min
+    pass
+
+
 class LogEntry(models.Model):
     class Meta:
         ordering = ("-timestamp",)
@@ -64,6 +90,6 @@ class LogEntry(models.Model):
 def get_numeric_field_names() -> list[str]:
     return [
         f.name
-        for f in State._meta.concrete_fields
+        for f in StateBase._meta.concrete_fields
         if type(f) in (FloatField, IntegerField)
     ]
