@@ -143,8 +143,13 @@ CACHE_LAST_TIMESTAMP = """
     set timestamp_max = excluded.timestamp_max;
 """
 
+DELETE_AGGREGATED_DATA = """
+    delete from {source}
+    where "timestamp" < now() - %(not_before)s
+"""
+
 DELETE_STAGING_DATA = """
-    delete from {target}
+    delete from {source}
     where "timestamp" < least(
         now() - %(not_before)s,
         (select min(timestamp_max) from {cache})
@@ -152,25 +157,35 @@ DELETE_STAGING_DATA = """
 """
 
 
-def process_data(*, to, stride):
-    source = State._meta.db_table
-    cache = StateCache._meta.db_table
+def process_data(*, target, stride):
+    source_name = State._meta.db_table
+    cache_name = StateCache._meta.db_table
 
-    target = to._meta.db_table
+    target_name = target._meta.db_table
 
     with transaction.atomic():
         with connection.cursor() as cursor:
-            query = INSERT_NEW_DATA.format(source=source, target=target, cache=cache)
+            query = INSERT_NEW_DATA.format(
+                source=source_name, target=target_name, cache=cache_name
+            )
             cursor.execute(query, {"stride": stride})
 
-            query = CACHE_LAST_TIMESTAMP.format(target=target, cache=cache)
+            query = CACHE_LAST_TIMESTAMP.format(target=target_name, cache=cache_name)
             cursor.execute(query)
 
 
 def delete_data_staging(*, not_before):
-    target = State._meta.db_table
-    cache = StateCache._meta.db_table
+    source_name = State._meta.db_table
+    cache_name = StateCache._meta.db_table
 
     with connection.cursor() as cursor:
-        query = DELETE_STAGING_DATA.format(target=target, cache=cache)
+        query = DELETE_STAGING_DATA.format(source=source_name, cache=cache_name)
+        cursor.execute(query, {"not_before": not_before})
+
+
+def delete_data(*, source, not_before):
+    source_name = source._meta.db_table
+
+    with connection.cursor() as cursor:
+        query = DELETE_AGGREGATED_DATA.format(source=source_name)
         cursor.execute(query, {"not_before": not_before})
