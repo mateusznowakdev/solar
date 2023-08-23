@@ -1,12 +1,17 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Avg, QuerySet
-from django.db.models.expressions import RawSQL
+from django.db.models import QuerySet
+from django.utils import timezone
 
-from solar.core.models import LogEntry, StateRaw
+from solar.core.models import LogEntry, StateRaw, StateT1, StateT2, StateT3, StateT4
 
-DATE_BIN = "DATE_BIN(%s, \"timestamp\", TIMESTAMP '2001-01-01 00:00:00')"
-DAYS_LIMIT = 7
+CHART_DATA_MODELS = (
+    (StateRaw, timedelta(hours=1)),
+    (StateT1, timedelta(hours=4)),
+    (StateT2, timedelta(hours=12)),
+    (StateT3, timedelta(days=2)),
+    (StateT4, timedelta(days=7)),
+)
 
 
 class LogService:
@@ -23,30 +28,22 @@ class SeriesService:
         if date_from > date_to:
             date_from, date_to = date_to, date_from
 
-        date_to = min(date_to, date_from + timedelta(days=3))
+        requested_range = date_to - date_from
+        now = timezone.now()
 
-        delta = date_to - date_from
-        stride = delta.total_seconds() // 1000
+        chosen_model = CHART_DATA_MODELS[-1][0]  # the worst precision
 
-        if delta > timedelta(hours=3):
-            # round to 5 seconds
-            stride = stride // 5 * 5
-        else:
-            # too few data, use calculated stride value
-            stride = max(1, int(stride))
+        for model, max_allowed_range in CHART_DATA_MODELS:
+            range_matched = requested_range <= max_allowed_range
+            age_matched = date_from >= now - model.RETENTION_PERIOD
 
-        data = (
-            StateRaw.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
-            .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
-            .order_by("avg_timestamp")
-            .values_list("avg_timestamp")
-            .annotate(avg1=Avg(fields[0]))
-        )
+            if range_matched and age_matched:
+                chosen_model = model
+                break
 
-        try:
-            data = data.annotate(avg2=Avg(fields[1]))
-        except IndexError:
-            pass
+        data = chosen_model.objects.filter(
+            timestamp__gte=date_from, timestamp__lte=date_to
+        ).values_list(fields)
 
         data = list(data)
 
