@@ -92,7 +92,7 @@ INSERT_MISSING = """
         mode() within group (order by output_priority)
     from {source}
     where "timestamp" >= coalesce(
-        (select max(date_bin(%(stride)s, "timestamp", '1900-01-01 00:00:00')) from {target}),
+        (select timestamp_max from {cache} where "table" = '{target}'),
         '1900-01-01 00:00:00'
     )
     group by timestamp_bin
@@ -154,7 +154,7 @@ def process_data(*, target, stride):
 
     with transaction.atomic():
         with connection.cursor() as cursor:
-            query = INSERT_MISSING.format(source=source_name, target=target_name)
+            query = INSERT_MISSING.format(source=source_name, target=target_name, cache=cache_name)
             cursor.execute(query, {"stride": stride})
 
             query = CACHE_LATEST.format(target=target_name, cache=cache_name)
