@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.db.models import Avg, QuerySet
 from django.db.models.expressions import RawSQL
 
-from solar.core.models import LogEntry, State
+from solar.core.models import LogEntry, StateRaw
 
 DATE_BIN = "DATE_BIN(%s, \"timestamp\", TIMESTAMP '2001-01-01 00:00:00')"
 DAYS_LIMIT = 7
@@ -36,7 +36,7 @@ class SeriesService:
             stride = max(1, int(stride))
 
         data = (
-            State.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
+            StateRaw.objects.filter(timestamp__gte=date_from, timestamp__lte=date_to)
             .annotate(avg_timestamp=RawSQL(DATE_BIN, (f"'{stride} seconds'",)))
             .order_by("avg_timestamp")
             .values_list("avg_timestamp")

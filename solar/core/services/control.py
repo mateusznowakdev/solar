@@ -1,11 +1,10 @@
 import collections
 from datetime import timedelta
 
-from django.db import transaction
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from solar.core.models import LogEntry, State, StateCache
+from solar.core.models import LogEntry, StateRaw
 
 CHUNK_SIZE = 32
 SCAN_DELTA = timedelta(seconds=10)
@@ -98,7 +97,7 @@ class ControlService:
         self.past_pv_voltages = collections.deque(maxlen=60)
         self.act_after = timezone.now()
 
-    def get_state(self) -> State:
+    def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them
         #
         # - controller temperature (0x103)
@@ -112,7 +111,7 @@ class ControlService:
         inv = recv_data(self.client, 0x200, 0x225)
         par = recv_data(self.client, 0xE200, 0xE20F)
 
-        state = State(
+        state = StateRaw(
             timestamp=timezone.now(),
             battery_level_soc=parse_int(con, 0x00),
             battery_voltage=parse_float(con, 0x01),
@@ -157,15 +156,11 @@ class ControlService:
             state.battery_current * state.battery_voltage
         )
 
-        with transaction.atomic():
-            state.save()
-            StateCache.objects.update_or_create(
-                table=State._meta.db_table, defaults={"timestamp_max": state.timestamp}
-            )
+        state.save()
 
         return state
 
-    def change_state(self, *, state: State) -> None:
+    def change_state(self, *, state: StateRaw) -> None:
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 

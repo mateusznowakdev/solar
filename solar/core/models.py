@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 from django.db.models import FloatField, IntegerField
 
@@ -51,29 +53,29 @@ class StateBase(models.Model):
     charge_priority = models.IntegerField()
 
 
-class State(StateBase):
-    # staging
-    pass
+class StateRaw(StateBase):
+    PRECISION = None
+    RETENTION_PERIOD = timedelta(days=14)  # TODO: change to 3 days after tests
 
 
 class StateT1(StateBase):
-    # every 5s
-    pass
+    PRECISION = timedelta(seconds=5)
+    RETENTION_PERIOD = timedelta(days=10)
 
 
 class StateT2(StateBase):
-    # every 15s
-    pass
+    PRECISION = timedelta(seconds=15)
+    RETENTION_PERIOD = timedelta(days=30)
 
 
 class StateT3(StateBase):
-    # every 1min
-    pass
+    PRECISION = timedelta(seconds=60)
+    RETENTION_PERIOD = timedelta(days=60)
 
 
 class StateT4(StateBase):
-    # every 3min
-    pass
+    PRECISION = timedelta(seconds=180)
+    RETENTION_PERIOD = timedelta(days=60)
 
 
 class StateCache(models.Model):

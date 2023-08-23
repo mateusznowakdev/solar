@@ -1,8 +1,6 @@
 from django.db import connection, transaction
 
-from solar.core.models import State, StateCache
-
-# date_bin rounds DOWN, so there is no need for any extra date subtracting
+from solar.core.models import StateCache, StateRaw
 
 INSERT_NEW_DATA = """
     insert into {target} (
@@ -157,35 +155,33 @@ DELETE_STAGING_DATA = """
 """
 
 
-def process_data(*, target, stride):
-    source_name = State._meta.db_table
-    cache_name = StateCache._meta.db_table
+def process_data(model):
+    source = StateRaw._meta.db_table
+    cache = StateCache._meta.db_table
 
-    target_name = target._meta.db_table
+    target = model._meta.db_table
 
     with transaction.atomic():
         with connection.cursor() as cursor:
-            query = INSERT_NEW_DATA.format(
-                source=source_name, target=target_name, cache=cache_name
-            )
-            cursor.execute(query, {"stride": stride})
+            query = INSERT_NEW_DATA.format(source=source, target=target, cache=cache)
+            cursor.execute(query, {"stride": model.PRECISION})
 
-            query = CACHE_LAST_TIMESTAMP.format(target=target_name, cache=cache_name)
+            query = CACHE_LAST_TIMESTAMP.format(target=target, cache=cache)
             cursor.execute(query)
 
 
-def delete_data_staging(*, not_before):
-    source_name = State._meta.db_table
-    cache_name = StateCache._meta.db_table
+def delete_data_staging():
+    source = StateRaw._meta.db_table
+    cache = StateCache._meta.db_table
 
     with connection.cursor() as cursor:
-        query = DELETE_STAGING_DATA.format(source=source_name, cache=cache_name)
-        cursor.execute(query, {"not_before": not_before})
+        query = DELETE_STAGING_DATA.format(source=source, cache=cache)
+        cursor.execute(query, {"not_before": StateRaw.RETENTION_PERIOD})
 
 
-def delete_data(*, source, not_before):
-    source_name = source._meta.db_table
+def delete_data(model):
+    source = model._meta.db_table
 
     with connection.cursor() as cursor:
-        query = DELETE_AGGREGATED_DATA.format(source=source_name)
-        cursor.execute(query, {"not_before": not_before})
+        query = DELETE_AGGREGATED_DATA.format(source=source)
+        cursor.execute(query, {"not_before": model.RETENTION_PERIOD})
