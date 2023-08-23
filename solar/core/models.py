@@ -55,27 +55,32 @@ class StateBase(models.Model):
 
 class StateRaw(StateBase):
     PRECISION = None
-    RETENTION_PERIOD = timedelta(days=14)  # TODO: change to 3 days after tests
+    RETENTION_PERIOD = timedelta(days=7)  # TODO: reduce to 1 after testing
 
 
 class StateT1(StateBase):
     PRECISION = timedelta(seconds=5)
-    RETENTION_PERIOD = timedelta(days=10)
+    RETENTION_PERIOD = timedelta(days=7)  # TODO: reduce to 3 after testing
 
 
 class StateT2(StateBase):
     PRECISION = timedelta(seconds=15)
-    RETENTION_PERIOD = timedelta(days=30)
+    RETENTION_PERIOD = timedelta(days=7)  # TODO: this one is OK
 
 
 class StateT3(StateBase):
     PRECISION = timedelta(seconds=60)
-    RETENTION_PERIOD = timedelta(days=60)
+    RETENTION_PERIOD = timedelta(days=30)
 
 
 class StateT4(StateBase):
     PRECISION = timedelta(seconds=180)
-    RETENTION_PERIOD = timedelta(days=60)
+    RETENTION_PERIOD = timedelta(days=90)
+
+
+class StateArchive(StateBase):
+    PRECISION = timedelta(days=1)
+    RETENTION_PERIOD = None
 
 
 class StateCache(models.Model):
