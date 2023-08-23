@@ -13,7 +13,7 @@ CHART_DATA_MODELS = (
     (StateT4, timedelta(days=7)),
 )
 
-MAX_DATA_POINTS = 1000
+MAX_DATA_POINTS = 750
 
 
 class LogService:
@@ -29,6 +29,8 @@ class SeriesService:
     ) -> dict:
         if date_from > date_to:
             date_from, date_to = date_to, date_from
+
+        date_to = min(date_to, date_from + CHART_DATA_MODELS[-1][1])
 
         requested_range = date_to - date_from
         now = timezone.now()
