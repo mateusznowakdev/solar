@@ -13,6 +13,8 @@ CHART_DATA_MODELS = (
     (StateT4, timedelta(days=7)),
 )
 
+MAX_DATA_POINTS = 1000
+
 
 class LogService:
     @staticmethod
@@ -46,6 +48,8 @@ class SeriesService:
         ).values_list("timestamp", *fields)
 
         data = list(data)
+        if len(data) > MAX_DATA_POINTS:
+            data = data[:: len(data) // MAX_DATA_POINTS + 1]
 
         return {
             "date_from": date_from,
