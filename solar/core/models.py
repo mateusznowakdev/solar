@@ -76,11 +76,16 @@ class StateT4(StateBase):
     pass
 
 
+class StateCache(models.Model):
+    table = models.CharField(max_length=20, unique=True)
+    timestamp_max = models.DateTimeField()
+
+
 class LogEntry(models.Model):
     class Meta:
         ordering = ("-timestamp",)
 
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(primary_key=True)
 
     field_name = models.CharField(max_length=50)
     old_value = models.FloatField()

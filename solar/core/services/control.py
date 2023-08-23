@@ -1,10 +1,11 @@
 import collections
 from datetime import timedelta
 
+from django.db import transaction
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from solar.core.models import LogEntry, State
+from solar.core.models import LogEntry, State, StateCache
 
 CHUNK_SIZE = 32
 SCAN_DELTA = timedelta(seconds=10)
@@ -156,7 +157,11 @@ class ControlService:
             state.battery_current * state.battery_voltage
         )
 
-        state.save()
+        with transaction.atomic():
+            state.save()
+            StateCache.objects.update_or_create(
+                table=State._meta.db_table, defaults={"timestamp_max": state.timestamp}
+            )
 
         return state
 
