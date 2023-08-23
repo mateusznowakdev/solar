@@ -43,7 +43,7 @@ class SeriesService:
 
         data = chosen_model.objects.filter(
             timestamp__gte=date_from, timestamp__lte=date_to
-        ).values_list(fields)
+        ).values_list("timestamp", *fields)
 
         data = list(data)
 
