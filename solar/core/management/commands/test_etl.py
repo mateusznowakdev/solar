@@ -19,4 +19,4 @@ class Command(BaseCommand):
         etl.delete_data_staging()
 
         for q in connection.queries:
-            print(q)
+            print(q["sql"])
