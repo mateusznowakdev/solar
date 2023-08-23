@@ -1,12 +1,10 @@
-from datetime import timedelta
-
 from django.db import connection, transaction
 
-from solar.core.models import State, StateCache, StateT1, StateT2, StateT3, StateT4
+from solar.core.models import State, StateCache
 
 # date_bin rounds DOWN, so there is no need for any extra date subtracting
 
-INSERT_MISSING = """
+INSERT_NEW_DATA = """
     insert into {target} (
         "timestamp",
         --
@@ -138,40 +136,41 @@ INSERT_MISSING = """
         output_priority = excluded.output_priority;
 """
 
-CACHE_LATEST = """
+CACHE_LAST_TIMESTAMP = """
     insert into {cache} ("table", timestamp_max)
     select '{target}', max("timestamp") from {target}
     on conflict ("table") do update
     set timestamp_max = excluded.timestamp_max;
 """
 
+DELETE_STAGING_DATA = """
+    delete from {target}
+    where "timestamp" < least(
+        now() - %(not_before)s,
+        (select min(timestamp_max) from {cache})
+    );
+"""
 
-def process_data(*, target, stride):
-    source_name = State._meta.db_table
-    cache_name = StateCache._meta.db_table
 
-    target_name = target._meta.db_table
+def process_data(*, to, stride):
+    source = State._meta.db_table
+    cache = StateCache._meta.db_table
+
+    target = to._meta.db_table
 
     with transaction.atomic():
         with connection.cursor() as cursor:
-            query = INSERT_MISSING.format(source=source_name, target=target_name, cache=cache_name)
+            query = INSERT_NEW_DATA.format(source=source, target=target, cache=cache)
             cursor.execute(query, {"stride": stride})
 
-            query = CACHE_LATEST.format(target=target_name, cache=cache_name)
+            query = CACHE_LAST_TIMESTAMP.format(target=target, cache=cache)
             cursor.execute(query)
 
 
-def process_data_t1():
-    process_data(target=StateT1, stride=timedelta(seconds=5))
+def delete_data_staging(*, not_before):
+    target = State._meta.db_table
+    cache = StateCache._meta.db_table
 
-
-def process_data_t2():
-    process_data(target=StateT2, stride=timedelta(seconds=15))
-
-
-def process_data_t3():
-    process_data(target=StateT3, stride=timedelta(seconds=60))
-
-
-def process_data_t4():
-    process_data(target=StateT4, stride=timedelta(seconds=180))
+    with connection.cursor() as cursor:
+        query = DELETE_STAGING_DATA.format(target=target, cache=cache)
+        cursor.execute(query, {"not_before": not_before})
