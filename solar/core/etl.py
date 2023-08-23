@@ -96,7 +96,46 @@ INSERT_MISSING = """
         '1900-01-01 00:00:00'
     )
     group by timestamp_bin
-    order by timestamp_bin;
+    order by timestamp_bin
+    on conflict ("timestamp") do update set
+        ambient_temperature = excluded.ambient_temperature,
+        battery_apparent_power = excluded.battery_apparent_power,
+        battery_current = excluded.battery_current,
+        battery_level_soc = excluded.battery_level_soc,
+        battery_voltage = excluded.battery_voltage,
+        bus_voltage = excluded.bus_voltage,
+        dc_current = excluded.dc_current,
+        dc_power = excluded.dc_power,
+        dc_voltage = excluded.dc_voltage,
+        grid_current = excluded.grid_current,
+        grid_frequency = excluded.grid_frequency,
+        grid_voltage = excluded.grid_voltage,
+        heatsink_a_temperature = excluded.heatsink_a_temperature,
+        heatsink_b_temperature = excluded.heatsink_b_temperature,
+        heatsink_c_temperature = excluded.heatsink_c_temperature,
+        inverter_current = excluded.inverter_current,
+        inverter_dc_component = excluded.inverter_dc_component,
+        inverter_frequency = excluded.inverter_frequency,
+        inverter_voltage = excluded.inverter_voltage,
+        load_active_power = excluded.load_active_power,
+        load_apparent_power = excluded.load_apparent_power,
+        load_current = excluded.load_current,
+        load_pf = excluded.load_pf,
+        load_ratio = excluded.load_ratio,
+        mains_charge_current = excluded.mains_charge_current,
+        pv_buck_current_1 = excluded.pv_buck_current_1,
+        pv_buck_current_2 = excluded.pv_buck_current_2,
+        pv_current = excluded.pv_current,
+        pv_power = excluded.pv_power,
+        pv_voltage = excluded.pv_voltage,
+        --
+        charge_priority = excluded.charge_priority,
+        charge_status = excluded.charge_status,
+        controller_faults = excluded.controller_faults,
+        current_state = excluded.current_state,
+        inverter_faults = excluded.inverter_faults,
+        load_on = excluded.load_on,
+        output_priority = excluded.output_priority;
 """
 
 
@@ -107,6 +146,10 @@ def process_data(*, source, target, stride):
 
         query = INSERT_MISSING.format(source=source, target=target)
         cursor.execute(query, {"stride": stride})
+
+    print("---")
+    for q in connection.queries:
+        print(q)
 
 
 def process_data_t1():
