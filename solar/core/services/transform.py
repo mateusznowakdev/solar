@@ -155,33 +155,37 @@ DELETE_STAGING_DATA = """
 """
 
 
-def process_data(model):
-    source = StateRaw._meta.db_table
-    cache = StateCache._meta.db_table
+class TransformService:
+    @staticmethod
+    def process_data(model):
+        source = StateRaw._meta.db_table
+        cache = StateCache._meta.db_table
 
-    target = model._meta.db_table
+        target = model._meta.db_table
 
-    with transaction.atomic():
+        with transaction.atomic():
+            with connection.cursor() as cursor:
+                query = INSERT_NEW_DATA.format(
+                    source=source, target=target, cache=cache
+                )
+                cursor.execute(query, {"stride": model.PRECISION})
+
+                query = CACHE_LAST_TIMESTAMP.format(target=target, cache=cache)
+                cursor.execute(query)
+
+    @staticmethod
+    def delete_data_staging():
+        source = StateRaw._meta.db_table
+        cache = StateCache._meta.db_table
+
         with connection.cursor() as cursor:
-            query = INSERT_NEW_DATA.format(source=source, target=target, cache=cache)
-            cursor.execute(query, {"stride": model.PRECISION})
+            query = DELETE_STAGING_DATA.format(source=source, cache=cache)
+            cursor.execute(query, {"not_before": StateRaw.RETENTION_PERIOD})
 
-            query = CACHE_LAST_TIMESTAMP.format(target=target, cache=cache)
-            cursor.execute(query)
+    @staticmethod
+    def delete_data(model):
+        source = model._meta.db_table
 
-
-def delete_data_staging():
-    source = StateRaw._meta.db_table
-    cache = StateCache._meta.db_table
-
-    with connection.cursor() as cursor:
-        query = DELETE_STAGING_DATA.format(source=source, cache=cache)
-        cursor.execute(query, {"not_before": StateRaw.RETENTION_PERIOD})
-
-
-def delete_data(model):
-    source = model._meta.db_table
-
-    with connection.cursor() as cursor:
-        query = DELETE_AGGREGATED_DATA.format(source=source)
-        cursor.execute(query, {"not_before": model.RETENTION_PERIOD})
+        with connection.cursor() as cursor:
+            query = DELETE_AGGREGATED_DATA.format(source=source)
+            cursor.execute(query, {"not_before": model.RETENTION_PERIOD})
