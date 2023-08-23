@@ -100,19 +100,26 @@ INSERT_MISSING = """
 """
 
 
-def process_data():
+def process_data(*, source, target, stride):
     with connection.cursor() as cursor:
-        for model, stride in (
-            (StateT1, timedelta(seconds=5)),
-            (StateT2, timedelta(seconds=15)),
-            (StateT3, timedelta(seconds=60)),
-            (StateT4, timedelta(seconds=180)),
-        ):
-            source = State._meta.db_table
-            target = model._meta.db_table
+        source = source._meta.db_table
+        target = target._meta.db_table
 
-            query = INSERT_MISSING.format(source=source, target=target)
-            cursor.execute(query, {"stride": stride})
+        query = INSERT_MISSING.format(source=source, target=target)
+        cursor.execute(query, {"stride": stride})
 
-        for q in connection.queries:
-            print(q)
+
+def process_data_t1():
+    process_data(source=State, target=StateT1, stride=timedelta(seconds=5))
+
+
+def process_data_t2():
+    process_data(source=State, target=StateT2, stride=timedelta(seconds=15))
+
+
+def process_data_t3():
+    process_data(source=State, target=StateT3, stride=timedelta(seconds=60))
+
+
+def process_data_t4():
+    process_data(source=State, target=StateT4, stride=timedelta(seconds=180))
