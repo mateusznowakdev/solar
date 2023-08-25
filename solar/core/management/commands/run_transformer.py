@@ -1,4 +1,5 @@
 import time
+import traceback
 from datetime import datetime, timedelta
 
 from django.core.management import BaseCommand
@@ -7,21 +8,35 @@ from solar.core.models import StateArchive, StateT1, StateT2, StateT3, StateT4
 from solar.core.services import TransformService
 
 
+def catch_exception(fn):
+    def inner():
+        try:
+            fn()
+        except Exception as e:
+            traceback.print_exception(e)
+
+    return inner
+
+
+@catch_exception
 def run_every_1min():
     TransformService.process_data(StateT1)
     TransformService.delete_data(StateT1)
 
 
+@catch_exception
 def run_every_5min():
     TransformService.process_data(StateT2)
     TransformService.delete_data(StateT2)
 
 
+@catch_exception
 def run_every_15min():
     TransformService.process_data(StateT3)
     TransformService.delete_data(StateT3)
 
 
+@catch_exception
 def run_every_60min():
     TransformService.process_data(StateT4)
     TransformService.delete_data(StateT4)
