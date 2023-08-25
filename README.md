@@ -53,3 +53,21 @@ Swap:        1048572       38912     1009660
 - Mosquitto MQTT broker
 - NGINX serving static files
 - Docker, Compose
+
+## Database performance
+
+The data is reduced in the background, using `avg` and `mode` aggregate
+functions.
+
+**How often is it done?**
+
+See the `run_transformer.py` command file.
+
+**What are the parameters?**
+
+See the `models.py` file.
+
+**What tables are used for charts?**
+
+It depends on the time range and how old are the requested values; see the
+`web.py` service file.
