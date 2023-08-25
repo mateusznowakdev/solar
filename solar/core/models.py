@@ -69,12 +69,12 @@ class StateT2(StateBase):
 
 
 class StateT3(StateBase):
-    PRECISION = timedelta(seconds=60)
+    PRECISION = timedelta(minutes=1)
     RETENTION_PERIOD = timedelta(days=30)
 
 
 class StateT4(StateBase):
-    PRECISION = timedelta(seconds=300)
+    PRECISION = timedelta(minutes=5)
     RETENTION_PERIOD = timedelta(days=90)
 
 

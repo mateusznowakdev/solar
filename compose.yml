@@ -26,10 +26,10 @@ services:
       driver: journald
     ports:
       - 8000:8000
-  tasks:
+  communicator:
     build:
       dockerfile: config/backend/Dockerfile
-    command: python manage.py run_tasks
+    command: python manage.py run_communicator
     deploy:
       restart_policy:
         condition: any
@@ -44,6 +44,20 @@ services:
     logging:
       driver: journald
     privileged: true
+  transformer:
+    build:
+      dockerfile: config/backend/Dockerfile
+    command: python manage.py run_transformer
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
+    logging:
+      driver: journald
   db:
     image: postgres:15-alpine
     deploy:
@@ -68,4 +82,4 @@ services:
       - 1883:1883
       - 8883:8883
     volumes:
-      - ./config/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./config/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
