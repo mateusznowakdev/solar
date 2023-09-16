@@ -6,10 +6,12 @@ import { STRINGS } from "../locale";
 import { dateReviver, getBackendURI } from "../utils";
 
 export default function Log() {
+  const [progress, setProgress] = useState({ loading: true });
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setProgress({ loading: true });
+
     fetch(getBackendURI() + "/api/log/")
       .then(async (response) => {
         const status = response.status;
@@ -21,15 +23,20 @@ export default function Log() {
       .then((text) => {
         const json = JSON.parse(text, dateReviver);
         setData(json);
-        setError(null);
+        setProgress({ loading: false, error: null });
       })
-      .catch((error) => setError(error.toString()));
+      .catch((error) =>
+        setProgress({ loading: false, error: error.toString() }),
+      );
   }, []);
 
-  if (error)
+  if (progress.loading)
+    return <div className="mt-3 text-warning">{STRINGS.LOADING}...</div>;
+
+  if (progress.error)
     return (
       <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {error}
+        {STRINGS.AN_ERROR_OCCURRED}: {progress.error}
       </div>
     );
 
