@@ -6,13 +6,15 @@ import { STRINGS } from "../locale";
 import { dateReviver, getBackendURI } from "../utils";
 
 export default function Log() {
-  const [progress, setProgress] = useState({ loading: true });
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    setProgress({ loading: true });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    fetch(getBackendURI() + "/api/log/")
+  useEffect(() => {
+    setLoading(true);
+
+    const result = fetch(getBackendURI() + "/api/log/")
       .then(async (response) => {
         const status = response.status;
         const text = await response.text();
@@ -20,23 +22,29 @@ export default function Log() {
         if (response.ok) return text;
         else throw new Error(`(HTTP ${status}) ${text}`);
       })
-      .then((text) => {
-        const json = JSON.parse(text, dateReviver);
-        setData(json);
-        setProgress({ loading: false, error: null });
-      })
-      .catch((error) =>
-        setProgress({ loading: false, error: error.toString() }),
-      );
+      .then((text) => ({
+        data: JSON.parse(text, dateReviver),
+        error: null,
+      }))
+      .catch((error) => ({
+        data: null,
+        error: error.toString(),
+      }));
+
+    result.then(({ data, error }) => {
+      setData(data);
+      setError(error);
+      setLoading(false);
+    });
   }, []);
 
-  if (progress.loading)
+  if (loading)
     return <div className="mt-3 text-warning">{STRINGS.LOADING}...</div>;
 
-  if (progress.error)
+  if (error)
     return (
       <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {progress.error}
+        {STRINGS.AN_ERROR_OCCURRED}: {error}
       </div>
     );
 
