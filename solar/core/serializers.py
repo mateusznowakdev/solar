@@ -18,6 +18,12 @@ class SeriesRequestSerializer(serializers.Serializer):
     date_from = serializers.DateTimeField()
     date_to = serializers.DateTimeField()
 
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        attrs["field"] = list(dict.fromkeys(attrs["field"]))
+
+        return attrs
+
 
 class SingleSeriesResponseSerializer(serializers.Serializer):
     field = serializers.CharField()
