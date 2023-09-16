@@ -1,6 +1,7 @@
 import collections
 from datetime import timedelta
 
+from django.conf import settings
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
@@ -161,6 +162,9 @@ class ControlService:
         return state
 
     def change_state(self, *, state: StateRaw) -> None:
+        if not settings.EXPERIMENTAL_CHANGE_STATE:
+            return
+
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 

@@ -108,3 +108,5 @@ SPECTACULAR_SETTINGS = {
 
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_PORT = 1883
+
+EXPERIMENTAL_CHANGE_STATE = bool(int(os.environ.get("EXPERIMENTAL_CHANGE_STATE", "0")))
