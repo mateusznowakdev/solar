@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LogList from "../components/log/LogList";
 
 import { STRINGS } from "../locale";
-import { dateReviver, getBackendURI } from "../utils";
+import { getBackendResponse } from "../utils";
 
 export default function Log() {
   const [data, setData] = useState([]);
@@ -14,24 +14,7 @@ export default function Log() {
   useEffect(() => {
     setLoading(true);
 
-    const result = fetch(getBackendURI() + "/api/log/")
-      .then(async (response) => {
-        const status = response.status;
-        const text = await response.text();
-
-        if (response.ok) return text;
-        else throw new Error(`(HTTP ${status}) ${text}`);
-      })
-      .then((text) => ({
-        data: JSON.parse(text, dateReviver),
-        error: null,
-      }))
-      .catch((error) => ({
-        data: null,
-        error: error.toString(),
-      }));
-
-    result.then(({ data, error }) => {
+    getBackendResponse("/api/log").then(({ data, error }) => {
       setData(data);
       setError(error);
       setLoading(false);
