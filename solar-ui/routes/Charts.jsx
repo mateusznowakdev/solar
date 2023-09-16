@@ -30,6 +30,14 @@ function ChartContainer({ data, error, loading }) {
       </div>
     );
 
+  if (!data) {
+    return (
+      <div className="mt-3 text-secondary">
+        {STRINGS.CHOOSE_VALID_CHART_SERIES}
+      </div>
+    );
+  }
+
   return (
     <>
       {data && data.values.length > 0 && <Chart data={data.values[0]} />}

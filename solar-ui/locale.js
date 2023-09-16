@@ -5,6 +5,7 @@ export const STRINGS = {
   ABOUT_SOURCE_CODE: "Kod źródłowy",
   ABOUT_VERSION: "Wersja",
   AN_ERROR_OCCURRED: "Wystąpił błąd",
+  CHOOSE_VALID_CHART_SERIES: "Wybierz poprawny parametr z listy powyżej",
   LOADING: "Wczytywanie",
   MENU_ABOUT: "Informacje",
   MENU_CHARTS: "Wykresy",

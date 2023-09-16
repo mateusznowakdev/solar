@@ -14,6 +14,7 @@ function sortByPinned(a, b) {
 export default function ParameterList({ data, pinned, togglePinned }) {
   const finalData = Object.entries(METADATA)
     .map(([key, meta]) => ({
+      chart: meta.chart,
       description: meta.description,
       key,
       pin: pinned.includes(key),

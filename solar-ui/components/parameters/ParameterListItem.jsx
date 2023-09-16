@@ -7,7 +7,10 @@ import { COLORS } from "../../meta";
 
 export default function ParameterListItem({ data, togglePinned }) {
   return (
-    <LinkContainer state={{ choice: data.key }} to="/charts">
+    <LinkContainer
+      state={{ choice: data.chart ? data.key : null }}
+      to="/charts"
+    >
       <ListGroup.Item
         action
         active={false}
