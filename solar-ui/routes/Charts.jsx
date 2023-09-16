@@ -87,7 +87,7 @@ export default function Charts() {
   const submitButton = (
     <Button
       className="w-100"
-      disabled={!startDate || !stopDate || (!seriesA && !seriesB)}
+      disabled={loading || !startDate || !stopDate || (!seriesA && !seriesB)}
       onClick={getSeries}
       variant="light"
     >
