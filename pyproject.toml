@@ -6,21 +6,18 @@ authors = []
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = "^4.2.3"
+django = "^4.2.5"
 django-cors-headers = "^4.2.0"
 djangorestframework = "^3.14.0"
-drf-spectacular = "^0.26.3"
+drf-spectacular = "^0.26.4"
 paho-mqtt = "^1.6.1"
-psycopg = {extras = ["binary"], version = "^3.1.9"}
-pymodbus = "^3.4.1"
+psycopg = {extras = ["binary"], version = "^3.1.10"}
+pymodbus = "^3.5.2"
 pyserial = "^3.5"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.7.0"
+black = "^23.9.1"
 isort = "^5.12.0"
-
-[tool.black]
-exclude = "data"
 
 [tool.isort]
 profile = "black"
