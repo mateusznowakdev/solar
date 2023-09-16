@@ -8,7 +8,8 @@ import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 
-import { dateReviver, getBackendURI, getDatesForOffset } from "../utils";
+import { STRINGS } from "../locale";
+import { getBackendResponse, getDatesForOffset } from "../utils";
 
 const OFFSETS = {
   "10m": 60 * 10,
@@ -30,6 +31,9 @@ export default function Charts() {
   const [startDate, setStartDate] = useState(initialStartDate);
   const [stopDate, setStopDate] = useState(initialStopDate);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   function getSeries() {
     const params = [
       ["date_from", startDate.toISOString()],
@@ -40,22 +44,23 @@ export default function Charts() {
     if (seriesA) params.push(["field", seriesA]);
     if (seriesB) params.push(["field", seriesB]);
 
-    fetch(getBackendURI() + "/api/series/?" + new URLSearchParams(params))
-      .then((response) => (response.ok ? response.text() : "{}"))
-      .then((text) => {
-        const json = JSON.parse(text, dateReviver);
+    setLoading(true);
 
-        if (!json.values) {
-          setData(null);
-          return;
+    getBackendResponse("/api/series/?" + new URLSearchParams(params)).then(
+      ({ data, error }) => {
+        setData(data);
+        setError(error);
+
+        if (data) {
+          setSeriesA(data?.values[0]?.field || "");
+          setSeriesB(data?.values[1]?.field || "");
+          setStartDate(data.date_from);
+          setStopDate(data.date_to);
         }
 
-        setData(json);
-        setSeriesA(json.values[0]?.field || "");
-        setSeriesB(json.values[1]?.field || "");
-        setStartDate(json.date_from);
-        setStopDate(json.date_to);
-      });
+        setLoading(false);
+      },
+    );
   }
 
   useEffect(getSeries, []);
@@ -71,6 +76,27 @@ export default function Charts() {
     </Button>
   );
 
+  let chartContainer;
+
+  if (loading)
+    chartContainer = (
+      <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>
+    );
+  else if (error)
+    chartContainer = (
+      <div className="mt-3 text-danger">
+        {STRINGS.AN_ERROR_OCCURRED}: {error}
+      </div>
+    );
+  else {
+    chartContainer = (
+      <>
+        {data && data.values.length > 0 && <Chart data={data.values[0]} />}
+        {data && data.values.length > 1 && <Chart data={data.values[1]} />}
+      </>
+    );
+  }
+
   return (
     <div>
       <Form className="my-3">
@@ -85,8 +111,7 @@ export default function Charts() {
           submitButton={submitButton}
         />
       </Form>
-      {data && data.values.length > 0 && <Chart data={data.values[0]} />}
-      {data && data.values.length > 1 && <Chart data={data.values[1]} />}
+      {chartContainer}
     </div>
   );
 }

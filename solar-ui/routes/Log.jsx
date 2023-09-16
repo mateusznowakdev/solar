@@ -22,7 +22,7 @@ export default function Log() {
   }, []);
 
   if (loading)
-    return <div className="mt-3 text-warning">{STRINGS.LOADING}...</div>;
+    return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
 
   if (error)
     return (
