@@ -28,7 +28,7 @@ export default function Log() {
 
   if (error)
     return (
-      <div className="alert alert-danger mt-3">
+      <div className="mt-3 text-danger">
         {STRINGS.AN_ERROR_OCCURRED}: {error}
       </div>
     );
