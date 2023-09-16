@@ -19,6 +19,25 @@ const OFFSETS = {
   "24h": 60 * 60 * 24,
 };
 
+function ChartContainer({ data, error, loading }) {
+  if (loading)
+    return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
+
+  if (error)
+    return (
+      <div className="mt-3 text-danger">
+        {STRINGS.AN_ERROR_OCCURRED}: {error}
+      </div>
+    );
+
+  return (
+    <>
+      {data && data.values.length > 0 && <Chart data={data.values[0]} />}
+      {data && data.values.length > 1 && <Chart data={data.values[1]} />}
+    </>
+  );
+}
+
 export default function Charts() {
   const [initialStartDate, initialStopDate] = getDatesForOffset(OFFSETS["10m"]);
 
@@ -76,27 +95,6 @@ export default function Charts() {
     </Button>
   );
 
-  let chartContainer;
-
-  if (loading)
-    chartContainer = (
-      <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>
-    );
-  else if (error)
-    chartContainer = (
-      <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {error}
-      </div>
-    );
-  else {
-    chartContainer = (
-      <>
-        {data && data.values.length > 0 && <Chart data={data.values[0]} />}
-        {data && data.values.length > 1 && <Chart data={data.values[1]} />}
-      </>
-    );
-  }
-
   return (
     <div>
       <Form className="my-3">
@@ -111,7 +109,7 @@ export default function Charts() {
           submitButton={submitButton}
         />
       </Form>
-      {chartContainer}
+      <ChartContainer data={data} error={error} loading={loading} />
     </div>
   );
 }
