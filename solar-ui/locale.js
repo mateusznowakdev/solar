@@ -4,6 +4,7 @@ export const STRINGS = {
     "źródłowego, bez jakiejkolwiek gwarancji i wsparcia technicznego.",
   ABOUT_SOURCE_CODE: "Kod źródłowy",
   ABOUT_VERSION: "Wersja",
+  AN_ERROR_OCCURRED: "Wystąpił błąd",
   MENU_ABOUT: "Informacje",
   MENU_CHARTS: "Wykresy",
   MENU_LOG: "Dziennik",
