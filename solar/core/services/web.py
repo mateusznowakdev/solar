@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Avg, Case, QuerySet, When
+from django.db.models import Case, QuerySet, Sum, When
 from django.utils import timezone
 
 from solar.core.models import (
@@ -43,22 +43,14 @@ class ProductionService:
             StateArchive.objects.annotate(group=group_qs)
             .values("group")
             .annotate(
-                pv_power=Avg("pv_power"), load_active_power=Avg("load_active_power")
+                pv_power=Sum("pv_power"), load_active_power=Sum("load_active_power")
             )
             .filter(timestamp__gte=min(timestamps))
             .order_by("group")
         )
 
         for entry in data:
-            group = entry.pop("group")
-
-            start_timestamp = timestamps[group]
-            end_timestamp = timezone.now() if group == 0 else timestamps[group - 1]
-            hours = (end_timestamp - start_timestamp).total_seconds() // 3600
-
-            entry["timestamp"] = start_timestamp
-            entry["pv_power"] = int(entry["pv_power"] * hours)
-            entry["load_active_power"] = int(entry["load_active_power"] * hours)
+            entry["timestamp"] = timestamps[entry.pop("group")]
 
         return data
 
