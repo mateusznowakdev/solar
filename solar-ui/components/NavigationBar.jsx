@@ -18,10 +18,6 @@ export default function NavigationBar() {
         <GraphUp size={24} />
         {STRINGS.MENU_CHARTS}
       </Nav.Link>
-      <Nav.Link as={NavLink} to="/production">
-        <GraphUp size={24} />
-        {STRINGS.MENU_PRODUCTION}
-      </Nav.Link>
       <Nav.Link as={NavLink} to="/log">
         <ClockHistory size={24} />
         {STRINGS.MENU_LOG}
