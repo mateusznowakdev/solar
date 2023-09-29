@@ -68,7 +68,7 @@ def run_transformer():
             run_every_30min()
             time_30min = now + timedelta(minutes=30)
 
-        time.sleep(30)
+        time.sleep(60)
 
 
 class Command(BaseCommand):
