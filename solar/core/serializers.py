@@ -21,6 +21,12 @@ class ProductionRequestSerializer(serializers.Serializer):
         return attrs
 
 
+class ProductionResponseSerializer(serializers.Serializer):
+    timestamp = serializers.DateTimeField()
+    pv_power = serializers.IntegerField()
+    load_active_power = serializers.IntegerField()
+
+
 class SeriesRequestSerializer(serializers.Serializer):
     field = serializers.ListField(
         child=serializers.ChoiceField(choices=get_numeric_field_names()),
@@ -37,7 +43,7 @@ class SeriesRequestSerializer(serializers.Serializer):
         return attrs
 
 
-class SingleSeriesResponseSerializer(serializers.Serializer):
+class SeriesItemResponseSerializer(serializers.Serializer):
     field = serializers.CharField()
     x = serializers.ListField(child=serializers.DateTimeField())
     y = serializers.ListField(child=serializers.FloatField())
@@ -46,7 +52,7 @@ class SingleSeriesResponseSerializer(serializers.Serializer):
 class SeriesResponseSerializer(serializers.Serializer):
     date_from = serializers.DateTimeField()
     date_to = serializers.DateTimeField()
-    values = SingleSeriesResponseSerializer(many=True)
+    values = SeriesItemResponseSerializer(many=True)
 
 
 class StateSerializer(serializers.ModelSerializer):
