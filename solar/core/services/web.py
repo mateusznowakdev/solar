@@ -35,15 +35,12 @@ class ProductionService:
     def get_production(*, timestamps: list[datetime]) -> list:
         # TODO: make sure timestamps are unique, sorted and total range is not too large
 
+        group_qs = Case(
+            *(When(timestamp__gte=ts, then=idx) for idx, ts in enumerate(timestamps))
+        )
+
         data = (
-            StateArchive.objects.annotate(
-                group=Case(
-                    *(
-                        When(timestamp__gte=ts, then=idx)
-                        for idx, ts in enumerate(timestamps)
-                    )
-                )
-            )
+            StateArchive.objects.annotate(group=group_qs)
             .values("group")
             .annotate(
                 pv_power=Avg("pv_power"), load_active_power=Avg("load_active_power")
@@ -53,7 +50,15 @@ class ProductionService:
         )
 
         for entry in data:
-            entry["timestamp"] = timestamps[entry.pop("group")]
+            group = entry.pop("group")
+
+            start_timestamp = timestamps[group]
+            end_timestamp = timezone.now() if group == 0 else timestamps[group - 1]
+            hours = (end_timestamp - start_timestamp).total_seconds() // 3600
+
+            entry["timestamp"] = start_timestamp
+            entry["pv_power"] = int(entry["pv_power"] * hours)
+            entry["load_active_power"] = int(entry["load_active_power"] * hours)
 
         return data
 
