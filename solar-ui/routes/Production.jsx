@@ -1,10 +1,17 @@
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 export default function Production() {
-  const startDate = dayjs().hour(0).minute(0).second(0).millisecond(0);
-  const allDates = [...Array(14).keys()].map((i) =>
-    startDate.subtract(i, "days"),
-  );
+  const [data, setData] = useState([]);
 
-  return JSON.stringify(allDates, null, 1);
+  useEffect(() => {
+    const startDate = dayjs().hour(0).minute(0).second(0).millisecond(0);
+    const allDates = [...Array(14).keys()].map((i) =>
+      startDate.subtract(i, "days").unix(),
+    );
+
+    setData(allDates);
+  }, []);
+
+  return JSON.stringify(data, null, 1);
 }
