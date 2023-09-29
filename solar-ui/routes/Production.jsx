@@ -39,5 +39,5 @@ export default function Production() {
       </div>
     );
 
-  return <div>{data}</div>;
+  return <div>{JSON.stringify(data, null, 1)}</div>;
 }

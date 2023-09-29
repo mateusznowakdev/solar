@@ -1,9 +1,17 @@
 from datetime import datetime, timedelta
 
-from django.db.models import QuerySet
+from django.db.models import Avg, Case, QuerySet, When
 from django.utils import timezone
 
-from solar.core.models import LogEntry, StateRaw, StateT1, StateT2, StateT3, StateT4
+from solar.core.models import (
+    LogEntry,
+    StateArchive,
+    StateRaw,
+    StateT1,
+    StateT2,
+    StateT3,
+    StateT4,
+)
 
 CHART_DATA_MODELS = (
     (StateRaw, timedelta(hours=1)),
@@ -25,7 +33,22 @@ class LogService:
 class ProductionService:
     @staticmethod
     def get_production(*, timestamps: list[datetime]) -> list:
-        return [t.timestamp() for t in timestamps]
+        return (
+            StateArchive.objects.annotate(
+                group=Case(
+                    *(
+                        When(timestamp__gte=ts, then=idx)
+                        for idx, ts in enumerate(timestamps)
+                    )
+                )
+            )
+            .values("group")
+            .annotate(
+                pv_power=Avg("pv_power"), load_active_power=Avg("load_active_power")
+            )
+            .filter(timestamp__gte=min(timestamps))
+            .order_by("group")
+        )
 
 
 class SeriesService:
