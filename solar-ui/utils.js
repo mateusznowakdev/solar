@@ -41,6 +41,14 @@ export function getVersion() {
   return import.meta.env.PACKAGE_VERSION;
 }
 
+export function renderDate(date) {
+  if (isNaN(date)) return "";
+
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "short",
+  }).format(date);
+}
+
 export function renderDateTime(date) {
   if (isNaN(date)) return "";
 

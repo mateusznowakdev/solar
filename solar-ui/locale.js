@@ -13,4 +13,6 @@ export const STRINGS = {
   MENU_MAIN: "Na żywo",
   MENU_PRODUCTION: "Produkcja",
   PARAMETERS_REFRESH_PROMPT: "Przeciągnij w dół, aby odświeżyć",
+  PRODUCTION_PV: "Panel",
+  PRODUCTION_TOTAL: "Razem",
 };

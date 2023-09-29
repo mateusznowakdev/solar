@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
+import ProductionList from "../components/production/ProductionList";
+
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
 
@@ -39,5 +41,5 @@ export default function Production() {
       </div>
     );
 
-  return <div>{JSON.stringify(data, null, 1)}</div>;
+  return <ProductionList data={data} />;
 }
