@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from solar.core.models import LogEntry, StateRaw, get_numeric_field_names
 
@@ -10,13 +13,20 @@ class LogEntrySerializer(serializers.ModelSerializer):
 
 
 class ProductionRequestSerializer(serializers.Serializer):
+    MAX_TIMESTAMPS = 14
+
     timestamp = serializers.ListField(
-        child=serializers.DateTimeField(), min_length=1, max_length=14
+        child=serializers.DateTimeField(), min_length=1, max_length=MAX_TIMESTAMPS
     )
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
-        attrs["timestamp"] = list(dict.fromkeys(attrs["timestamp"]))
+
+        timestamps = attrs["timestamp"]
+        max_days_allowed = ProductionRequestSerializer.MAX_TIMESTAMPS + 1
+
+        if max(timestamps) - min(timestamps) > timedelta(days=max_days_allowed):
+            raise ValidationError()  # someone is abusing API, return useless message
 
         return attrs
 
@@ -35,12 +45,6 @@ class SeriesRequestSerializer(serializers.Serializer):
     )
     date_from = serializers.DateTimeField()
     date_to = serializers.DateTimeField()
-
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-        attrs["field"] = list(dict.fromkeys(attrs["field"]))
-
-        return attrs
 
 
 class SeriesItemResponseSerializer(serializers.Serializer):

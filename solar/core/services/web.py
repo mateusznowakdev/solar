@@ -33,7 +33,7 @@ class LogService:
 class ProductionService:
     @staticmethod
     def get_production(*, timestamps: list[datetime]) -> list:
-        # TODO: make sure timestamps are unique, sorted and total range is not too large
+        timestamps = list(reversed(sorted(set(timestamps))))
 
         group_qs = Case(
             *(When(timestamp__gte=ts, then=idx) for idx, ts in enumerate(timestamps))
@@ -64,6 +64,7 @@ class SeriesService:
             date_from, date_to = date_to, date_from
 
         date_to = min(date_to, date_from + CHART_DATA_MODELS[-1][1])
+        fields = list(dict.fromkeys(fields))
 
         requested_range = date_to - date_from
         now = timezone.now()
