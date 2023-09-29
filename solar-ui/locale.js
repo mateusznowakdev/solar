@@ -11,5 +11,6 @@ export const STRINGS = {
   MENU_CHARTS: "Wykresy",
   MENU_LOG: "Dziennik",
   MENU_MAIN: "Na żywo",
+  MENU_PRODUCTION: "Produkcja",
   PARAMETERS_REFRESH_PROMPT: "Przeciągnij w dół, aby odświeżyć",
 };
