@@ -6,10 +6,11 @@ from rest_framework.response import Response
 
 from solar.core.serializers import (
     LogEntrySerializer,
+    ProductionRequestSerializer,
     SeriesRequestSerializer,
     SeriesResponseSerializer,
 )
-from solar.core.services import LogService, SeriesService
+from solar.core.services import LogService, ProductionService, SeriesService
 
 
 class LogAPIView(views.APIView):
@@ -19,6 +20,23 @@ class LogAPIView(views.APIView):
         out_serializer = LogEntrySerializer(instance=out_data, many=True)
 
         return Response(data=out_serializer.data)
+
+
+class ProductionAPIView(views.APIView):
+    timestamp = OpenApiParameter(
+        "timestamp", type=OpenApiTypes.DATETIME, required=True, many=True
+    )
+
+    @extend_schema(parameters=[timestamp])
+    def get(self, request: Request) -> Response:
+        in_serializer = ProductionRequestSerializer(data=self.request.query_params)
+        in_serializer.is_valid(raise_exception=True)
+
+        out_data = ProductionService.get_production(
+            timestamps=in_serializer.validated_data.get("timestamp"),
+        )
+
+        return Response(data=out_data)
 
 
 class SeriesAPIView(views.APIView):

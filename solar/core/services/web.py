@@ -22,6 +22,12 @@ class LogService:
         return LogEntry.objects.all()[:100]
 
 
+class ProductionService:
+    @staticmethod
+    def get_production(*, timestamps: list[datetime]) -> list:
+        return [t.timestamp() for t in timestamps]
+
+
 class SeriesService:
     @staticmethod
     def get_series(

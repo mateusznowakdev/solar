@@ -9,6 +9,18 @@ class LogEntrySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ProductionRequestSerializer(serializers.Serializer):
+    timestamp = serializers.ListField(
+        child=serializers.DateTimeField(), min_length=1, max_length=14
+    )
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        attrs["timestamp"] = list(dict.fromkeys(attrs["timestamp"]))
+
+        return attrs
+
+
 class SeriesRequestSerializer(serializers.Serializer):
     field = serializers.ListField(
         child=serializers.ChoiceField(choices=get_numeric_field_names()),
