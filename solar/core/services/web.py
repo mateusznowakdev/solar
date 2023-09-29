@@ -33,7 +33,9 @@ class LogService:
 class ProductionService:
     @staticmethod
     def get_production(*, timestamps: list[datetime]) -> list:
-        return (
+        # TODO: make sure timestamps are unique, sorted and total range is not too large
+
+        data = (
             StateArchive.objects.annotate(
                 group=Case(
                     *(
@@ -49,6 +51,11 @@ class ProductionService:
             .filter(timestamp__gte=min(timestamps))
             .order_by("group")
         )
+
+        for entry in data:
+            entry["timestamp"] = timestamps[entry.pop("group")]
+
+        return data
 
 
 class SeriesService:
