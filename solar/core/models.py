@@ -79,7 +79,7 @@ class StateT4(StateBase):
 
 
 class StateArchive(StateBase):
-    PRECISION = timedelta(days=1)
+    PRECISION = timedelta(hours=1)
     RETENTION_PERIOD = None
 
 

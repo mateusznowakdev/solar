@@ -37,7 +37,7 @@ def run_every_15min():
 
 
 @catch_exception
-def run_every_60min():
+def run_every_30min():
     TransformService.process_data(StateT4)
     TransformService.delete_data(StateT4)
 
@@ -50,7 +50,7 @@ def run_transformer():
     time_1min = datetime.now()
     time_5min = datetime.now()
     time_15min = datetime.now()
-    time_60min = datetime.now()
+    time_30min = datetime.now()
 
     while True:
         now = datetime.now()
@@ -64,11 +64,11 @@ def run_transformer():
         if now > time_15min:
             run_every_15min()
             time_15min = now + timedelta(minutes=15)
-        if now > time_60min:
-            run_every_60min()
-            time_60min = now + timedelta(minutes=60)
+        if now > time_30min:
+            run_every_30min()
+            time_30min = now + timedelta(minutes=30)
 
-        time.sleep(60)
+        time.sleep(30)
 
 
 class Command(BaseCommand):
