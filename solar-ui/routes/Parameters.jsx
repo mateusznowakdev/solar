@@ -1,6 +1,7 @@
 import { Client } from "paho-mqtt/paho-mqtt";
 import { useEffect, useState } from "react";
 
+import LegalNotice from "../components/LegalNotice";
 import ParameterList from "../components/parameters/ParameterList";
 import RefreshPrompt from "../components/parameters/RefreshPrompt";
 
@@ -67,6 +68,7 @@ export default function Parameters() {
     <div>
       <RefreshPrompt show={!isLive} />
       <ParameterList data={data} pinned={pinned} togglePinned={togglePinned} />
+      <LegalNotice />
     </div>
   );
 }

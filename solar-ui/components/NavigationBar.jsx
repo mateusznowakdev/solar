@@ -2,7 +2,6 @@ import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
 
 import Factory from "lucide-react/dist/esm/icons/factory";
-import Info from "lucide-react/dist/esm/icons/info";
 import LineChart from "lucide-react/dist/esm/icons/line-chart";
 import RadioTower from "lucide-react/dist/esm/icons/radio-tower";
 import ScrollText from "lucide-react/dist/esm/icons/scroll-text";
@@ -27,10 +26,6 @@ export default function NavigationBar() {
       <Nav.Link as={NavLink} to="/log">
         <ScrollText strokeWidth={1.25} />
         {STRINGS.MENU_LOG}
-      </Nav.Link>
-      <Nav.Link as={NavLink} to="/about">
-        <Info strokeWidth={1.25} />
-        {STRINGS.MENU_ABOUT}
       </Nav.Link>
     </Nav>
   );
