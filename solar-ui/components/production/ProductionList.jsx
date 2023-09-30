@@ -4,7 +4,7 @@ import ProductionListItem from "./ProductionListItem";
 
 import { STRINGS } from "../../locale";
 
-export default function ProductionList({ data }) {
+export default function ProductionList({ data, mode }) {
   return (
     <Table className="production-table">
       <thead>
@@ -16,7 +16,7 @@ export default function ProductionList({ data }) {
       </thead>
       <tbody>
         {data.map((entry, idx) => (
-          <ProductionListItem data={entry} key={idx} />
+          <ProductionListItem data={entry} key={idx} mode={mode} />
         ))}
       </tbody>
     </Table>

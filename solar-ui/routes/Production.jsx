@@ -19,7 +19,7 @@ function getLastMonths() {
   return [...Array(12).keys()].map((i) => startDate.subtract(i, "months"));
 }
 
-function ProductionContainer({ data, error, loading }) {
+function ProductionContainer({ data, error, loading, mode }) {
   if (loading)
     return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
 
@@ -30,7 +30,7 @@ function ProductionContainer({ data, error, loading }) {
       </div>
     );
 
-  return <ProductionList data={data} />;
+  return <ProductionList data={data} mode={mode} />;
 }
 
 export default function Production() {
@@ -41,12 +41,22 @@ export default function Production() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const params = (mode === "days" ? getLastDays() : getLastMonths()).map(
-      (date) => ["timestamp", date.toISOString()],
-    );
+    let timestamps;
+
+    switch (mode) {
+      case "days":
+        timestamps = getLastDays();
+        break;
+      case "months":
+        timestamps = getLastMonths();
+        break;
+      default:
+        return;
+    }
 
     setLoading(true);
 
+    const params = timestamps.map((date) => ["timestamp", date.toISOString()]);
     getBackendResponse("/api/production/?" + new URLSearchParams(params)).then(
       ({ data, error }) => {
         setData(data);
@@ -68,7 +78,12 @@ export default function Production() {
           </Col>
         </Form.Group>
       </Form>
-      <ProductionContainer data={data} error={error} loading={loading} />
+      <ProductionContainer
+        data={data}
+        error={error}
+        loading={loading}
+        mode={mode}
+      />
     </div>
   );
 }

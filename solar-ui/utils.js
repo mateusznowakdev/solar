@@ -41,35 +41,50 @@ export function getVersion() {
   return import.meta.env.PACKAGE_VERSION;
 }
 
-export function renderDate(date) {
+export function renderDate(date, options) {
   if (isNaN(date)) return "";
 
   return new Intl.DateTimeFormat(undefined, {
     weekday: "short",
     day: "numeric",
     month: "short",
+    ...(options || {}),
   }).format(date);
 }
 
-export function renderDateTime(date) {
+export function renderDateTime(date, options) {
   if (isNaN(date)) return "";
 
   return new Intl.DateTimeFormat(undefined, {
     dateStyle: "short",
     timeStyle: "medium",
+    ...(options || {}),
   }).format(date);
 }
 
-export function renderNumber(number) {
-  if (isNaN(number)) return "";
+export function renderMonth(date, options) {
+  if (isNaN(date)) return "";
 
-  return new Intl.NumberFormat(undefined).format(number);
+  return new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    year: "numeric",
+    ...(options || {}),
+  }).format(date);
 }
 
-export function renderTime(date) {
+export function renderNumber(number, options) {
+  if (isNaN(number)) return "";
+
+  return new Intl.NumberFormat(undefined, {
+    ...(options || {}),
+  }).format(number);
+}
+
+export function renderTime(date, options) {
   if (isNaN(date)) return "";
 
   return new Intl.DateTimeFormat(undefined, {
     timeStyle: "medium",
+    ...(options || {}),
   }).format(date);
 }
