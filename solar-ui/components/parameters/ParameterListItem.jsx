@@ -1,7 +1,8 @@
 import ListGroup from "react-bootstrap/ListGroup";
-import Pin from "react-bootstrap-icons/dist/icons/pin";
-import PinFill from "react-bootstrap-icons/dist/icons/pin-fill";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
+
+import Dot from "lucide-react/dist/esm/icons/dot";
+import Star from "lucide-react/dist/esm/icons/star";
 
 import { COLORS } from "../../meta";
 
@@ -23,7 +24,11 @@ export default function ParameterListItem({ data, togglePinned }) {
             e.preventDefault();
           }}
         >
-          {data.pin ? <PinFill color={COLORS.PRIMARY} /> : <Pin />}
+          {data.pin ? (
+            <Star color={COLORS.PRIMARY} size={16} />
+          ) : (
+            <Dot size={16} />
+          )}
         </div>
         <div className="flex-grow-1 me-2">{data.description}</div>
         <div>
