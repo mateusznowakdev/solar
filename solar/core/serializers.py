@@ -13,22 +13,9 @@ class LogEntrySerializer(serializers.ModelSerializer):
 
 
 class ProductionRequestSerializer(serializers.Serializer):
-    MAX_TIMESTAMPS = 14
-
     timestamp = serializers.ListField(
-        child=serializers.DateTimeField(), min_length=1, max_length=MAX_TIMESTAMPS
+        child=serializers.DateTimeField(), min_length=1, max_length=14
     )
-
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-
-        timestamps = attrs["timestamp"]
-        max_days_allowed = ProductionRequestSerializer.MAX_TIMESTAMPS + 1
-
-        if max(timestamps) - min(timestamps) > timedelta(days=max_days_allowed):
-            raise ValidationError()  # someone is abusing API, return useless message
-
-        return attrs
 
 
 class ProductionResponseSerializer(serializers.Serializer):
