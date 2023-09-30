@@ -6,7 +6,7 @@ import { STRINGS } from "../../locale";
 
 export default function ProductionList({ data }) {
   return (
-    <Table>
+    <Table className="production-table">
       <thead>
         <tr>
           <th></th>
@@ -15,8 +15,8 @@ export default function ProductionList({ data }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((entry) => (
-          <ProductionListItem data={entry} />
+        {data.map((entry, idx) => (
+          <ProductionListItem data={entry} key={idx} />
         ))}
       </tbody>
     </Table>
