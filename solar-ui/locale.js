@@ -10,6 +10,6 @@ export const STRINGS = {
   PARAMETERS_REFRESH_PROMPT: "Przeciągnij w dół, aby odświeżyć",
   PRODUCTION_DAYS: "Ostatnie 14 dni",
   PRODUCTION_MONTHS: "Ostatnie 12 miesięcy",
-  PRODUCTION_PV: "Panel",
-  PRODUCTION_TOTAL: "Razem",
+  PRODUCTION_PV: "Produkcja",
+  PRODUCTION_TOTAL: "Zużycie",
 };
