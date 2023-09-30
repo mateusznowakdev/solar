@@ -45,7 +45,9 @@ export function renderDate(date) {
   if (isNaN(date)) return "";
 
   return new Intl.DateTimeFormat(undefined, {
-    dateStyle: "short",
+    weekday: "short",
+    day: "numeric",
+    month: "short",
   }).format(date);
 }
 
