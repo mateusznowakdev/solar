@@ -4,11 +4,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = bool(int(os.environ.get("DJANGO_DEBUG", "0")))
-SECRET_KEY = "devsecretkey" if DEBUG else os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 
-# For example, "localhost":
+# E.g. "localhost":
 ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h]
-# For example, "http://localhost:5173":
+# E.g. "http://localhost:5173":
 CORS_ALLOWED_ORIGINS = [
     o for o in os.environ.get("DJANGO_ALLOWED_ORIGINS", "").split(",") if o
 ]
