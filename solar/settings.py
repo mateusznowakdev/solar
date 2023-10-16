@@ -6,8 +6,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = bool(int(os.environ.get("DJANGO_DEBUG", "0")))
 SECRET_KEY = "devsecretkey" if DEBUG else os.environ.get("DJANGO_SECRET_KEY")
 
+# For example, "localhost":
 ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h]
-CORS_ALLOWED_ORIGINS = [f"http://{h}" for h in ALLOWED_HOSTS]
+# For example, "http://localhost:5173":
+CORS_ALLOWED_ORIGINS = [
+    o for o in os.environ.get("DJANGO_ALLOWED_ORIGINS", "").split(",") if o
+]
 
 MAIN_APPS = [
     "django.contrib.admin",

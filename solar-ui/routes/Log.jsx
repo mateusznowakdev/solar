@@ -14,7 +14,7 @@ export default function Log() {
   useEffect(() => {
     setLoading(true);
 
-    getBackendResponse("/api/log").then(({ data, error }) => {
+    getBackendResponse("/api/log/").then(({ data, error }) => {
       setData(data);
       setError(error);
       setLoading(false);
