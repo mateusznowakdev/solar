@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LogList from "../components/log/LogList";
 
 import { STRINGS } from "../locale";
-import { getBackendResponse } from "../utils";
+import { getBackendResponse, renderDate } from "../utils";
 
 export default function Log() {
   const [data, setData] = useState([]);
@@ -15,7 +15,11 @@ export default function Log() {
     setLoading(true);
 
     getBackendResponse("/api/log/").then(({ data, error }) => {
-      setData(data);
+      if (data) {
+        const items = Object.groupBy(data, (f) => renderDate(f.timestamp));
+        setData(items);
+      }
+
       setError(error);
       setLoading(false);
     });
