@@ -12,8 +12,9 @@ DEVICE_LIST = ("/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3")
 def run_communicator(control_service, publish_service):
     while True:
         state = control_service.get_state()
-        control_service.change_state(state=state)
 
+        control_service.save_state(state=state)
+        control_service.postprocess_state(state=state)
         publish_service.publish(state=state)
 
         time.sleep(0.75)

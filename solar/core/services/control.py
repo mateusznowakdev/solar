@@ -8,7 +8,13 @@ from pymodbus.client import ModbusSerialClient
 from solar.core.models import LogEntry, StateRaw
 
 CHUNK_SIZE = 32
-SCAN_DELTA = timedelta(seconds=10)
+
+PRIORITY_PV = 0
+PRIORITY_GRID = 1
+
+DEFAULT_COOLDOWN = timedelta(seconds=10)
+PV_COOLDOWN = timedelta(seconds=10)
+GRID_COOLDOWN = timedelta(minutes=5)
 
 
 def convert_to_signed(value: int) -> int:
@@ -96,7 +102,7 @@ class ControlService:
         self.client.connect()
 
         self.past_pv_voltages = collections.deque(maxlen=60)
-        self.act_after = timezone.now()
+        self.next_pv_processing_time = timezone.now()
 
     def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them
@@ -157,35 +163,50 @@ class ControlService:
             state.battery_current * state.battery_voltage
         )
 
-        state.save()
-
         return state
 
-    def change_state(self, *, state: StateRaw) -> None:
+    def save_state(self, *, state: StateRaw) -> None:
+        state.save()
+
+    def postprocess_state(self, *, state: StateRaw) -> None:
+        self._process_pv_voltage(state=state)
+
+    def _process_pv_voltage(self, *, state: StateRaw) -> None:
         if not settings.EXPERIMENTAL_CHANGE_STATE:
             return
 
+        # Store latest PV voltage value
+
         self.past_pv_voltages.append(state.pv_voltage)
-        avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
+
+        # Skip processing if is too early
 
         current_time = timezone.now()
-        if current_time < self.act_after:
+        if current_time < self.next_pv_processing_time:
             return
 
-        if avg_pv_voltage < 200 and state.output_priority != 1:
+        # Change state if necessary
+
+        avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
+
+        if avg_pv_voltage < 200 and state.output_priority != PRIORITY_GRID:
             # switch to grid
-            new_output_priority = 1
+            new_output_priority = PRIORITY_GRID
             send_data(self.client, 0xE204, new_output_priority)
-            self.act_after = current_time + timedelta(minutes=5)
-        elif avg_pv_voltage > 220 and state.output_priority != 0:
+            self.next_pv_processing_time = current_time + GRID_COOLDOWN
+
+        elif avg_pv_voltage > 220 and state.output_priority != PRIORITY_PV:
             # switch to PV
-            new_output_priority = 0
+            new_output_priority = PRIORITY_PV
             send_data(self.client, 0xE204, new_output_priority)
-            self.act_after = current_time + SCAN_DELTA
+            self.next_pv_processing_time = current_time + PV_COOLDOWN
+
         else:
-            # do nothing, cooldown
+            # do nothing
             new_output_priority = None
-            self.act_after = current_time + SCAN_DELTA
+            self.next_pv_processing_time = current_time + DEFAULT_COOLDOWN
+
+        # Add log entry if state has changed
 
         if new_output_priority is not None:
             LogEntry.objects.create(
