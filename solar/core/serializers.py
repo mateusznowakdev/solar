@@ -1,15 +1,21 @@
-from datetime import timedelta
-
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from solar.core.models import LogEntry, StateRaw, get_numeric_field_names
 
 
 class LogEntrySerializer(serializers.ModelSerializer):
+    event = serializers.SerializerMethodField()
+    value = serializers.SerializerMethodField()
+
     class Meta:
         model = LogEntry
-        fields = "__all__"
+        fields = ("timestamp", "event", "value")
+
+    def get_event(self, obj):
+        return obj.data.get("event")
+
+    def get_value(self, obj):
+        return obj.data.get("value")
 
 
 class ProductionRequestSerializer(serializers.Serializer):

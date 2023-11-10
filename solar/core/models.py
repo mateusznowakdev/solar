@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 from django.db import models
-from django.db.models import FloatField, IntegerField
 
 
 class StateBase(models.Model):
@@ -93,15 +92,12 @@ class LogEntry(models.Model):
         ordering = ("-timestamp",)
 
     timestamp = models.DateTimeField(primary_key=True)
-
-    field_name = models.CharField(max_length=50)
-    old_value = models.FloatField()
-    new_value = models.FloatField()
+    data = models.JSONField()
 
 
 def get_numeric_field_names() -> list[str]:
     return [
         f.name
         for f in StateBase._meta.concrete_fields
-        if type(f) in (FloatField, IntegerField)
+        if type(f) in (models.FloatField, models.IntegerField)
     ]

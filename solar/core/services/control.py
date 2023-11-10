@@ -6,6 +6,7 @@ from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
 from solar.core.models import LogEntry, StateRaw
+from solar.core.services.logging import LoggingService
 
 CHUNK_SIZE = 32
 
@@ -178,22 +179,20 @@ class ControlService:
 
     def _process_controller_faults(self, *, state: StateRaw) -> None:
         if set(state.controller_faults) != set(self.past_controller_faults):
-            LogEntry.objects.create(
+            LoggingService.log(
                 timestamp=state.timestamp,
-                field_name="controller_faults",
-                old_value=self.past_controller_faults,
-                new_value=state.controller_faults,
+                event="controller_faults",
+                value=state.controller_faults,
             )
 
         self.past_controller_faults = state.controller_faults
 
     def _process_inverter_faults(self, *, state: StateRaw) -> None:
         if set(state.inverter_faults) != set(self.past_inverter_faults):
-            LogEntry.objects.create(
+            LoggingService.log(
                 timestamp=state.timestamp,
-                field_name="inverter_faults",
-                old_value=self.past_inverter_faults,
-                new_value=state.inverter_faults,
+                event="inverter_faults",
+                value=state.inverter_faults,
             )
 
         self.past_inverter_faults = state.inverter_faults
@@ -236,9 +235,8 @@ class ControlService:
         # Add log entry if state has changed
 
         if new_output_priority is not None:
-            LogEntry.objects.create(
+            LoggingService.log(
                 timestamp=current_time,
-                field_name="output_priority",
-                old_value=state.output_priority,
-                new_value=new_output_priority,
+                event="output_priority",
+                value=new_output_priority,
             )

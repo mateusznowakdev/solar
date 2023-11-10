@@ -4,7 +4,8 @@ import traceback
 
 from django.core.management import BaseCommand
 
-from solar.core.services import ControlService, PublishService
+from solar.core.services.control import ControlService
+from solar.core.services.publish import PublishService
 
 DEVICE_LIST = ("/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3")
 

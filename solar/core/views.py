@@ -11,7 +11,7 @@ from solar.core.serializers import (
     SeriesRequestSerializer,
     SeriesResponseSerializer,
 )
-from solar.core.services import LogService, ProductionService, SeriesService
+from solar.core.services.web import LogService, ProductionService, SeriesService
 
 
 class LogAPIView(views.APIView):
