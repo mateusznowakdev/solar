@@ -102,6 +102,9 @@ class ControlService:
         self.client.connect()
 
         self.past_pv_voltages = collections.deque(maxlen=60)
+        self.past_controller_faults = []
+        self.past_inverter_faults = []
+
         self.next_pv_processing_time = timezone.now()
 
     def get_state(self) -> StateRaw:
@@ -169,7 +172,31 @@ class ControlService:
         state.save()
 
     def postprocess_state(self, *, state: StateRaw) -> None:
+        self._process_controller_faults(state=state)
+        self._process_inverter_faults(state=state)
         self._process_pv_voltage(state=state)
+
+    def _process_controller_faults(self, *, state: StateRaw) -> None:
+        if set(state.controller_faults) != set(self.past_controller_faults):
+            LogEntry.objects.create(
+                timestamp=state.timestamp,
+                field_name="controller_faults",
+                old_value=self.past_controller_faults,
+                new_value=state.controller_faults,
+            )
+
+        self.past_controller_faults = state.controller_faults
+
+    def _process_inverter_faults(self, *, state: StateRaw) -> None:
+        if set(state.inverter_faults) != set(self.past_inverter_faults):
+            LogEntry.objects.create(
+                timestamp=state.timestamp,
+                field_name="inverter_faults",
+                old_value=self.past_inverter_faults,
+                new_value=state.inverter_faults,
+            )
+
+        self.past_inverter_faults = state.inverter_faults
 
     def _process_pv_voltage(self, *, state: StateRaw) -> None:
         if not settings.EXPERIMENTAL_CHANGE_STATE:
@@ -179,7 +206,7 @@ class ControlService:
 
         self.past_pv_voltages.append(state.pv_voltage)
 
-        # Skip processing if is too early
+        # Skip processing during cooldown period
 
         current_time = timezone.now()
         if current_time < self.next_pv_processing_time:
