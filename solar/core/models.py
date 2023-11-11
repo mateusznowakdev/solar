@@ -95,6 +95,11 @@ class LogEntry(models.Model):
     data = models.JSONField()
 
 
+class SettingsEntry(models.Model):
+    name = models.CharField(max_length=20, primary_key=True)
+    checked = models.BooleanField()
+
+
 def get_numeric_field_names() -> list[str]:
     return [
         f.name

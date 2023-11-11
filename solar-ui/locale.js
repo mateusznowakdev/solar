@@ -1,6 +1,8 @@
 export const STRINGS = {
   ABOUT_SOURCE_CODE: "Kod źródłowy i informacje prawne",
   AN_ERROR_OCCURRED: "Wystąpił błąd",
+  AUTO_CHARGE_PRIORITY: "Automatycznie zmień priorytet ładowania",
+  AUTO_OUTPUT_PRIORITY: "Automatycznie zmień priorytet wyjścia",
   CHOOSE_VALID_CHART_SERIES: "Wybierz poprawny parametr z listy powyżej",
   LOADING: "Wczytywanie",
   MENU_CHARTS: "Wykresy",
@@ -11,4 +13,6 @@ export const STRINGS = {
   PRODUCTION_MONTHS: "Ostatnie 12 miesięcy",
   PRODUCTION_PV: "Produkcja",
   PRODUCTION_TOTAL: "Zużycie",
+  SAVE: "Zapisz",
+  SETTINGS_LOG: "Ustawienia",
 };

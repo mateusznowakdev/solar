@@ -68,6 +68,11 @@ class SeriesResponseSerializer(Serializer):
     values = SeriesItemResponseSerializer(many=True)
 
 
+class SettingsResponseSerializer(Serializer):
+    auto_charge_priority = serializers.BooleanField()
+    auto_output_priority = serializers.BooleanField()
+
+
 class StateSerializer(ModelSerializer):
     controller_faults = serializers.ListField(child=serializers.IntegerField())
     inverter_faults = serializers.ListField(child=serializers.IntegerField())

@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from solar.core.models import (
     LogEntry,
+    SettingsEntry,
     StateArchive,
     StateRaw,
     StateT1,
@@ -24,13 +25,13 @@ CHART_DATA_MODELS = (
 MAX_DATA_POINTS = 750
 
 
-class LogService:
+class LogAPIService:
     @staticmethod
     def get_logs() -> QuerySet[LogEntry]:
         return LogEntry.objects.all()[:100]
 
 
-class ProductionService:
+class ProductionAPIService:
     @staticmethod
     def get_production(*, timestamps: list[datetime]) -> list:
         timestamps = list(reversed(sorted(set(timestamps))))
@@ -55,7 +56,7 @@ class ProductionService:
         return data
 
 
-class SeriesService:
+class SeriesAPIService:
     @staticmethod
     def get_series(
         *, fields: list[str], date_from: datetime, date_to: datetime
@@ -94,4 +95,23 @@ class SeriesService:
                 {"field": f, "x": [d[0] for d in data], "y": [d[idx + 1] for d in data]}
                 for idx, f in enumerate(fields)
             ],
+        }
+
+
+class SettingsAPIService:
+    @staticmethod
+    def get_settings() -> dict:
+        try:
+            ac = SettingsEntry.objects.get(name="auto_charge_priority").checked
+        except SettingsEntry.DoesNotExist:
+            ac = False
+
+        try:
+            ao = SettingsEntry.objects.get(name="auto_output_priority").checked
+        except SettingsEntry.DoesNotExist:
+            ao = False
+
+        return {
+            "auto_charge_priority": ac,
+            "auto_output_priority": ao,
         }

@@ -10,14 +10,20 @@ from solar.core.serializers import (
     ProductionResponseSerializer,
     SeriesRequestSerializer,
     SeriesResponseSerializer,
+    SettingsResponseSerializer,
 )
-from solar.core.services.web import LogService, ProductionService, SeriesService
+from solar.core.services.web import (
+    LogAPIService,
+    ProductionAPIService,
+    SeriesAPIService,
+    SettingsAPIService,
+)
 
 
 class LogAPIView(views.APIView):
     @extend_schema(responses={200: LogEntrySerializer(many=True)})
     def get(self, request: Request) -> Response:
-        out_data = LogService.get_logs()
+        out_data = LogAPIService.get_logs()
         out_serializer = LogEntrySerializer(instance=out_data, many=True)
 
         return Response(data=out_serializer.data)
@@ -35,7 +41,7 @@ class ProductionAPIView(views.APIView):
         in_serializer = ProductionRequestSerializer(data=self.request.query_params)
         in_serializer.is_valid(raise_exception=True)
 
-        out_data = ProductionService.get_production(
+        out_data = ProductionAPIService.get_production(
             timestamps=in_serializer.validated_data.get("timestamp"),
         )
         out_serializer = ProductionResponseSerializer(out_data, many=True)
@@ -56,11 +62,20 @@ class SeriesAPIView(views.APIView):
         in_serializer = SeriesRequestSerializer(data=self.request.query_params)
         in_serializer.is_valid(raise_exception=True)
 
-        out_data = SeriesService.get_series(
+        out_data = SeriesAPIService.get_series(
             fields=in_serializer.validated_data.get("field"),
             date_from=in_serializer.validated_data.get("date_from"),
             date_to=in_serializer.validated_data.get("date_to"),
         )
         out_serializer = SeriesResponseSerializer(out_data)
+
+        return Response(data=out_serializer.data)
+
+
+class SettingsAPIView(views.APIView):
+    @extend_schema(responses={200: SettingsResponseSerializer()})
+    def get(self, request: Request) -> Response:
+        out_data = SettingsAPIService.get_settings()
+        out_serializer = SettingsResponseSerializer(out_data)
 
         return Response(data=out_serializer.data)

@@ -5,6 +5,7 @@ import Charts from "./routes/Charts";
 import Log from "./routes/Log";
 import Parameters from "./routes/Parameters";
 import Production from "./routes/Production";
+import Settings from "./routes/Settings";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route element={<Charts />} path="/charts" />
         <Route element={<Production />} path="/production" />
         <Route element={<Log />} path="/log" />
+        <Route element={<Settings />} path="/settings" />
       </Routes>
       <NavigationBar />
     </HashRouter>
