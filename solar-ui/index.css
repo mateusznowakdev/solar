@@ -49,12 +49,12 @@
 }
 
 .refresh-button {
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   bottom: 5rem;
-  height: 4rem;
+  height: 3rem;
   position: fixed;
   right: 1rem;
-  width: 4rem;
+  width: 3rem;
 }
 
 .text-small {

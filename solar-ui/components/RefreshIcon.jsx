@@ -8,7 +8,7 @@ export default function RefreshIcon() {
       onClick={() => window.location.reload()}
       variant="light"
     >
-      <RefreshCw />
+      <RefreshCw strokeWidth={1.25} />
     </Button>
   );
 }
