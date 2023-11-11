@@ -1,21 +1,22 @@
 import collections
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from solar.core.models import LogEntry, StateRaw
+from solar.core.models import StateRaw
 from solar.core.services.logging import LoggingService
 
 CHUNK_SIZE = 32
 
-PRIORITY_PV = 0
-PRIORITY_GRID = 1
+CHARGE_SAFE_HOURS = (0, 1, 2, 3, 4, 5, 22, 23)
 
-DEFAULT_COOLDOWN = timedelta(seconds=10)
-PV_COOLDOWN = timedelta(seconds=10)
-GRID_COOLDOWN = timedelta(minutes=5)
+CHARGE_PREFER_PV = 0
+CHARGE_ONLY_PV = 3
+
+OUTPUT_PRIORITY_PV = 0
+OUTPUT_PRIORITY_GRID = 1
 
 
 def convert_to_signed(value: int) -> int:
@@ -106,7 +107,8 @@ class ControlService:
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
-        self.next_pv_processing_time = timezone.now()
+        self.next_charge_priority_change_time = datetime.now()
+        self.next_output_priority_change_time = datetime.now()
 
     def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them
@@ -175,7 +177,8 @@ class ControlService:
     def postprocess_state(self, *, state: StateRaw) -> None:
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
-        self._process_pv_voltage(state=state)
+        self._change_charge_priority(state=state)
+        self._change_output_priority(state=state)
 
     def _process_controller_faults(self, *, state: StateRaw) -> None:
         if set(state.controller_faults) != set(self.past_controller_faults):
@@ -197,7 +200,48 @@ class ControlService:
 
         self.past_inverter_faults = state.inverter_faults
 
-    def _process_pv_voltage(self, *, state: StateRaw) -> None:
+    def _change_charge_priority(self, *, state: StateRaw) -> None:
+        if not settings.EXPERIMENTAL_CHANGE_STATE:
+            return
+
+        # Skip processing during cooldown period
+
+        current_time = datetime.now()
+        if current_time < self.next_charge_priority_change_time:
+            return
+
+        # Change state if necessary
+        # System (naive) time is used
+
+        hour = current_time.hour
+
+        if hour in CHARGE_SAFE_HOURS and state.charge_priority != CHARGE_PREFER_PV:
+            # prefer PV
+            new_charge_priority = CHARGE_PREFER_PV
+            send_data(self.client, 0xE20F, new_charge_priority)
+            self.next_charge_priority_change_time = current_time + timedelta(minutes=1)
+
+        elif hour not in CHARGE_SAFE_HOURS and state.charge_priority != CHARGE_ONLY_PV:
+            # enforce PV
+            new_charge_priority = CHARGE_ONLY_PV
+            send_data(self.client, 0xE20F, new_charge_priority)
+            self.next_charge_priority_change_time = current_time + timedelta(minutes=1)
+
+        else:
+            # do nothing
+            new_charge_priority = None
+            self.next_charge_priority_change_time = current_time + timedelta(seconds=10)
+
+        # Add log entry if state has changed
+
+        if new_charge_priority is not None:
+            LoggingService.log(
+                timestamp=timezone.now(),
+                event="charge_priority",
+                value=new_charge_priority,
+            )
+
+    def _change_output_priority(self, *, state: StateRaw) -> None:
         if not settings.EXPERIMENTAL_CHANGE_STATE:
             return
 
@@ -207,36 +251,36 @@ class ControlService:
 
         # Skip processing during cooldown period
 
-        current_time = timezone.now()
-        if current_time < self.next_pv_processing_time:
+        current_time = datetime.now()
+        if current_time < self.next_output_priority_change_time:
             return
 
         # Change state if necessary
 
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 
-        if avg_pv_voltage < 200 and state.output_priority != PRIORITY_GRID:
+        if avg_pv_voltage < 200 and state.output_priority != OUTPUT_PRIORITY_GRID:
             # switch to grid
-            new_output_priority = PRIORITY_GRID
+            new_output_priority = OUTPUT_PRIORITY_GRID
             send_data(self.client, 0xE204, new_output_priority)
-            self.next_pv_processing_time = current_time + GRID_COOLDOWN
+            self.next_output_priority_change_time = current_time + timedelta(minutes=5)
 
-        elif avg_pv_voltage > 220 and state.output_priority != PRIORITY_PV:
+        elif avg_pv_voltage > 220 and state.output_priority != OUTPUT_PRIORITY_PV:
             # switch to PV
-            new_output_priority = PRIORITY_PV
+            new_output_priority = OUTPUT_PRIORITY_PV
             send_data(self.client, 0xE204, new_output_priority)
-            self.next_pv_processing_time = current_time + PV_COOLDOWN
+            self.next_output_priority_change_time = current_time + timedelta(seconds=10)
 
         else:
             # do nothing
             new_output_priority = None
-            self.next_pv_processing_time = current_time + DEFAULT_COOLDOWN
+            self.next_output_priority_change_time = current_time + timedelta(seconds=10)
 
         # Add log entry if state has changed
 
         if new_output_priority is not None:
             LoggingService.log(
-                timestamp=current_time,
+                timestamp=timezone.now(),
                 event="output_priority",
                 value=new_output_priority,
             )
