@@ -7,7 +7,6 @@ import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
-
 import { STRINGS } from "../locale";
 import { getBackendResponse, getDatesForOffset } from "../utils";
 

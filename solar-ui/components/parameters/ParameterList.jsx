@@ -1,8 +1,7 @@
 import ListGroup from "react-bootstrap/ListGroup";
 
-import ParameterListItem from "./ParameterListItem";
-
 import { PARAMETER_METADATA } from "../../meta";
+import ParameterListItem from "./ParameterListItem";
 
 function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;

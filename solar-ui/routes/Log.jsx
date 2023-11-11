@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import RefreshIcon from "../components/RefreshIcon";
 import LogList from "../components/log/LogList";
-
 import { STRINGS } from "../locale";
 import { getBackendResponse, renderDate } from "../utils";
 

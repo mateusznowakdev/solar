@@ -169,11 +169,11 @@ export const PARAMETER_METADATA = {
       })[value] || value,
   },
   pv_buck_current_1: {
-    description: "Zbiorczy prąd PV 1",
+    description: "Zbiorczy prąd paneli 1",
     unit: "A",
   },
   pv_buck_current_2: {
-    description: "Zbiorczy prąd PV 2",
+    description: "Zbiorczy prąd paneli 2",
     unit: "A",
   },
   pv_current: {

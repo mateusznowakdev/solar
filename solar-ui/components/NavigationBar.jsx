@@ -1,10 +1,9 @@
-import Nav from "react-bootstrap/Nav";
-import { NavLink } from "react-router-dom";
-
 import Factory from "lucide-react/dist/esm/icons/factory";
 import LineChart from "lucide-react/dist/esm/icons/line-chart";
 import RadioTower from "lucide-react/dist/esm/icons/radio-tower";
 import ScrollText from "lucide-react/dist/esm/icons/scroll-text";
+import Nav from "react-bootstrap/Nav";
+import { NavLink } from "react-router-dom";
 
 import { STRINGS } from "../locale";
 

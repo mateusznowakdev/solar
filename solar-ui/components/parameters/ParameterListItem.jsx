@@ -1,8 +1,7 @@
-import ListGroup from "react-bootstrap/ListGroup";
-import LinkContainer from "react-router-bootstrap/LinkContainer";
-
 import Dot from "lucide-react/dist/esm/icons/dot";
 import Star from "lucide-react/dist/esm/icons/star";
+import ListGroup from "react-bootstrap/ListGroup";
+import LinkContainer from "react-router-bootstrap/LinkContainer";
 
 import { COLORS } from "../../meta";
 

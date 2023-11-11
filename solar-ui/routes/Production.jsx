@@ -5,7 +5,6 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 import ProductionList from "../components/production/ProductionList";
-
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
 

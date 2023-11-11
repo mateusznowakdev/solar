@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import LegalNotice from "../components/LegalNotice";
 import RefreshIcon from "../components/RefreshIcon";
 import ParameterList from "../components/parameters/ParameterList";
-
 import { dateReviver } from "../utils";
 
 const MQTT_JSON_TOPIC = "solar/json";

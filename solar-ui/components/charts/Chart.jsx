@@ -1,11 +1,11 @@
 import {
-  CategoryScale,
   Chart as BaseChart,
+  CategoryScale,
   Filler,
   Legend,
-  LinearScale,
   LineController,
   LineElement,
+  LinearScale,
   PointElement,
   Title,
   Tooltip,
@@ -63,7 +63,8 @@ export default function Chart({ data }) {
           tooltip: {
             callbacks: {
               title: (context) => renderDateTime(data.x[context[0].parsed.x]),
-              label: (context) => PARAMETER_METADATA[data.field].render(context.raw),
+              label: (context) =>
+                PARAMETER_METADATA[data.field].render(context.raw),
             },
           },
         },

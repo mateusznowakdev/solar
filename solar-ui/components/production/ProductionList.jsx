@@ -1,8 +1,7 @@
 import Table from "react-bootstrap/Table";
 
-import ProductionListItem from "./ProductionListItem";
-
 import { STRINGS } from "../../locale";
+import ProductionListItem from "./ProductionListItem";
 
 export default function ProductionList({ data, mode }) {
   return (
