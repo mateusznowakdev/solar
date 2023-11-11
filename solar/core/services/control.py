@@ -101,13 +101,18 @@ class ControlService:
         )
         self.client.connect()
 
+        LoggingService.log(
+            timestamp=timezone.now(),
+            event="inverter_connected",
+            value=device,
+        )
+
         self.past_pv_voltages = collections.deque(maxlen=60)
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
-        # wait for database to start
-        self.next_charge_priority_change_time = datetime.now() + timedelta(seconds=30)
-        self.next_output_priority_change_time = datetime.now() + timedelta(seconds=30)
+        self.next_charge_priority_change_time = datetime.now()
+        self.next_output_priority_change_time = datetime.now()
 
     def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them

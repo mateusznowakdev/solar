@@ -2,10 +2,10 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-import { METADATA } from "../../meta";
+import { PARAMETER_METADATA } from "../../meta";
 
 function shouldHaveChart(key) {
-  return (METADATA[key] || {}).chart;
+  return (PARAMETER_METADATA[key] || {}).chart;
 }
 
 function sortByDescription(a, b) {
@@ -13,7 +13,7 @@ function sortByDescription(a, b) {
 }
 
 export default function ChartSeriesPicker({ setValue, value }) {
-  const choices = Object.entries(METADATA)
+  const choices = Object.entries(PARAMETER_METADATA)
     .filter(([key]) => shouldHaveChart(key))
     .map(([key, meta]) => {
       let description = meta.description;

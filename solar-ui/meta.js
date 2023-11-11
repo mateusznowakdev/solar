@@ -5,7 +5,7 @@ export const COLORS = {
   PRIMARY_TRANSLUCENT: "#19875433",
 };
 
-export const METADATA = {
+export const PARAMETER_METADATA = {
   ambient_temperature: {
     description: "Temperatura otoczenia",
     unit: "°C",
@@ -193,6 +193,17 @@ export const METADATA = {
     description: "Czas pomiaru",
     render: (value) => renderDateTime(value),
   },
+};
+
+export const EVENT_METADATA = {
+  inverter_connected: {
+    description: "Połączono z",
+  },
+};
+
+export const METADATA = {
+  ...PARAMETER_METADATA,
+  ...EVENT_METADATA,
 };
 
 export function defaultRenderer(value) {

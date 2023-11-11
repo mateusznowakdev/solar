@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { useEffect } from "react";
 
-import { COLORS, METADATA } from "../../meta";
+import { COLORS, PARAMETER_METADATA } from "../../meta";
 import { renderDateTime, renderTime } from "../../utils";
 
 BaseChart.register(
@@ -37,7 +37,7 @@ export default function Chart({ data }) {
             borderColor: COLORS.PRIMARY,
             data: data.y,
             fill: true,
-            label: METADATA[data.field].description,
+            label: PARAMETER_METADATA[data.field].description,
           },
         ],
         labels: data.x,
@@ -58,12 +58,12 @@ export default function Chart({ data }) {
           },
           title: {
             display: true,
-            text: METADATA[data.field].description,
+            text: PARAMETER_METADATA[data.field].description,
           },
           tooltip: {
             callbacks: {
               title: (context) => renderDateTime(data.x[context[0].parsed.x]),
-              label: (context) => METADATA[data.field].render(context.raw),
+              label: (context) => PARAMETER_METADATA[data.field].render(context.raw),
             },
           },
         },
@@ -76,7 +76,7 @@ export default function Chart({ data }) {
           },
           y: {
             ticks: {
-              callback: (value) => METADATA[data.field].render(value),
+              callback: (value) => PARAMETER_METADATA[data.field].render(value),
               precision: 0,
             },
           },

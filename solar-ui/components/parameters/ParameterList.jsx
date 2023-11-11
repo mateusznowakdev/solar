@@ -2,7 +2,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 import ParameterListItem from "./ParameterListItem";
 
-import { METADATA } from "../../meta";
+import { PARAMETER_METADATA } from "../../meta";
 
 function sortByPinned(a, b) {
   if (a.pin && !b.pin) return -1;
@@ -12,7 +12,7 @@ function sortByPinned(a, b) {
 }
 
 export default function ParameterList({ data, pinned, togglePinned }) {
-  const finalData = Object.entries(METADATA)
+  const finalData = Object.entries(PARAMETER_METADATA)
     .map(([key, meta]) => ({
       chart: meta.chart,
       description: meta.description,
