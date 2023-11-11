@@ -12,7 +12,7 @@ def catch_exception(fn):
     def inner():
         try:
             fn()
-        except Exception as e:
+        except Exception as e:  # pylint:disable=broad-exception-caught
             traceback.print_exception(e)
 
     return inner

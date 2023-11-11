@@ -3,34 +3,46 @@ from rest_framework import serializers
 from solar.core.models import LogEntry, StateRaw, get_numeric_field_names
 
 
-class LogEntrySerializer(serializers.ModelSerializer):
-    event = serializers.SerializerMethodField()
-    value = serializers.SerializerMethodField()
+class Serializer(serializers.Serializer):
+    def create(self, validated_data):
+        raise Exception("This serializer is read-only")
+
+    def update(self, instance, validated_data):
+        raise Exception("This serializer is read-only")
+
+
+class ModelSerializer(serializers.ModelSerializer):
+    pass
+
+
+class LogEntrySerializer(ModelSerializer):
+    event = serializers.SerializerMethodField(method_name="get_event_field")
+    value = serializers.SerializerMethodField(method_name="get_value_field")
 
     class Meta:
         model = LogEntry
         fields = ("timestamp", "event", "value")
 
-    def get_event(self, obj):
+    def get_event_field(self, obj):
         return obj.data.get("event")
 
-    def get_value(self, obj):
+    def get_value_field(self, obj):
         return obj.data.get("value")
 
 
-class ProductionRequestSerializer(serializers.Serializer):
+class ProductionRequestSerializer(Serializer):
     timestamp = serializers.ListField(
         child=serializers.DateTimeField(), min_length=1, max_length=14
     )
 
 
-class ProductionResponseSerializer(serializers.Serializer):
+class ProductionResponseSerializer(Serializer):
     timestamp = serializers.DateTimeField()
     pv_power = serializers.IntegerField()
     load_active_power = serializers.IntegerField()
 
 
-class SeriesRequestSerializer(serializers.Serializer):
+class SeriesRequestSerializer(Serializer):
     field = serializers.ListField(
         child=serializers.ChoiceField(choices=get_numeric_field_names()),
         min_length=1,
@@ -40,19 +52,19 @@ class SeriesRequestSerializer(serializers.Serializer):
     date_to = serializers.DateTimeField()
 
 
-class SeriesItemResponseSerializer(serializers.Serializer):
+class SeriesItemResponseSerializer(Serializer):
     field = serializers.CharField()
     x = serializers.ListField(child=serializers.DateTimeField())
     y = serializers.ListField(child=serializers.FloatField())
 
 
-class SeriesResponseSerializer(serializers.Serializer):
+class SeriesResponseSerializer(Serializer):
     date_from = serializers.DateTimeField()
     date_to = serializers.DateTimeField()
     values = SeriesItemResponseSerializer(many=True)
 
 
-class StateSerializer(serializers.ModelSerializer):
+class StateSerializer(ModelSerializer):
     controller_faults = serializers.ListField(child=serializers.IntegerField())
     inverter_faults = serializers.ListField(child=serializers.IntegerField())
 

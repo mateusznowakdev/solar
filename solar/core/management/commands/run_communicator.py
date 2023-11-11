@@ -29,7 +29,7 @@ class Command(BaseCommand):
             try:
                 control_service = ControlService(device=device)
                 run_communicator(control_service, publish_service)
-            except Exception as e:
+            except Exception as e:  # pylint:disable=broad-exception-caught
                 traceback.print_exception(e)
                 time.sleep(2.5)
 
