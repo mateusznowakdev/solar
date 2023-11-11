@@ -185,22 +185,24 @@ class ControlService:
         self._change_output_priority(state=state)
 
     def _process_controller_faults(self, *, state: StateRaw) -> None:
-        if set(state.controller_faults) != set(self.past_controller_faults):
-            LoggingService.log(
-                timestamp=state.timestamp,
-                event="controller_faults",
-                value=state.controller_faults,
-            )
+        if state.controller_faults:
+            if set(state.controller_faults) != set(self.past_controller_faults):
+                LoggingService.log(
+                    timestamp=state.timestamp,
+                    event="controller_faults",
+                    value=state.controller_faults,
+                )
 
         self.past_controller_faults = state.controller_faults
 
     def _process_inverter_faults(self, *, state: StateRaw) -> None:
-        if set(state.inverter_faults) != set(self.past_inverter_faults):
-            LoggingService.log(
-                timestamp=state.timestamp,
-                event="inverter_faults",
-                value=state.inverter_faults,
-            )
+        if state.inverter_faults:
+            if set(state.inverter_faults) != set(self.past_inverter_faults):
+                LoggingService.log(
+                    timestamp=state.timestamp,
+                    event="inverter_faults",
+                    value=state.inverter_faults,
+                )
 
         self.past_inverter_faults = state.inverter_faults
 
