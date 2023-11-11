@@ -1,5 +1,5 @@
 import collections
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 from django.conf import settings
 from django.utils import timezone
@@ -9,8 +9,6 @@ from solar.core.models import StateRaw
 from solar.core.services.logging import LoggingService
 
 CHUNK_SIZE = 32
-
-CHARGE_SAFE_HOURS = (0, 1, 2, 3, 4, 5, 22, 23)
 
 CHARGE_PREFER_PV = 0
 CHARGE_ONLY_PV = 3
@@ -214,15 +212,19 @@ class ControlService:
         # Change state if necessary
         # System (naive) time is used
 
-        hour = current_time.hour
+        is_safe_hour = (
+            current_time.isoweekday() in (6, 7)
+            or current_time.time() < time(hour=5, minute=30)
+            or current_time.time() >= time(hour=22, minute=30)
+        )
 
-        if hour in CHARGE_SAFE_HOURS and state.charge_priority != CHARGE_PREFER_PV:
+        if is_safe_hour and state.charge_priority != CHARGE_PREFER_PV:
             # prefer PV
             new_charge_priority = CHARGE_PREFER_PV
             send_data(self.client, 0xE20F, new_charge_priority)
             self.next_charge_priority_change_time = current_time + timedelta(minutes=1)
 
-        elif hour not in CHARGE_SAFE_HOURS and state.charge_priority != CHARGE_ONLY_PV:
+        elif not is_safe_hour and state.charge_priority != CHARGE_ONLY_PV:
             # enforce PV
             new_charge_priority = CHARGE_ONLY_PV
             send_data(self.client, 0xE20F, new_charge_priority)
