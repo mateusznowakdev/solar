@@ -1,3 +1,20 @@
+"""
+These environment variables can be used to configure the application:
+
+- DJANGO_ALLOWED_HOSTS=str,str,...
+- DJANGO_ALLOWED_ORIGINS=str,str,...
+- DJANGO_DEBUG=int
+- DJANGO_SECRET_KEY=str
+- EXPERIMENTAL_STATE_CHANGE=int
+- MQTT_BROKER=str
+- POSTGRES_HOST=str
+- POSTGRES_NAME=str
+- POSTGRES_PASSWORD=str
+- POSTGRES_PORT=str
+- POSTGRES_USER=str
+- TZ=str
+"""
+
 import os
 from pathlib import Path
 
