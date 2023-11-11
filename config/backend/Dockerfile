@@ -13,6 +13,8 @@ RUN poetry export > requirements.txt
 FROM python:3.11-alpine AS target
 WORKDIR /app
 
+RUN apk add tzdata
+
 COPY --from=intermediate /app/requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
