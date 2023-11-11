@@ -48,6 +48,15 @@
   text-align: right;
 }
 
+.refresh-button {
+  border-radius: 2rem;
+  bottom: 5rem;
+  height: 4rem;
+  position: fixed;
+  right: 1rem;
+  width: 4rem;
+}
+
 .text-small {
   font-size: 0.75rem;
 }

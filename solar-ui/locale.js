@@ -7,7 +7,6 @@ export const STRINGS = {
   MENU_LOG: "Dziennik",
   MENU_MAIN: "Na żywo",
   MENU_PRODUCTION: "Produkcja",
-  PARAMETERS_REFRESH_PROMPT: "Przeciągnij w dół, aby odświeżyć",
   PRODUCTION_DAYS: "Ostatnie 14 dni",
   PRODUCTION_MONTHS: "Ostatnie 12 miesięcy",
   PRODUCTION_PV: "Produkcja",

@@ -2,8 +2,8 @@ import { Client } from "paho-mqtt/paho-mqtt";
 import { useEffect, useState } from "react";
 
 import LegalNotice from "../components/LegalNotice";
+import RefreshIcon from "../components/RefreshIcon";
 import ParameterList from "../components/parameters/ParameterList";
-import RefreshPrompt from "../components/parameters/RefreshPrompt";
 
 import { dateReviver } from "../utils";
 
@@ -12,8 +12,6 @@ const MQTT_JSON_TOPIC = "solar/json";
 export default function Parameters() {
   const [data, setData] = useState({});
   const [pinned, setPinned] = useState([]);
-
-  const [isLive, setLive] = useState(true);
 
   function getPinned() {
     const pinned = JSON.parse(
@@ -27,12 +25,9 @@ export default function Parameters() {
     const client = new Client(window.location.hostname, 8883, "/", clientName);
 
     client.onMessageArrived = (message) => {
-      setLive(true);
       setData(JSON.parse(message.payloadString, dateReviver));
     };
-    client.onConnectionLost = () => {
-      setLive(false);
-    };
+    client.onConnectionLost = () => {};
 
     client.connect({
       onSuccess: () => {
@@ -66,9 +61,9 @@ export default function Parameters() {
 
   return (
     <div>
-      <RefreshPrompt show={!isLive} />
       <ParameterList data={data} pinned={pinned} togglePinned={togglePinned} />
       <LegalNotice />
+      <RefreshIcon />
     </div>
   );
 }

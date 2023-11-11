@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import RefreshIcon from "../components/RefreshIcon";
 import LogList from "../components/log/LogList";
 
 import { STRINGS } from "../locale";
@@ -35,5 +36,10 @@ export default function Log() {
       </div>
     );
 
-  return <LogList data={data} />;
+  return (
+    <>
+      <LogList data={data} />
+      <RefreshIcon />
+    </>
+  );
 }
