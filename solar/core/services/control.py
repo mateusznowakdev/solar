@@ -107,8 +107,9 @@ class ControlService:
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
-        self.next_charge_priority_change_time = datetime.now()
-        self.next_output_priority_change_time = datetime.now()
+        # wait for database to start
+        self.next_charge_priority_change_time = datetime.now() + timedelta(seconds=30)
+        self.next_output_priority_change_time = datetime.now() + timedelta(seconds=30)
 
     def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them
