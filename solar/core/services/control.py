@@ -249,6 +249,7 @@ class ControlService:
                 timestamp=timezone.now(),
                 event="charge_priority",
                 value=new_charge_priority,
+                automated=True,
             )
 
     def _change_output_priority(self, *, state: StateRaw) -> None:
@@ -293,4 +294,5 @@ class ControlService:
                 timestamp=timezone.now(),
                 event="output_priority",
                 value=new_output_priority,
+                automated=True,
             )
