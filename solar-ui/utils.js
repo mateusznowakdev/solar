@@ -41,6 +41,14 @@ export function getVersion() {
   return import.meta.env.PACKAGE_VERSION;
 }
 
+export function renderBoolean(value) {
+  return value ? "Tak" : "Nie";
+}
+
+export function renderChoice(choices, value) {
+  return choices[value] || value;
+}
+
 export function renderDate(date, options) {
   if (isNaN(date)) return "";
 
@@ -70,6 +78,12 @@ export function renderMonth(date, options) {
     year: "numeric",
     ...(options || {}),
   }).format(date);
+}
+
+export function renderMultipleChoices(choices, values) {
+  if (!values || values.length === 0) return "---";
+
+  return values.map((value) => renderChoice(choices, value)).join(", ");
 }
 
 export function renderNumber(number, options) {
