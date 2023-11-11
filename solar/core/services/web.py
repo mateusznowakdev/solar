@@ -115,3 +115,16 @@ class SettingsAPIService:
             "auto_charge_priority": ac,
             "auto_output_priority": ao,
         }
+
+    @staticmethod
+    def update_settings(*, settings: dict) -> dict:
+        SettingsEntry.objects.update_or_create(
+            name="auto_charge_priority",
+            defaults={"checked": settings.get("auto_charge_priority", False)},
+        )
+        SettingsEntry.objects.update_or_create(
+            name="auto_output_priority",
+            defaults={"checked": settings.get("auto_output_priority", False)},
+        )
+
+        return SettingsAPIService.get_settings()

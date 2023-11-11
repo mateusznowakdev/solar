@@ -7,8 +7,8 @@ export function dateReviver(key, value) {
   return value;
 }
 
-export function getBackendResponse(path) {
-  return fetch(getBackendURI() + path)
+export function getBackendResponse(path, options) {
+  return fetch(getBackendURI() + path, options)
     .then(async (response) => {
       const status = response.status;
       const text = await response.text();

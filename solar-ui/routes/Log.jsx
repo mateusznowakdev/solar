@@ -11,7 +11,7 @@ export default function Log() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  function getLogs() {
     setLoading(true);
 
     getBackendResponse("/api/log/").then(({ data, error }) => {
@@ -23,7 +23,9 @@ export default function Log() {
       setError(error);
       setLoading(false);
     });
-  }, []);
+  }
+
+  useEffect(getLogs, []);
 
   if (loading)
     return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;

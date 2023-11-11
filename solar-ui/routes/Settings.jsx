@@ -12,7 +12,7 @@ export default function Settings() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  function getSettings() {
     setLoading(true);
 
     getBackendResponse("/api/settings/").then(({ data, error }) => {
@@ -20,7 +20,23 @@ export default function Settings() {
       setError(error);
       setLoading(false);
     });
-  }, []);
+  }
+
+  function putSettings() {
+    setLoading(true);
+
+    getBackendResponse("/api/settings/", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+    }).then(({ data, error }) => {
+      setData(data);
+      setError(error);
+      setLoading(false);
+    });
+  }
+
+  useEffect(getSettings, []);
 
   if (loading)
     return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
@@ -55,7 +71,9 @@ export default function Settings() {
         />
       </div>
       <div className="d-grid mt-3">
-        <Button variant="light">{STRINGS.SAVE}</Button>
+        <Button onClick={putSettings} variant="light">
+          {STRINGS.SAVE}
+        </Button>
       </div>
     </Form>
   );

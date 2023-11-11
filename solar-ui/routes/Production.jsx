@@ -39,7 +39,7 @@ export default function Production() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  function getProduction() {
     let timestamps;
 
     switch (mode) {
@@ -63,7 +63,9 @@ export default function Production() {
         setLoading(false);
       },
     );
-  }, [mode]);
+  }
+
+  useEffect(getProduction, [mode]);
 
   return (
     <div>

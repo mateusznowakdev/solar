@@ -10,6 +10,7 @@ from solar.core.serializers import (
     ProductionResponseSerializer,
     SeriesRequestSerializer,
     SeriesResponseSerializer,
+    SettingsRequestSerializer,
     SettingsResponseSerializer,
 )
 from solar.core.services.web import (
@@ -76,6 +77,20 @@ class SettingsAPIView(views.APIView):
     @extend_schema(responses={200: SettingsResponseSerializer()})
     def get(self, request: Request) -> Response:
         out_data = SettingsAPIService.get_settings()
+        out_serializer = SettingsResponseSerializer(out_data)
+
+        return Response(data=out_serializer.data)
+
+    @extend_schema(
+        request=SettingsRequestSerializer(),
+        responses={200: SettingsResponseSerializer()},
+    )
+    def put(self, request: Request) -> Response:
+        in_serializer = SettingsRequestSerializer(data=request.data)
+        in_serializer.is_valid(raise_exception=True)
+        in_data = in_serializer.validated_data
+
+        out_data = SettingsAPIService.update_settings(settings=in_data)
         out_serializer = SettingsResponseSerializer(out_data)
 
         return Response(data=out_serializer.data)
