@@ -5,7 +5,6 @@ from django.utils import timezone
 
 from solar.core.models import (
     LogEntry,
-    SettingsEntry,
     StateArchive,
     StateRaw,
     StateT1,
@@ -13,6 +12,7 @@ from solar.core.models import (
     StateT3,
     StateT4,
 )
+from solar.core.services.settings import SettingsService
 
 CHART_DATA_MODELS = (
     (StateRaw, timedelta(hours=1)),
@@ -101,30 +101,14 @@ class SeriesAPIService:
 class SettingsAPIService:
     @staticmethod
     def get_settings() -> dict:
-        try:
-            ac = SettingsEntry.objects.get(name="auto_charge_priority").checked
-        except SettingsEntry.DoesNotExist:
-            ac = False
-
-        try:
-            ao = SettingsEntry.objects.get(name="auto_output_priority").checked
-        except SettingsEntry.DoesNotExist:
-            ao = False
-
         return {
-            "auto_charge_priority": ac,
-            "auto_output_priority": ao,
+            name: SettingsService.get_setting(name=name)
+            for name in ("auto_charge_priority", "auto_output_priority")
         }
 
     @staticmethod
     def update_settings(*, settings: dict) -> dict:
-        SettingsEntry.objects.update_or_create(
-            name="auto_charge_priority",
-            defaults={"checked": settings.get("auto_charge_priority", False)},
-        )
-        SettingsEntry.objects.update_or_create(
-            name="auto_output_priority",
-            defaults={"checked": settings.get("auto_output_priority", False)},
-        )
+        for name in ("auto_charge_priority", "auto_output_priority"):
+            SettingsService.put_setting(name=name, checked=settings[name])
 
         return SettingsAPIService.get_settings()

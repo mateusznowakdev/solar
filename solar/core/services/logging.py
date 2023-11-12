@@ -7,7 +7,7 @@ from solar.core.models import LogEntry
 class LoggingService:
     @staticmethod
     def log(
-        *, timestamp: datetime, event: str, value: Any, automated: bool = False
+        *, timestamp: datetime, event: str, value: Any = None, automated: bool = False
     ) -> None:
         LogEntry.objects.create(
             timestamp=timestamp,

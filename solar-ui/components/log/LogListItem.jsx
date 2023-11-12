@@ -8,8 +8,8 @@ export default function LogListItem({ data }) {
     <ListGroup.Item className="align-items-center d-flex justify-content-between py-2">
       <div>
         {METADATA[data.event].description}
-        {": "}
-        {METADATA[data.event].render(data.value)}
+        {data.value !== null && ": "}
+        {data.value !== null && METADATA[data.event].render(data.value)}
         {data.automated && "*"}
       </div>
       <div className="text-small">{renderTime(data.timestamp)}</div>

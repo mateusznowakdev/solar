@@ -9,10 +9,14 @@ export const STRINGS = {
   MENU_LOG: "Dziennik",
   MENU_MAIN: "Na żywo",
   MENU_PRODUCTION: "Produkcja",
+  MENU_SETTINGS: "Ustawienia",
   PRODUCTION_DAYS: "Ostatnie 14 dni",
   PRODUCTION_MONTHS: "Ostatnie 12 miesięcy",
   PRODUCTION_PV: "Produkcja",
   PRODUCTION_TOTAL: "Zużycie",
   SAVE: "Zapisz",
-  SETTINGS_LOG: "Ustawienia",
+  SETTINGS_HINT:
+    "Aplikacja składa się z kilku równolegle działających modułów. " +
+    "Moduł komunikujący się z inwerterem może pobrać nowe ustawienia z opóźnieniem. " +
+    "Odpowiednia informacja pojawi się w dzienniku.",
 };

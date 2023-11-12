@@ -5,7 +5,6 @@ These environment variables can be used to configure the application:
 - DJANGO_ALLOWED_ORIGINS=str,str,...
 - DJANGO_DEBUG=int
 - DJANGO_SECRET_KEY=str
-- EXPERIMENTAL_STATE_CHANGE=int
 - MQTT_BROKER=str
 - POSTGRES_HOST=str
 - POSTGRES_NAME=str
@@ -129,5 +128,3 @@ SPECTACULAR_SETTINGS = {
 
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_PORT = 1883
-
-EXPERIMENTAL_CHANGE_STATE = bool(int(os.environ.get("EXPERIMENTAL_CHANGE_STATE", "0")))

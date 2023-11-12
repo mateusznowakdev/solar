@@ -1,12 +1,12 @@
 import collections
 from datetime import datetime, time, timedelta
 
-from django.conf import settings
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
 from solar.core.models import StateRaw
 from solar.core.services.logging import LoggingService
+from solar.core.services.settings import SettingsService
 
 CHUNK_SIZE = 32
 
@@ -107,10 +107,18 @@ class ControlService:
             value=device,
         )
 
+        self.auto_charge_priority = SettingsService.get_setting(
+            name="auto_charge_priority"
+        )
+        self.auto_output_priority = SettingsService.get_setting(
+            name="auto_output_priority"
+        )
+
         self.past_pv_voltages = collections.deque(maxlen=60)
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
+        self.next_settings_refresh_time = datetime.now() + timedelta(seconds=10)
         self.next_charge_priority_change_time = datetime.now()
         self.next_output_priority_change_time = datetime.now()
 
@@ -179,10 +187,39 @@ class ControlService:
         state.save()
 
     def postprocess_state(self, *, state: StateRaw) -> None:
+        self._refresh_settings()
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
         self._change_charge_priority(state=state)
         self._change_output_priority(state=state)
+
+    def _refresh_settings(self) -> None:
+        # Skip refreshing during cooldown period
+
+        current_time = datetime.now()
+        if current_time < self.next_settings_refresh_time:
+            return
+
+        # Get settings and compare
+
+        auto_charge_priority = SettingsService.get_setting(name="auto_charge_priority")
+        auto_output_priority = SettingsService.get_setting(name="auto_output_priority")
+
+        if auto_charge_priority != self.auto_charge_priority:
+            LoggingService.log(
+                timestamp=timezone.now(), event="auto_charge_priority_changed"
+            )
+        if auto_output_priority != self.auto_output_priority:
+            LoggingService.log(
+                timestamp=timezone.now(), event="auto_output_priority_changed"
+            )
+
+        # Store settings for later
+
+        self.auto_charge_priority = auto_charge_priority
+        self.auto_output_priority = auto_output_priority
+
+        self.next_settings_refresh_time = current_time + timedelta(seconds=10)
 
     def _process_controller_faults(self, *, state: StateRaw) -> None:
         if state.controller_faults:
@@ -207,7 +244,7 @@ class ControlService:
         self.past_inverter_faults = state.inverter_faults
 
     def _change_charge_priority(self, *, state: StateRaw) -> None:
-        if not settings.EXPERIMENTAL_CHANGE_STATE:
+        if not self.auto_charge_priority:
             return
 
         # Skip processing during cooldown period
@@ -253,7 +290,7 @@ class ControlService:
             )
 
     def _change_output_priority(self, *, state: StateRaw) -> None:
-        if not settings.EXPERIMENTAL_CHANGE_STATE:
+        if not self.auto_output_priority:
             return
 
         # Store latest PV voltage value

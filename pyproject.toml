@@ -29,6 +29,7 @@ disable = ["broad-exception-raised", "missing-class-docstring", "missing-functio
 django-settings-module = "solar.settings"
 ignore = "migrations"
 load-plugins = ["pylint_django"]
+max-attributes = 10
 
 [build-system]
 requires = ["poetry-core"]

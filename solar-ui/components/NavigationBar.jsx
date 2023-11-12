@@ -29,7 +29,7 @@ export default function NavigationBar() {
       </Nav.Link>
       <Nav.Link as={NavLink} to="/settings">
         <Settings strokeWidth={1.25} />
-        {STRINGS.SETTINGS_LOG}
+        {STRINGS.MENU_SETTINGS}
       </Nav.Link>
     </Nav>
   );

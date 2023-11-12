@@ -80,6 +80,9 @@ export default function Settings() {
           {STRINGS.SAVE}
         </Button>
       </div>
+      <div className="mt-3 text-secondary text-small">
+        {STRINGS.SETTINGS_HINT}
+      </div>
     </Form>
   );
 }
