@@ -36,6 +36,11 @@ export default function Settings() {
     });
   }
 
+  function putSettingsDelayed() {
+    setLoading(true);
+    setTimeout(putSettings, 1000);
+  }
+
   useEffect(getSettings, []);
 
   if (loading)
@@ -71,7 +76,7 @@ export default function Settings() {
         />
       </div>
       <div className="d-grid mt-3">
-        <Button onClick={putSettings} variant="light">
+        <Button onClick={putSettingsDelayed} variant="light">
           {STRINGS.SAVE}
         </Button>
       </div>
