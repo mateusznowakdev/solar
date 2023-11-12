@@ -16,7 +16,7 @@ export const STRINGS = {
   PRODUCTION_TOTAL: "Zużycie",
   SAVE: "Zapisz",
   SETTINGS_HINT:
-    "Aplikacja składa się z kilku równolegle działających modułów. " +
-    "Moduł komunikujący się z inwerterem może pobrać nowe ustawienia z opóźnieniem. " +
-    "Odpowiednia informacja pojawi się w dzienniku.",
+    "Aplikacja składa się z\u00a0kilku równolegle działających modułów. " +
+    "Moduł komunikujący się z\u00a0inwerterem może pobrać nowe ustawienia z\u00a0opóźnieniem. " +
+    "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
 };
