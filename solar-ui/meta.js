@@ -214,14 +214,14 @@ export const PARAMETER_METADATA = {
 };
 
 export const EVENT_METADATA = {
-  auto_charge_priority_changed: {
-    description: "Zastosowano nowe ustawienia",
+  system_output_priority: {
+    description: "Zmieniono ustawienia wyjścia",
   },
-  auto_output_priority_changed: {
-    description: "Zastosowano nowe ustawienia",
+  system_charge_priority: {
+    description: "Zmieniono ustawienia ładowania",
   },
-  inverter_connected: {
-    description: "Połączono z",
+  system_connecting: {
+    description: "Łączenie z",
   },
 };
 

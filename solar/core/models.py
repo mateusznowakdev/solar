@@ -92,7 +92,9 @@ class LogEntry(models.Model):
         ordering = ("-timestamp",)
 
     timestamp = models.DateTimeField(primary_key=True)
-    data = models.JSONField()
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=100)
+    value = models.JSONField(null=True)
 
 
 class SettingsEntry(models.Model):

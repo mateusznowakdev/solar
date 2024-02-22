@@ -16,22 +16,9 @@ class ModelSerializer(serializers.ModelSerializer):
 
 
 class LogEntrySerializer(ModelSerializer):
-    event = serializers.SerializerMethodField(method_name="get_event_field")
-    value = serializers.SerializerMethodField(method_name="get_value_field")
-    automated = serializers.SerializerMethodField(method_name="get_automated_field")
-
     class Meta:
         model = LogEntry
-        fields = ("timestamp", "event", "value", "automated")
-
-    def get_event_field(self, obj):
-        return obj.data.get("event")
-
-    def get_value_field(self, obj):
-        return obj.data.get("value")
-
-    def get_automated_field(self, obj):
-        return obj.data.get("automated")
+        fields = ("timestamp", "name", "category", "value")
 
 
 class ProductionRequestSerializer(Serializer):

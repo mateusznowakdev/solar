@@ -103,7 +103,7 @@ class ControlService:
 
         LoggingService.log(
             timestamp=timezone.now(),
-            event="inverter_connected",
+            name=LoggingService.SYSTEM_CONNECTING,
             value=device,
         )
 
@@ -207,11 +207,11 @@ class ControlService:
 
         if auto_charge_priority != self.auto_charge_priority:
             LoggingService.log(
-                timestamp=timezone.now(), event="auto_charge_priority_changed"
+                timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY
             )
         if auto_output_priority != self.auto_output_priority:
             LoggingService.log(
-                timestamp=timezone.now(), event="auto_output_priority_changed"
+                timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY
             )
 
         # Store settings for later
@@ -226,7 +226,7 @@ class ControlService:
             if set(state.controller_faults) != set(self.past_controller_faults):
                 LoggingService.log(
                     timestamp=state.timestamp,
-                    event="controller_faults",
+                    name=LoggingService.ERRORS_CONTROLLER_FAULTS,
                     value=state.controller_faults,
                 )
 
@@ -237,7 +237,7 @@ class ControlService:
             if set(state.inverter_faults) != set(self.past_inverter_faults):
                 LoggingService.log(
                     timestamp=state.timestamp,
-                    event="inverter_faults",
+                    name=LoggingService.ERRORS_INVERTER_FAULTS,
                     value=state.inverter_faults,
                 )
 
@@ -284,9 +284,8 @@ class ControlService:
         if new_charge_priority is not None:
             LoggingService.log(
                 timestamp=timezone.now(),
-                event="charge_priority",
+                name=LoggingService.AUTOMATION_CHARGE_PRIORITY,
                 value=new_charge_priority,
-                automated=True,
             )
 
     def _change_output_priority(self, *, state: StateRaw) -> None:
@@ -329,7 +328,6 @@ class ControlService:
         if new_output_priority is not None:
             LoggingService.log(
                 timestamp=timezone.now(),
-                event="output_priority",
+                name=LoggingService.AUTOMATION_OUTPUT_PRIORITY,
                 value=new_output_priority,
-                automated=True,
             )

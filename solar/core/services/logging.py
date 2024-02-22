@@ -5,11 +5,29 @@ from solar.core.models import LogEntry
 
 
 class LoggingService:
+    AUTOMATION_CHARGE_PRIORITY = "charge_priority"
+    AUTOMATION_OUTPUT_PRIORITY = "output_priority"
+    ERRORS_CONTROLLER_FAULTS = "controller_faults"
+    ERRORS_INVERTER_FAULTS = "inverter_faults"
+    SYSTEM_CONNECTING = "system_connecting"
+    SYSTEM_CHARGE_PRIORITY = "system_charge_priority"
+    SYSTEM_OUTPUT_PRIORITY = "system_output_priority"
+
+    NAME_CATEGORIES = {
+        AUTOMATION_CHARGE_PRIORITY: "automation",
+        AUTOMATION_OUTPUT_PRIORITY: "automation",
+        ERRORS_CONTROLLER_FAULTS: "errors",
+        ERRORS_INVERTER_FAULTS: "errors",
+        SYSTEM_CONNECTING: "system",
+        SYSTEM_CHARGE_PRIORITY: "system",
+        SYSTEM_OUTPUT_PRIORITY: "system",
+    }
+
     @staticmethod
-    def log(
-        *, timestamp: datetime, event: str, value: Any = None, automated: bool = False
-    ) -> None:
+    def log(*, timestamp: datetime, name: str, value: Any = None) -> None:
         LogEntry.objects.create(
             timestamp=timestamp,
-            data={"event": event, "value": value, "automated": automated},
+            name=name,
+            category=LoggingService.NAME_CATEGORIES.get(name, "unknown"),
+            value=value,
         )
