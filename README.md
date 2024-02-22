@@ -1,15 +1,11 @@
 Project description can be found
-[on my website](https://mateusznowak.dev/solar).
+[on my website](https://mateusznowak.dev/projects/solar-inverter-datalogger/).
 
 **Changelog**
 
-v1.5 (in development)
+v1.5
 
-- Update Python to 3.12
-- Update Django to 5.0
-- Update Vite to 5.0
-- Define explicit version numbers for all container images
-- ...
+- Add password protection to the MQTT broker
 
 v1.4.1
 

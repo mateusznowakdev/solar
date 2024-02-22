@@ -6,6 +6,9 @@ These environment variables can be used to configure the application:
 - DJANGO_DEBUG=int
 - DJANGO_SECRET_KEY=str
 - MQTT_BROKER=str
+- MQTT_PASSWORD=str
+- MQTT_PORT=str
+- MQTT_USER=str
 - POSTGRES_HOST=str
 - POSTGRES_NAME=str
 - POSTGRES_PASSWORD=str
@@ -85,7 +88,7 @@ DATABASES = {
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
         "NAME": os.environ.get("POSTGRES_NAME", "postgres"),
         "USER": os.environ.get("POSTGRES_USER", "postgres"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
     }
 }
 
@@ -127,4 +130,6 @@ SPECTACULAR_SETTINGS = {
 }
 
 MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
-MQTT_PORT = 1883
+MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", "")
+MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
+MQTT_USER = os.environ.get("MQTT_USER", "django")

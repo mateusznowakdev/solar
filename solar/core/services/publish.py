@@ -14,6 +14,7 @@ MQTT_TOPIC_PREFIX = "solar/"
 class PublishService:
     def __init__(self) -> None:
         self.client = Client(f"pub{random.randint(0, 999999):06d}")
+        self.client.username_pw_set(settings.MQTT_USER, settings.MQTT_PASSWORD)
         self.client.connect(settings.MQTT_BROKER, settings.MQTT_PORT)
         self.client.loop_start()
 

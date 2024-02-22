@@ -71,7 +71,10 @@ services:
     volumes:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
   mqtt:
-    image: eclipse-mosquitto:2
+    build:
+      dockerfile: config/mqtt/Dockerfile
+    env_file:
+      - .env
     deploy:
       restart_policy:
         condition: any
@@ -81,5 +84,3 @@ services:
     ports:
       - 1883:1883
       - 8883:8883
-    volumes:
-      - ./config/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
