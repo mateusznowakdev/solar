@@ -4,6 +4,7 @@ import random
 from django.conf import settings
 from django.forms import model_to_dict
 from paho.mqtt.client import Client
+from paho.mqtt.enums import CallbackAPIVersion
 
 from solar.core.models import StateRaw
 from solar.core.serializers import StateSerializer
@@ -13,7 +14,9 @@ MQTT_TOPIC_PREFIX = "solar/"
 
 class PublishService:
     def __init__(self) -> None:
-        self.client = Client(f"pub{random.randint(0, 999999):06d}")
+        client_id = f"pub{random.randint(0, 999999):06d}"
+
+        self.client = Client(CallbackAPIVersion.VERSION2, client_id)
         self.client.username_pw_set(settings.MQTT_USER, settings.MQTT_PASSWORD)
         self.client.connect(settings.MQTT_BROKER, settings.MQTT_PORT)
         self.client.loop_start()

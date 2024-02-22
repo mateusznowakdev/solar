@@ -1,4 +1,4 @@
-FROM python:3.11-alpine AS intermediate
+FROM python:3.12-alpine AS intermediate
 WORKDIR /app
 
 RUN apk add poetry
@@ -10,7 +10,7 @@ RUN poetry export > requirements.txt
 
 # ---
 
-FROM python:3.11-alpine AS target
+FROM python:3.12-alpine AS target
 WORKDIR /app
 
 RUN apk add tzdata
