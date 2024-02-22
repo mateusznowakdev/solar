@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from solar.core.models import LogEntry, StateRaw, get_numeric_field_names
+from solar.core.services.logging import LoggingService
 
 
 class Serializer(serializers.Serializer):
@@ -15,7 +16,14 @@ class ModelSerializer(serializers.ModelSerializer):
     pass
 
 
-class LogEntrySerializer(ModelSerializer):
+class LogRequestSerializer(Serializer):
+    category = serializers.ListField(
+        child=serializers.ChoiceField(choices=LoggingService.CATEGORIES),
+        required=False
+    )
+
+
+class LogResponseSerializer(ModelSerializer):
     class Meta:
         model = LogEntry
         fields = "__all__"

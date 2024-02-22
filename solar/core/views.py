@@ -5,7 +5,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from solar.core.serializers import (
-    LogEntrySerializer,
+    LogRequestSerializer,
+    LogResponseSerializer,
     ProductionRequestSerializer,
     ProductionResponseSerializer,
     SeriesRequestSerializer,
@@ -22,10 +23,19 @@ from solar.core.services.web import (
 
 
 class LogAPIView(views.APIView):
-    @extend_schema(responses={200: LogEntrySerializer(many=True)})
+    category = OpenApiParameter("category", type=OpenApiTypes.STR, many=True)
+
+    @extend_schema(
+        parameters=[category], responses={200: LogResponseSerializer(many=True)}
+    )
     def get(self, request: Request) -> Response:
-        out_data = LogAPIService.get_logs()
-        out_serializer = LogEntrySerializer(instance=out_data, many=True)
+        in_serializer = LogRequestSerializer(data=self.request.query_params)
+        in_serializer.is_valid(raise_exception=True)
+
+        out_data = LogAPIService.get_logs(
+            categories=in_serializer.validated_data.get("category")
+        )
+        out_serializer = LogResponseSerializer(instance=out_data, many=True)
 
         return Response(data=out_serializer.data)
 

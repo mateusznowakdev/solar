@@ -27,8 +27,13 @@ MAX_DATA_POINTS = 750
 
 class LogAPIService:
     @staticmethod
-    def get_logs() -> QuerySet[LogEntry]:
-        return LogEntry.objects.all()[:100]
+    def get_logs(*, categories: list[str]) -> QuerySet[LogEntry]:
+        queryset = LogEntry.objects.all()
+
+        if categories:
+            queryset = queryset.filter(category__in=categories)
+
+        return queryset[:100]
 
 
 class ProductionAPIService:

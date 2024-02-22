@@ -13,6 +13,7 @@ class LoggingService:
     SYSTEM_CHARGE_PRIORITY = "system_charge_priority"
     SYSTEM_OUTPUT_PRIORITY = "system_output_priority"
 
+    CATEGORIES = ("automation", "errors", "system")
     NAME_CATEGORIES = {
         AUTOMATION_CHARGE_PRIORITY: "automation",
         AUTOMATION_OUTPUT_PRIORITY: "automation",
