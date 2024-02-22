@@ -10,6 +10,7 @@ class LoggingService:
     ERRORS_CONTROLLER_FAULTS = "controller_faults"
     ERRORS_INVERTER_FAULTS = "inverter_faults"
     SYSTEM_CONNECTING = "system_connecting"
+    SYSTEM_CONNECTED = "system_connected"
     SYSTEM_CHARGE_PRIORITY = "system_charge_priority"
     SYSTEM_OUTPUT_PRIORITY = "system_output_priority"
 
@@ -20,6 +21,7 @@ class LoggingService:
         ERRORS_CONTROLLER_FAULTS: "errors",
         ERRORS_INVERTER_FAULTS: "errors",
         SYSTEM_CONNECTING: "system",
+        SYSTEM_CONNECTED: "system",
         SYSTEM_CHARGE_PRIORITY: "system",
         SYSTEM_OUTPUT_PRIORITY: "system",
     }

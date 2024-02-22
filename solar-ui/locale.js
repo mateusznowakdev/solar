@@ -21,5 +21,5 @@ export const STRINGS = {
     "Aplikacja składa się z\u00a0kilku równolegle działających modułów. " +
     "Moduł komunikujący się z\u00a0inwerterem może pobrać nowe ustawienia z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
-  SYSTEM: "System"
+  SYSTEM: "System",
 };

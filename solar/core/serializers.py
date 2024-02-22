@@ -18,8 +18,7 @@ class ModelSerializer(serializers.ModelSerializer):
 
 class LogRequestSerializer(Serializer):
     category = serializers.ListField(
-        child=serializers.ChoiceField(choices=LoggingService.CATEGORIES),
-        required=False
+        child=serializers.ChoiceField(choices=LoggingService.CATEGORIES), required=False
     )
 
 

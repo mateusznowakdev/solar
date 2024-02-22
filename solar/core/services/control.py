@@ -100,11 +100,10 @@ class ControlService:
             port=device, baudrate=9600, bytesize=8, method="rtu", stopbits=1, parity="N"
         )
         self.client.connect()
+        self.connected = False  # based on first successful transmission
 
         LoggingService.log(
-            timestamp=timezone.now(),
-            name=LoggingService.SYSTEM_CONNECTING,
-            value=device,
+            timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING
         )
 
         self.auto_charge_priority = SettingsService.get_setting(
@@ -135,6 +134,14 @@ class ControlService:
         con = recv_data(self.client, 0x100, 0x10E)
         inv = recv_data(self.client, 0x200, 0x225)
         par = recv_data(self.client, 0xE200, 0xE20F)
+
+        if not self.connected:
+            LoggingService.log(
+                timestamp=timezone.now(),
+                name=LoggingService.SYSTEM_CONNECTED,
+                value=self.client.comm_params.host,
+            )
+            self.connected = True
 
         state = StateRaw(
             timestamp=timezone.now(),

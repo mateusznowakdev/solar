@@ -221,7 +221,10 @@ export const EVENT_METADATA = {
     description: "Zmieniono ustawienia ładowania",
   },
   system_connecting: {
-    description: "Łączenie z",
+    description: "Łączenie z inwerterem",
+  },
+  system_connected: {
+    description: "Połączono z",
   },
 };
 
