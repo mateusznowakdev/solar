@@ -5,7 +5,10 @@ Project description can be found
 
 v1.5
 
+- Filter logs by category
 - Add password protection to the MQTT broker
+- Change data structure for logs and settings
+- Upgrade Python, packages and system images
 
 v1.4.1
 

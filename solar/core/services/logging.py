@@ -29,6 +29,6 @@ class LoggingService:
         LogEntry.objects.create(
             timestamp=timestamp,
             name=name,
-            category=LoggingService.NAME_CATEGORIES.get(name, "unknown"),
+            category=LoggingService.NAME_CATEGORIES.get(name, "other"),
             value=value,
         )
