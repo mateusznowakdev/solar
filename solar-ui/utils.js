@@ -102,3 +102,8 @@ export function renderTime(date, options) {
     ...(options || {}),
   }).format(date);
 }
+
+export function toggleItem(list, item) {
+  const idx = list.indexOf(item);
+  idx === -1 ? list.push(item) : list.splice(idx, 1);
+}

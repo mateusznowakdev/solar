@@ -1,11 +1,13 @@
 import CalendarDays from "lucide-react/dist/esm/icons/calendar-days";
 import { Fragment } from "react";
 
-import { LogListItemGroup } from "./LogListItemGroup";
+import LogFilters from "./LogFilters";
+import LogListItemGroup from "./LogListItemGroup";
 
-export default function LogList({ data }) {
+export default function LogList({ data, filters, toggleFilters }) {
   return (
     <>
+      <LogFilters filters={filters} toggleFilter={toggleFilters} />
       {Object.entries(data).map(([day, entries]) => (
         <Fragment key={day}>
           <p className="align-items-center d-flex my-2 pt-1">

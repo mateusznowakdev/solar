@@ -4,20 +4,15 @@ import { useEffect, useState } from "react";
 import LegalNotice from "../components/LegalNotice";
 import RefreshIcon from "../components/RefreshIcon";
 import ParameterList from "../components/parameters/ParameterList";
-import { dateReviver } from "../utils";
+import { dateReviver, toggleItem } from "../utils";
 
 const MQTT_JSON_TOPIC = "solar/json";
 
 export default function Parameters() {
   const [data, setData] = useState({});
-  const [pinned, setPinned] = useState([]);
-
-  function getPinned() {
-    const pinned = JSON.parse(
-      localStorage.getItem("pinned") || '["timestamp"]',
-    );
-    setPinned(pinned);
-  }
+  const [pinned, setPinned] = useState(
+    localStorage.getItem("pinned") || '["timestamp"]',
+  );
 
   function getMQTTClient() {
     const clientName = "sub" + Math.floor(Math.random() * 1000000);
@@ -47,15 +42,12 @@ export default function Parameters() {
 
   function togglePinned(key) {
     const pinnedCopy = [...pinned];
-
-    const idx = pinnedCopy.indexOf(key);
-    idx === -1 ? pinnedCopy.push(key) : pinnedCopy.splice(idx, 1);
+    toggleItem(pinnedCopy, key);
 
     setPinned(pinnedCopy);
     localStorage.setItem("pinned", JSON.stringify(pinnedCopy));
   }
 
-  useEffect(getPinned, []);
   useEffect(getMQTTClient, []);
 
   return (
