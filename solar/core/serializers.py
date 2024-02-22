@@ -18,7 +18,7 @@ class ModelSerializer(serializers.ModelSerializer):
 class LogEntrySerializer(ModelSerializer):
     class Meta:
         model = LogEntry
-        fields = ("timestamp", "name", "category", "value")
+        fields = "__all__"
 
 
 class ProductionRequestSerializer(Serializer):

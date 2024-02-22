@@ -91,7 +91,7 @@ class LogEntry(models.Model):
     class Meta:
         ordering = ("-timestamp",)
 
-    timestamp = models.DateTimeField(primary_key=True)
+    timestamp = models.DateTimeField()
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
     value = models.JSONField(null=True)

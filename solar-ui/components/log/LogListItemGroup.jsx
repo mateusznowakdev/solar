@@ -6,7 +6,7 @@ export function LogListItemGroup({ data }) {
   return (
     <ListGroup variant="flush">
       {data.map((entry) => (
-        <LogListItem data={entry} key={entry.timestamp} />
+        <LogListItem data={entry} key={entry.id} />
       ))}
     </ListGroup>
   );
