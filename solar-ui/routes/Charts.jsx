@@ -103,7 +103,8 @@ export default function Charts() {
   );
 
   return (
-    <div>
+    <>
+      <h1 className="my-3">{STRINGS.MENU_CHARTS}</h1>
       <Form className="my-3">
         <ChartSeriesPicker setValue={setSeriesA} value={seriesA} />
         <ChartSeriesPicker setValue={setSeriesB} value={seriesB} />
@@ -117,6 +118,6 @@ export default function Charts() {
         />
       </Form>
       <ChartContainer data={data} error={error} loading={loading} />
-    </div>
+    </>
   );
 }

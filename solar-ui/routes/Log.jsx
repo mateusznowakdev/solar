@@ -53,6 +53,7 @@ export default function Log() {
 
   return (
     <>
+      <h1 className="my-3">{STRINGS.MENU_LOG}</h1>
       <LogList data={data} filters={filters} toggleFilters={toggleFilter} />
       <RefreshIcon />
     </>

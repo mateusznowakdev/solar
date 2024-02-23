@@ -68,7 +68,8 @@ export default function Production() {
   useEffect(getProduction, [mode]);
 
   return (
-    <div>
+    <>
+      <h1 className="my-3">{STRINGS.MENU_PRODUCTION}</h1>
       <Form className="my-3">
         <Form.Group as={Row} className="mb-2">
           <Col>
@@ -85,6 +86,6 @@ export default function Production() {
         loading={loading}
         mode={mode}
       />
-    </div>
+    </>
   );
 }

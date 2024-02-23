@@ -7,7 +7,7 @@ import { STRINGS } from "../../locale";
 
 export default function LogFilters({ filters, toggleFilter }) {
   return (
-    <ButtonToolbar className="pb-2 pt-3">
+    <ButtonToolbar className="pb-2">
       <ButtonGroup className="me-2">
         <Button
           className="px-2"

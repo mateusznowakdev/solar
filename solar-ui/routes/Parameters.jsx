@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LegalNotice from "../components/LegalNotice";
 import RefreshIcon from "../components/RefreshIcon";
 import ParameterList from "../components/parameters/ParameterList";
+import { STRINGS } from "../locale";
 import { dateReviver, toggleItem } from "../utils";
 
 const MQTT_JSON_TOPIC = "solar/json";
@@ -52,6 +53,7 @@ export default function Parameters() {
 
   return (
     <div>
+      <h1 className="my-3">{STRINGS.MENU_MAIN}</h1>
       <ParameterList data={data} pinned={pinned} togglePinned={togglePinned} />
       <LegalNotice />
       <RefreshIcon />

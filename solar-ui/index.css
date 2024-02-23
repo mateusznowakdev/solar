@@ -1,3 +1,7 @@
+h1 {
+  font-weight: normal;
+}
+
 .btn {
   align-items: center;
   display: flex;

@@ -54,35 +54,44 @@ export default function Settings() {
     );
 
   return (
-    <Form>
-      <div className="mt-3">
-        <FormCheck
-          checked={data.auto_charge_priority}
-          id="auto_charge_priority"
-          label={STRINGS.AUTO_CHARGE_PRIORITY}
-          onChange={(e) =>
-            setData((d) => ({ ...d, auto_charge_priority: !!e.target.checked }))
-          }
-        />
-      </div>
-      <div className="mt-3">
-        <FormCheck
-          checked={data.auto_output_priority}
-          id="auto_output_priority"
-          label={STRINGS.AUTO_OUTPUT_PRIORITY}
-          onChange={(e) =>
-            setData((d) => ({ ...d, auto_output_priority: !!e.target.checked }))
-          }
-        />
-      </div>
-      <div className="d-grid mt-3">
-        <Button onClick={putSettingsDelayed} variant="light">
-          {STRINGS.SAVE}
-        </Button>
-      </div>
-      <div className="mt-3 text-secondary text-small">
-        {STRINGS.SETTINGS_HINT}
-      </div>
-    </Form>
+    <>
+      <h1 className="my-3">{STRINGS.MENU_SETTINGS}</h1>
+      <Form>
+        <div className="mt-3">
+          <FormCheck
+            checked={data.auto_charge_priority}
+            id="auto_charge_priority"
+            label={STRINGS.AUTO_CHARGE_PRIORITY}
+            onChange={(e) =>
+              setData((d) => ({
+                ...d,
+                auto_charge_priority: !!e.target.checked,
+              }))
+            }
+          />
+        </div>
+        <div className="mt-3">
+          <FormCheck
+            checked={data.auto_output_priority}
+            id="auto_output_priority"
+            label={STRINGS.AUTO_OUTPUT_PRIORITY}
+            onChange={(e) =>
+              setData((d) => ({
+                ...d,
+                auto_output_priority: !!e.target.checked,
+              }))
+            }
+          />
+        </div>
+        <div className="d-grid mt-3">
+          <Button onClick={putSettingsDelayed} variant="light">
+            {STRINGS.SAVE}
+          </Button>
+        </div>
+        <div className="mt-3 text-secondary text-small">
+          {STRINGS.SETTINGS_HINT}
+        </div>
+      </Form>
+    </>
   );
 }
