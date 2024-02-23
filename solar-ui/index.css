@@ -59,6 +59,7 @@ h1 {
   position: fixed;
   right: 1rem;
   width: 3rem;
+  z-index: 100;
 }
 
 .text-small {
