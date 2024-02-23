@@ -88,6 +88,8 @@ class StateCache(models.Model):
 
 
 class LogEntry(models.Model):
+    RETENTION_PERIOD = timedelta(days=60)
+
     class Meta:
         ordering = ("-timestamp",)
 

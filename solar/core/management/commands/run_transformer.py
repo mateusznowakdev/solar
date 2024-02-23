@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from django.core.management import BaseCommand
 
-from solar.core.models import StateArchive, StateT1, StateT2, StateT3, StateT4
+from solar.core.models import LogEntry, StateArchive, StateT1, StateT2, StateT3, StateT4
 from solar.core.services.transform import TransformService
 
 
@@ -43,6 +43,7 @@ def run_every_30min():
 
     TransformService.process_data(StateArchive)
 
+    TransformService.delete_data(LogEntry)
     TransformService.delete_data_staging()
 
 
