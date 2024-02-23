@@ -1,9 +1,10 @@
 import { STRINGS } from "../locale";
 import { getVersion } from "../utils";
+import Hint from "./Hint";
 
 export default function LegalNotice() {
   return (
-    <p className="my-3 text-secondary text-small">
+    <Hint>
       Solar v{getVersion()}
       <br />
       <a
@@ -13,6 +14,6 @@ export default function LegalNotice() {
       >
         {STRINGS.ABOUT_SOURCE_CODE}
       </a>
-    </p>
+    </Hint>
   );
 }

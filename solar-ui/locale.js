@@ -4,7 +4,7 @@ export const STRINGS = {
   AUTO_CHARGE_PRIORITY: "Automatycznie zmień priorytet ładowania",
   AUTO_OUTPUT_PRIORITY: "Automatycznie zmień priorytet wyjścia",
   AUTOMATION: "Automatyzacja",
-  CHOOSE_VALID_CHART_SERIES: "Wybierz poprawny parametr z listy powyżej",
+  CHARTS_HINT: "Wybierz poprawny parametr z listy powyżej",
   ERRORS: "Błędy",
   LOADING: "Wczytywanie",
   MENU_CHARTS: "Wykresy",
@@ -18,8 +18,7 @@ export const STRINGS = {
   PRODUCTION_TOTAL: "Zużycie",
   SAVE: "Zapisz",
   SETTINGS_HINT:
-    "Aplikacja składa się z\u00a0kilku równolegle działających modułów. " +
-    "Moduł komunikujący się z\u00a0inwerterem może pobrać nowe ustawienia z\u00a0opóźnieniem. " +
+    "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
   SYSTEM: "System",
 };

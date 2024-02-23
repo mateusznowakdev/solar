@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
 
+import Hint from "../components/Hint";
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
@@ -30,11 +31,7 @@ function ChartContainer({ data, error, loading }) {
     );
 
   if (!data) {
-    return (
-      <div className="mt-3 text-secondary">
-        {STRINGS.CHOOSE_VALID_CHART_SERIES}
-      </div>
-    );
+    return <Hint>{STRINGS.CHARTS_HINT}</Hint>;
   }
 
   return (

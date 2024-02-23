@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FormCheck from "react-bootstrap/FormCheck";
 
+import Hint from "../components/Hint";
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
 
@@ -88,9 +89,7 @@ export default function Settings() {
             {STRINGS.SAVE}
           </Button>
         </div>
-        <div className="mt-3 text-secondary text-small">
-          {STRINGS.SETTINGS_HINT}
-        </div>
+        <Hint>{STRINGS.SETTINGS_HINT}</Hint>
       </Form>
     </>
   );
