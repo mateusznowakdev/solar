@@ -4,6 +4,8 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
+import ErrorText from "../components/generic/ErrorText";
+import LoadingText from "../components/generic/LoadingText";
 import ProductionList from "../components/production/ProductionList";
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
@@ -19,15 +21,8 @@ function getLastMonths() {
 }
 
 function ProductionContainer({ data, error, loading, mode }) {
-  if (loading)
-    return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
-
-  if (error)
-    return (
-      <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {error}
-      </div>
-    );
+  if (loading) return <LoadingText />;
+  if (error) return <ErrorText error={error} />;
 
   return <ProductionList data={data} mode={mode} />;
 }

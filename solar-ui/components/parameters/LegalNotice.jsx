@@ -1,12 +1,12 @@
-import { STRINGS } from "../locale";
-import { getVersion } from "../utils";
-import Hint from "./Hint";
+import { STRINGS } from "../../locale";
+import { getVersion } from "../../utils";
+import HintText from "../generic/HintText";
 
 export default function LegalNotice() {
-  return (
-    <Hint>
+  const hint = (
+    <>
       Solar v{getVersion()}
-      <br />
+      &nbsp;&middot;&nbsp;
       <a
         className="link-secondary"
         href="https://github.com/mateusznowakdev/solar"
@@ -14,6 +14,8 @@ export default function LegalNotice() {
       >
         {STRINGS.ABOUT_SOURCE_CODE}
       </a>
-    </Hint>
+    </>
   );
+
+  return <HintText hint={hint} />;
 }

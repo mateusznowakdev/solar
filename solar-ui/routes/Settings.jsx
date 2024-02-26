@@ -3,7 +3,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FormCheck from "react-bootstrap/FormCheck";
 
-import Hint from "../components/Hint";
+import ErrorText from "../components/generic/ErrorText";
+import HintText from "../components/generic/HintText";
+import LoadingText from "../components/generic/LoadingText";
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
 
@@ -44,15 +46,8 @@ export default function Settings() {
 
   useEffect(getSettings, []);
 
-  if (loading)
-    return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
-
-  if (error)
-    return (
-      <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {error}
-      </div>
-    );
+  if (loading) return <LoadingText />;
+  if (error) return <ErrorText error={error} />;
 
   return (
     <>
@@ -89,7 +84,7 @@ export default function Settings() {
             {STRINGS.SAVE}
           </Button>
         </div>
-        <Hint>{STRINGS.SETTINGS_HINT}</Hint>
+        <HintText hint={STRINGS.SETTINGS_HINT} />
       </Form>
     </>
   );

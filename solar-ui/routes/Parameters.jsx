@@ -1,8 +1,8 @@
 import { Client } from "paho-mqtt/paho-mqtt";
 import { useEffect, useState } from "react";
 
-import LegalNotice from "../components/LegalNotice";
 import RefreshIcon from "../components/RefreshIcon";
+import LegalNotice from "../components/parameters/LegalNotice";
 import ParameterList from "../components/parameters/ParameterList";
 import { STRINGS } from "../locale";
 import { dateReviver, toggleItem } from "../utils";

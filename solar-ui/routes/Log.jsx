@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 import RefreshIcon from "../components/RefreshIcon";
+import ErrorText from "../components/generic/ErrorText";
+import LoadingText from "../components/generic/LoadingText";
 import LogList from "../components/log/LogList";
 import { STRINGS } from "../locale";
 import { getBackendResponse, renderDate, toggleItem } from "../utils";
@@ -41,15 +43,8 @@ export default function Log() {
 
   useEffect(getLogs, [filters]);
 
-  if (loading)
-    return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
-
-  if (error)
-    return (
-      <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {error}
-      </div>
-    );
+  if (loading) return <LoadingText />;
+  if (error) return <ErrorText error={error} />;
 
   return (
     <>

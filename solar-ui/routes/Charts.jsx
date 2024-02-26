@@ -3,11 +3,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
 
-import Hint from "../components/Hint";
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
+import ErrorText from "../components/generic/ErrorText";
+import HintText from "../components/generic/HintText";
+import LoadingText from "../components/generic/LoadingText";
 import { STRINGS } from "../locale";
 import { getBackendResponse, getDatesForOffset } from "../utils";
 
@@ -20,19 +22,10 @@ const OFFSETS = {
 };
 
 function ChartContainer({ data, error, loading }) {
-  if (loading)
-    return <div className="mt-3 text-secondary">{STRINGS.LOADING}...</div>;
+  if (loading) return <LoadingText />;
+  if (error) return <ErrorText error={error} />;
 
-  if (error)
-    return (
-      <div className="mt-3 text-danger">
-        {STRINGS.AN_ERROR_OCCURRED}: {error}
-      </div>
-    );
-
-  if (!data) {
-    return <Hint>{STRINGS.CHARTS_HINT}</Hint>;
-  }
+  if (!data) return <HintText hint={STRINGS.CHARTS_HINT} />;
 
   return (
     <>

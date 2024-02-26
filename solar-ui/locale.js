@@ -1,5 +1,5 @@
 export const STRINGS = {
-  ABOUT_SOURCE_CODE: "Kod źródłowy i informacje prawne",
+  ABOUT_SOURCE_CODE: "GitHub",
   AN_ERROR_OCCURRED: "Wystąpił błąd",
   AUTO_CHARGE_PRIORITY: "Automatycznie zmień priorytet ładowania",
   AUTO_OUTPUT_PRIORITY: "Automatycznie zmień priorytet wyjścia",
