@@ -3,9 +3,17 @@ import { useEffect, useState } from "react";
 import RefreshIcon from "../components/RefreshIcon";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
+import LogFilters from "../components/log/LogFilters";
 import LogList from "../components/log/LogList";
 import { STRINGS } from "../locale";
 import { getBackendResponse, renderDate, toggleItem } from "../utils";
+
+function LogContainer({ data, error, loading }) {
+  if (loading) return <LoadingText />;
+  if (error) return <ErrorText error={error} />;
+
+  return <LogList data={data} />;
+}
 
 export default function Log() {
   const [data, setData] = useState([]);
@@ -43,13 +51,11 @@ export default function Log() {
 
   useEffect(getLogs, [filters]);
 
-  if (loading) return <LoadingText />;
-  if (error) return <ErrorText error={error} />;
-
   return (
     <>
       <h1 className="my-3">{STRINGS.MENU_LOG}</h1>
-      <LogList data={data} filters={filters} toggleFilters={toggleFilter} />
+      <LogFilters filters={filters} toggleFilter={toggleFilter} />
+      <LogContainer data={data} error={error} loading={loading} />
       <RefreshIcon />
     </>
   );
