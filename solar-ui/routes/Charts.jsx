@@ -47,7 +47,7 @@ export default function Charts() {
   const [startDate, setStartDate] = useState(initialStartDate);
   const [stopDate, setStopDate] = useState(initialStopDate);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // left false on purpose
   const [error, setError] = useState(null);
 
   function getSeries() {

@@ -16,7 +16,7 @@ function SettingsContainer({ data, error, loading, setData, submit }) {
 export default function Settings() {
   const [data, setData] = useState({});
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   function getSettings() {

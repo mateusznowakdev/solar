@@ -31,7 +31,7 @@ export default function Production() {
   const [mode, setMode] = useState("days");
   const [data, setData] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   function getProduction() {

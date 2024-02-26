@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import RefreshIcon from "../components/RefreshIcon";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
 import LogFilters from "../components/log/LogFilters";
@@ -21,7 +20,7 @@ export default function Log() {
     JSON.parse(localStorage.getItem("filters") || "[]"),
   );
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   function getLogs() {
@@ -56,7 +55,6 @@ export default function Log() {
       <h1 className="my-3">{STRINGS.MENU_LOG}</h1>
       <LogFilters filters={filters} toggleFilter={toggleFilter} />
       <LogContainer data={data} error={error} loading={loading} />
-      <RefreshIcon />
     </>
   );
 }
