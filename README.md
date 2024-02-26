@@ -5,7 +5,9 @@ Project description can be found
 
 v1.5
 
+- Improve loading and error messages
 - Filter logs by category
+- Display headers on each screen
 - Add password protection to the MQTT broker
 - Change data structure for log entries
 - Upgrade Python, packages and system images
