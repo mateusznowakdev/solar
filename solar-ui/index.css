@@ -62,6 +62,10 @@ h1 {
   z-index: 100;
 }
 
+.rotate {
+  animation: 2s linear infinite spinner-border;
+}
+
 .text-small {
   font-size: 0.75rem;
 }

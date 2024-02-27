@@ -1,11 +1,11 @@
-import Loader from "lucide-react/dist/esm/icons/loader";
+import Loader2 from "lucide-react/dist/esm/icons/loader-2";
 
 import { STRINGS } from "../../locale";
 
 export default function LoadingText() {
   return (
     <div className="my-3 text-secondary">
-      <Loader strokeWidth={1.5} />
+      <Loader2 className="mb-2 rotate" strokeWidth={1.5} />
       <br />
       {STRINGS.LOADING}...
     </div>
