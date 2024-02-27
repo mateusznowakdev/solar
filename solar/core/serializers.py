@@ -28,12 +28,6 @@ class LogResponseSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class ProductionRequestSerializer(Serializer):
-    timestamp = serializers.ListField(
-        child=serializers.DateTimeField(), min_length=1, max_length=14
-    )
-
-
 class ProductionResponseSerializer(Serializer):
     timestamp = serializers.DateTimeField()
     pv_power = serializers.IntegerField()

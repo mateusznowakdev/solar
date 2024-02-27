@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from dateutil.relativedelta import relativedelta
 from django.db.models import Case, QuerySet, Sum, When
 from django.utils import timezone
 
@@ -37,9 +38,31 @@ class LogAPIService:
 
 
 class ProductionAPIService:
+    MAX_DAYS = 14
+    MAX_MONTHS = 12
+
     @staticmethod
-    def get_production(*, timestamps: list[datetime]) -> list:
-        timestamps = list(reversed(sorted(set(timestamps))))
+    def _get_daily_timestamps() -> list:
+        now = timezone.now().astimezone(timezone.get_default_timezone())
+        start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        timestamps = [start - relativedelta(days=d) for d in range(14)]
+        return timestamps
+
+    @staticmethod
+    def _get_monthly_timestamps() -> list:
+        now = timezone.now().astimezone(timezone.get_default_timezone())
+        start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        timestamps = [start - relativedelta(months=m) for m in range(12)]
+        return timestamps
+
+    @staticmethod
+    def get_production(*, mode: str) -> list:
+        if mode == "daily":
+            timestamps = ProductionAPIService._get_daily_timestamps()
+        elif mode == "monthly":
+            timestamps = ProductionAPIService._get_monthly_timestamps()
+        else:
+            return []
 
         group_qs = Case(
             *(When(timestamp__gte=ts, then=idx) for idx, ts in enumerate(timestamps))

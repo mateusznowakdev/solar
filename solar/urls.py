@@ -4,16 +4,18 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from solar.core.views import (
     LogAPIView,
-    ProductionAPIView,
+    ProductionDailyAPIView,
+    ProductionMonthlyAPIView,
     SeriesAPIView,
     SettingsAPIView,
 )
 
 urlpatterns = [
-    path("api/log/", LogAPIView.as_view(), name="api-log"),
-    path("api/production/", ProductionAPIView.as_view(), name="api-production"),
-    path("api/series/", SeriesAPIView.as_view(), name="api-series"),
-    path("api/settings/", SettingsAPIView.as_view(), name="api-settings"),
+    path("api/log/", LogAPIView.as_view()),
+    path("api/production/daily/", ProductionDailyAPIView.as_view()),
+    path("api/production/monthly/", ProductionMonthlyAPIView.as_view()),
+    path("api/series/", SeriesAPIView.as_view()),
+    path("api/settings/", SettingsAPIView.as_view()),
 ]
 
 if settings.DEBUG:

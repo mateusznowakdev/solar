@@ -4,10 +4,10 @@ export default function ProductionListItem({ data, mode }) {
   let dateString;
 
   switch (mode) {
-    case "days":
+    case "daily":
       dateString = renderDate(data.timestamp);
       break;
-    case "months":
+    case "monthly":
       dateString = renderMonth(data.timestamp);
       break;
     default:
