@@ -12,7 +12,14 @@ export default function SettingsForm({ data, setData, submit }) {
         <FormCheck
           checked={data.auto_charge_priority}
           id="auto_charge_priority"
-          label={STRINGS.AUTO_CHARGE_PRIORITY}
+          label={
+            <>
+              <div>{STRINGS.AUTO_CHARGE_PRIORITY}</div>
+              <div className="text-muted mt-1">
+                {STRINGS.AUTO_CHARGE_PRIORITY_HINT}
+              </div>
+            </>
+          }
           onChange={(e) =>
             setData((d) => ({
               ...d,
@@ -21,12 +28,19 @@ export default function SettingsForm({ data, setData, submit }) {
           }
         />
       </div>
-      <div className="text-muted ms-4">{STRINGS.AUTO_CHARGE_PRIORITY_HINT}</div>
+
       <div className="mt-3">
         <FormCheck
           checked={data.auto_output_priority}
           id="auto_output_priority"
-          label={STRINGS.AUTO_OUTPUT_PRIORITY}
+          label={
+            <>
+              <div>{STRINGS.AUTO_OUTPUT_PRIORITY}</div>
+              <div className="text-muted mt-1">
+                {STRINGS.AUTO_OUTPUT_PRIORITY_HINT}
+              </div>
+            </>
+          }
           onChange={(e) =>
             setData((d) => ({
               ...d,
@@ -35,7 +49,6 @@ export default function SettingsForm({ data, setData, submit }) {
           }
         />
       </div>
-      <div className="text-muted ms-4">{STRINGS.AUTO_OUTPUT_PRIORITY_HINT}</div>
       <div className="d-grid mt-3">
         <Button onClick={submit} variant="light">
           {STRINGS.SAVE}
