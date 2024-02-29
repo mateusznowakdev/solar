@@ -21,6 +21,7 @@ export default function SettingsForm({ data, setData, submit }) {
           }
         />
       </div>
+      <div className="text-muted ms-4">{STRINGS.AUTO_CHARGE_PRIORITY_HINT}</div>
       <div className="mt-3">
         <FormCheck
           checked={data.auto_output_priority}
@@ -34,6 +35,7 @@ export default function SettingsForm({ data, setData, submit }) {
           }
         />
       </div>
+      <div className="text-muted ms-4">{STRINGS.AUTO_OUTPUT_PRIORITY_HINT}</div>
       <div className="d-grid mt-3">
         <Button onClick={submit} variant="light">
           {STRINGS.SAVE}
