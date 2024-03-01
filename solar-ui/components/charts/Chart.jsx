@@ -28,6 +28,8 @@ BaseChart.register(
 );
 BaseChart.defaults.font.family = '"Inter", system-ui, sans-serif';
 
+const Y_AXIS_WIDTH = 48;
+
 export default function Chart({ data }) {
   useEffect(() => {
     const chartOptions = {
@@ -77,8 +79,18 @@ export default function Chart({ data }) {
             },
           },
           y: {
+            afterFit(scale) {
+              scale.width = Y_AXIS_WIDTH;
+            },
             ticks: {
               callback: (value) => PARAMETER_METADATA[data.field].render(value),
+              crossAlign: (context) => {
+                if (context.scale._labelSizes.widest.width >= Y_AXIS_WIDTH) {
+                  return "far";
+                } else {
+                  return "near";
+                }
+              },
               precision: 0,
             },
           },
