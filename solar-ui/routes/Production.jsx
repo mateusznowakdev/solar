@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import FormGroup from "react-bootstrap/FormGroup";
+import FormSelect from "react-bootstrap/FormSelect";
 import Row from "react-bootstrap/Row";
 
 import ErrorText from "../components/generic/ErrorText";
@@ -39,14 +41,14 @@ export default function Production() {
     <>
       <h1 className="my-3">{STRINGS.MENU_PRODUCTION}</h1>
       <Form className="my-3">
-        <Form.Group as={Row} className="mb-2">
+        <FormGroup as={Row} className="mb-2">
           <Col>
-            <Form.Select onChange={(e) => setMode(e.target.value)} value={mode}>
+            <FormSelect onChange={(e) => setMode(e.target.value)} value={mode}>
               <option value="daily">{STRINGS.PRODUCTION_DAYS}</option>
               <option value="monthly">{STRINGS.PRODUCTION_MONTHS}</option>
-            </Form.Select>
+            </FormSelect>
           </Col>
-        </Form.Group>
+        </FormGroup>
       </Form>
       <ProductionContainer
         data={data}

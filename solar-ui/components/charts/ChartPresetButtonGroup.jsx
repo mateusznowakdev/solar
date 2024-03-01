@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
+import FormGroup from "react-bootstrap/FormGroup";
 import Row from "react-bootstrap/Row";
 
 import { getDatesForOffset } from "../../utils";
@@ -30,7 +30,7 @@ export default function ChartPresetButtonGroup({
   submitButton,
 }) {
   return (
-    <Form.Group as={Row} className="g-2 mb-2">
+    <FormGroup as={Row} className="g-2 mb-2">
       <Col xs={10}>
         <ButtonGroup className="d-flex">
           {Object.entries(offsets).map(([label, offset]) => (
@@ -45,6 +45,6 @@ export default function ChartPresetButtonGroup({
         </ButtonGroup>
       </Col>
       <Col xs={2}>{submitButton}</Col>
-    </Form.Group>
+    </FormGroup>
   );
 }

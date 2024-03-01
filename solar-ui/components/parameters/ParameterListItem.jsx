@@ -1,6 +1,6 @@
 import Dot from "lucide-react/dist/esm/icons/dot";
 import Star from "lucide-react/dist/esm/icons/star";
-import ListGroup from "react-bootstrap/ListGroup";
+import ListGroupItem from "react-bootstrap/ListGroupItem";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
 
 import { COLORS } from "../../meta";
@@ -11,7 +11,7 @@ export default function ParameterListItem({ data, togglePinned }) {
       state={{ choice: data.chart ? data.key : null }}
       to="/charts"
     >
-      <ListGroup.Item
+      <ListGroupItem
         action
         active={false}
         className="align-items-center d-flex justify-content-between"
@@ -33,7 +33,7 @@ export default function ParameterListItem({ data, togglePinned }) {
         <div>
           {data.value} {data.unit}
         </div>
-      </ListGroup.Item>
+      </ListGroupItem>
     </LinkContainer>
   );
 }

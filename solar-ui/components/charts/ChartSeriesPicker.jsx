@@ -1,5 +1,6 @@
 import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
+import FormGroup from "react-bootstrap/FormGroup";
+import FormSelect from "react-bootstrap/FormSelect";
 import Row from "react-bootstrap/Row";
 
 import { PARAMETER_METADATA } from "../../meta";
@@ -24,17 +25,17 @@ export default function ChartSeriesPicker({ setValue, value }) {
     .sort(sortByDescription);
 
   return (
-    <Form.Group as={Row} className="mb-2">
+    <FormGroup as={Row} className="mb-2">
       <Col>
-        <Form.Select onChange={(e) => setValue(e.target.value)} value={value}>
+        <FormSelect onChange={(e) => setValue(e.target.value)} value={value}>
           <option value="">---</option>
           {choices.map((item) => (
             <option key={item.key} value={item.key}>
               {item.description}
             </option>
           ))}
-        </Form.Select>
+        </FormSelect>
       </Col>
-    </Form.Group>
+    </FormGroup>
   );
 }
