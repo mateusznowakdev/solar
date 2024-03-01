@@ -6,6 +6,7 @@ Project description can be found
 v1.5
 
 - Improve loading and error messages
+- Add extra buttons to date pickers in charts view
 - Filter logs by category
 - Display headers on each screen
 - Add password protection to the MQTT broker
