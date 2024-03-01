@@ -26,6 +26,7 @@ BaseChart.register(
   Title,
   Tooltip,
 );
+BaseChart.defaults.font.family = '"Inter", system-ui, sans-serif';
 
 export default function Chart({ data }) {
   useEffect(() => {

@@ -6,6 +6,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.0.16",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.1",
     "dayjs": "^1.11.10",

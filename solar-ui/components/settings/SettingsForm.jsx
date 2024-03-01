@@ -15,7 +15,7 @@ export default function SettingsForm({ data, setData, submit }) {
           label={
             <>
               <div>{STRINGS.AUTO_CHARGE_PRIORITY}</div>
-              <div className="text-muted mt-1">
+              <div className="text-secondary mt-1">
                 {STRINGS.AUTO_CHARGE_PRIORITY_HINT}
               </div>
             </>
@@ -36,7 +36,7 @@ export default function SettingsForm({ data, setData, submit }) {
           label={
             <>
               <div>{STRINGS.AUTO_OUTPUT_PRIORITY}</div>
-              <div className="text-muted mt-1">
+              <div className="text-secondary mt-1">
                 {STRINGS.AUTO_OUTPUT_PRIORITY_HINT}
               </div>
             </>
