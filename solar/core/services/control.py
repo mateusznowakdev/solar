@@ -99,6 +99,7 @@ class ControlService:
         self.client = ModbusSerialClient(
             port=device, baudrate=9600, bytesize=8, method="rtu", stopbits=1, parity="N"
         )
+        self.client._recv_interval = self.client._t0 * 24
         self.client.connect()
         self.connected = False  # based on first successful transmission
 
