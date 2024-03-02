@@ -59,7 +59,7 @@ services:
     logging:
       driver: journald
   db:
-    image: postgres:15-alpine
+    image: postgres:15.6-alpine3.19
     deploy:
       restart_policy:
         condition: any

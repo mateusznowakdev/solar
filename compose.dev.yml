@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:15.6-alpine3.19
     env_file:
       - .env
     ports:
