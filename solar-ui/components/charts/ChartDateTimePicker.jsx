@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
 import ChevronLeft from "lucide-react/dist/esm/icons/chevron-left";
 import ChevronRight from "lucide-react/dist/esm/icons/chevron-right";
 import X from "lucide-react/dist/esm/icons/x";
+import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
@@ -15,7 +15,7 @@ export default function ChartDateTimePicker({ setValue, value }) {
 
   useEffect(() => {
     if (date && time) {
-      setValue(dayjs(date + time, "YYYY-MM-DDHH:mm"));
+      setValue(DateTime.fromFormat(date + time, "yyyy-MM-ddHH:mm"));
     } else {
       setValue(null);
     }
@@ -23,17 +23,25 @@ export default function ChartDateTimePicker({ setValue, value }) {
 
   useEffect(() => {
     if (value) {
-      setDate(dayjs(value).format("YYYY-MM-DD"));
-      setTime(dayjs(value).format("HH:mm"));
+      setDate(value.toFormat("yyyy-MM-dd"));
+      setTime(value.toFormat("HH:mm"));
     }
   }, [value]);
 
   function addDay() {
-    setDate(dayjs(date).add(1, "day").format("YYYY-MM-DD"));
+    setDate(
+      DateTime.fromFormat(date, "yyyy-MM-dd")
+        .plus({ days: 1 })
+        .toFormat("yyyy-MM-dd"),
+    );
   }
 
   function subDay() {
-    setDate(dayjs(date).subtract(1, "day").format("YYYY-MM-DD"));
+    setDate(
+      DateTime.fromFormat(date, "yyyy-MM-dd")
+        .minus({ days: 1 })
+        .toFormat("yyyy-MM-dd"),
+    );
   }
 
   return (

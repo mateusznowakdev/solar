@@ -52,8 +52,8 @@ export default function Charts() {
 
   function getSeries() {
     const params = [
-      ["date_from", startDate.toISOString()],
-      ["date_to", stopDate.toISOString()],
+      ["date_from", startDate.toISO()],
+      ["date_to", stopDate.toISO()],
     ];
 
     if (!seriesA && !seriesB) return;

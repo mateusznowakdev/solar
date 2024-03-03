@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
+import { DateTime } from "luxon";
 
 export function dateReviver(key, value) {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value))
-    return new Date(value);
+    return DateTime.fromISO(value);
 
   return value;
 }
@@ -31,8 +31,10 @@ export function getBackendURI() {
 }
 
 export function getDatesForOffset(value) {
-  const stopDate = dayjs().second(0).millisecond(0).add(1, "minute");
-  const startDate = stopDate.subtract(value, "seconds");
+  const stopDate = DateTime.now()
+    .set({ second: 0, millisecond: 0 })
+    .plus({ minutes: 1 });
+  const startDate = stopDate.minus({ seconds: value });
 
   return [startDate, stopDate];
 }
@@ -50,34 +52,34 @@ export function renderChoice(choices, value) {
 }
 
 export function renderDate(date, options) {
-  if (isNaN(date)) return "";
+  if (!date) return date;
 
-  return new Intl.DateTimeFormat(undefined, {
+  return date.toLocaleString({
     weekday: "short",
     day: "numeric",
     month: "short",
     ...(options || {}),
-  }).format(date);
+  });
 }
 
 export function renderDateTime(date, options) {
-  if (isNaN(date)) return "";
+  if (!date) return date;
 
-  return new Intl.DateTimeFormat(undefined, {
+  return date.toLocaleString({
     dateStyle: "short",
     timeStyle: "medium",
     ...(options || {}),
-  }).format(date);
+  });
 }
 
 export function renderMonth(date, options) {
-  if (isNaN(date)) return "";
+  if (!date) return date;
 
-  return new Intl.DateTimeFormat(undefined, {
+  return date.toLocaleString({
     month: "short",
     year: "numeric",
     ...(options || {}),
-  }).format(date);
+  });
 }
 
 export function renderMultipleChoices(choices, values) {
@@ -95,12 +97,12 @@ export function renderNumber(number, options) {
 }
 
 export function renderTime(date, options) {
-  if (isNaN(date)) return "";
+  if (!date) return date;
 
-  return new Intl.DateTimeFormat(undefined, {
+  return date.toLocaleString({
     timeStyle: "medium",
     ...(options || {}),
-  }).format(date);
+  });
 }
 
 export function toggleItem(list, item) {
