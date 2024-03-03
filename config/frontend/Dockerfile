@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install
+RUN npm install --maxsockets 1
 
 COPY solar-ui solar-ui
 COPY vite.config.mjs .
