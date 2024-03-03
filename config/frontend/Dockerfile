@@ -1,12 +1,14 @@
-# older version, due to critical network bug
+# npm is downgraded due to critical network bugs
+# node 20.6.1 is the latest version with npm 9
 # https://github.com/npm/cli/issues/7024
-FROM node:20.9.0-alpine3.18 AS intermediate
+# https://github.com/npm/cli/issues/7072
+FROM node:20.6.1-alpine3.18 AS intermediate
 WORKDIR /app
 
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install --maxsockets 1
+RUN npm install --loglevel info --maxsockets 1
 
 COPY solar-ui solar-ui
 COPY vite.config.mjs .
