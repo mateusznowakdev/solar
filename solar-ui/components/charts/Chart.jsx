@@ -7,9 +7,11 @@ import {
   LineElement,
   LinearScale,
   PointElement,
+  TimeScale,
   Title,
   Tooltip,
 } from "chart.js";
+import "chartjs-adapter-luxon";
 import { useEffect } from "react";
 
 import { COLORS, PARAMETER_METADATA } from "../../meta";
@@ -23,6 +25,7 @@ BaseChart.register(
   LineController,
   LineElement,
   PointElement,
+  TimeScale,
   Title,
   Tooltip,
 );
@@ -65,7 +68,6 @@ export default function Chart({ data }) {
           },
           tooltip: {
             callbacks: {
-              title: (context) => renderDateTime(data.x[context[0].parsed.x]),
               label: (context) =>
                 PARAMETER_METADATA[data.field].render(context.raw),
             },
@@ -74,9 +76,7 @@ export default function Chart({ data }) {
         responsive: true,
         scales: {
           x: {
-            ticks: {
-              callback: (value) => renderTime(data.x[value]),
-            },
+            type: "time",
           },
           y: {
             afterFit(scale) {
