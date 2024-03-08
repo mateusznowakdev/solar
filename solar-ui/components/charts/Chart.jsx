@@ -15,7 +15,6 @@ import "chartjs-adapter-luxon";
 import { useEffect } from "react";
 
 import { COLORS, PARAMETER_METADATA } from "../../meta";
-import { renderDateTime, renderTime } from "../../utils";
 
 BaseChart.register(
   CategoryScale,
@@ -62,10 +61,6 @@ export default function Chart({ data }) {
           legend: {
             display: false,
           },
-          title: {
-            display: true,
-            text: PARAMETER_METADATA[data.field].description,
-          },
           tooltip: {
             callbacks: {
               label: (context) =>
@@ -110,8 +105,14 @@ export default function Chart({ data }) {
   }, [data]);
 
   return (
-    <div>
-      <canvas height="256px" id={"canvas-" + data.field}></canvas>
-    </div>
+    <>
+      <p className="mb-0 mt-3 text-center text-muted">
+        {PARAMETER_METADATA[data.field].description} (
+        {PARAMETER_METADATA[data.field].unit})
+      </p>
+      <div>
+        <canvas height="256px" id={"canvas-" + data.field}></canvas>
+      </div>
+    </>
   );
 }
