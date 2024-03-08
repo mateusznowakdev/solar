@@ -62,10 +62,15 @@ export default function Chart({ data }) {
             display: false,
           },
           tooltip: {
+            backgroundColor: "#ffffff",
+            bodyColor: "#000000",
+            borderColor: "#aaaaaa",
+            borderWidth: 0.5,
             callbacks: {
               label: (context) =>
                 PARAMETER_METADATA[data.field].render(context.raw),
             },
+            titleColor: "#000000",
           },
         },
         responsive: true,
