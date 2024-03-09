@@ -3,15 +3,16 @@ Project description can be found
 
 **Changelog**
 
+v1.6
+
+- Fix issue where saved favorite parameters are not read properly
+- Improve chart rendering
+
 v1.5
 
-- Improve loading and error messages
-- Add extra buttons to date pickers in charts view
 - Filter logs by category
-- Display headers on each screen
-- Add password protection to the MQTT broker
-- Change data structure for log entries
-- Upgrade Python, packages and system images
+- Add extra buttons to date pickers in charts view
+- Disable write access to the MQTT broker
 
 v1.4.1
 
@@ -19,9 +20,8 @@ v1.4.1
 
 v1.4
 
-- Group log entries by date
-- Show controller errors, inverter errors, and communication status in the log
-- Change charging priority based on current date and time
+- Show errors and communication status in the log
+- Change inverter state based on various conditions
 - Add settings screen
 
 v1.3
@@ -35,8 +35,7 @@ v1.2
 v1.1
 
 - Use native date pickers
-- Optimize database performance using ETL processes
-- Preserve container logs between restarts
+- Optimize database performance
 
 v1.0
 
