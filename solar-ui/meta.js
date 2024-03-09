@@ -9,6 +9,7 @@ import {
 export const COLORS = {
   PRIMARY: "#198754", // --bs-green
   PRIMARY_TRANSLUCENT: "#19875433",
+  SECONDARY: "#6c757d",
 };
 
 const CHARGE_PRIORITY = {

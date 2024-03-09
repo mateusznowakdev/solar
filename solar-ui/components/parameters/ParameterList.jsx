@@ -35,7 +35,7 @@ function ParameterListItem({ data, togglePinned }) {
           {data.pin ? (
             <Star color={COLORS.PRIMARY} size={16} />
           ) : (
-            <Dot size={16} />
+            <Dot color={COLORS.SECONDARY} size={16} />
           )}
         </div>
         <div className="flex-grow-1 me-2">{data.description}</div>

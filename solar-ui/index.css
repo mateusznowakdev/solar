@@ -7,6 +7,7 @@ body {
 }
 
 h1 {
+  color: var(--bs-secondary);
   font-weight: 300;
 }
 
@@ -17,7 +18,7 @@ h1 {
 }
 
 .badge.success {
-  border: 1px solid var(--bs-success);
+  border-color: var(--bs-success);
   color: var(--bs-success);
 }
 
@@ -34,6 +35,11 @@ h1 {
   border-color: var(--bs-btn-hover-border-color);
 }
 
+.form-check-input:checked {
+  background-color: var(--bs-success);
+  border-color: var(--bs-success);
+}
+
 .list-group-item {
   padding: 0;
 }
@@ -48,8 +54,13 @@ h1 {
   padding-right: 0;
 }
 
+.nav-link {
+  color: var(--bs-secondary);
+}
+
 .nav-link.active {
   color: var(--bs-green);
+  font-weight: 500;
 }
 
 .pin-icon {
