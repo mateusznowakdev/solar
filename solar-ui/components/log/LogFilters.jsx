@@ -1,29 +1,24 @@
-import Check from "lucide-react/dist/esm/icons/check";
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import Badge from "react-bootstrap/Badge";
+import Stack from "react-bootstrap/Stack";
 
 import { STRINGS } from "../../locale";
 
 function LogFilter({ name, description, filters, toggleFilter }) {
   return (
-    <ButtonGroup className="me-2">
-      <Button
-        className="p-2"
-        onClick={() => toggleFilter(name)}
-        size="sm"
-        variant="light"
-      >
-        {filters.includes(name) && <Check size={16} />}
-        {description}
-      </Button>
-    </ButtonGroup>
+    <Badge
+      bg=""
+      className={"py-2 " + (filters.includes(name) ? "success" : "")}
+      onClick={() => toggleFilter(name)}
+      pill
+    >
+      {description}
+    </Badge>
   );
 }
 
 export default function LogFilters({ filters, toggleFilter }) {
   return (
-    <ButtonToolbar className="pb-2">
+    <Stack className="mb-3" direction="horizontal" gap={2}>
       <LogFilter
         name="errors"
         description={STRINGS.ERRORS}
@@ -42,6 +37,6 @@ export default function LogFilters({ filters, toggleFilter }) {
         filters={filters}
         toggleFilter={toggleFilter}
       />
-    </ButtonToolbar>
+    </Stack>
   );
 }

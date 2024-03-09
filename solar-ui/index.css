@@ -2,8 +2,23 @@
   --bs-body-font-family: "Inter", system-ui, sans-serif;
 }
 
+body {
+  user-select: none;
+}
+
 h1 {
   font-weight: 300;
+}
+
+.badge {
+  background: var(--bs-light);
+  border: 1px solid var(--bs-light);
+  color: var(--bs-secondary);
+}
+
+.badge.success {
+  border: 1px solid var(--bs-success);
+  color: var(--bs-success);
 }
 
 .btn {
