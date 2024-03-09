@@ -94,12 +94,17 @@ def send_data(client: ModbusSerialClient, reg: int, value: int) -> None:
     client.write_register(reg, value, 1)
 
 
+class ModbusLenientSerialClient(ModbusSerialClient):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._recv_interval = self._t0 * 24  # wait longer for response
+
+
 class ControlService:
     def __init__(self, *, device: str) -> None:
-        self.client = ModbusSerialClient(
+        self.client = ModbusLenientSerialClient(
             port=device, baudrate=9600, bytesize=8, method="rtu", stopbits=1, parity="N"
         )
-        self.client._recv_interval = self.client._t0 * 24
         self.client.connect()
         self.connected = False  # based on first successful transmission
 
