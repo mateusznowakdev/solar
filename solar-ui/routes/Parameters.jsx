@@ -26,7 +26,7 @@ function ParametersContainer({ data, error, loading, pinned, togglePinned }) {
 export default function Parameters() {
   const [data, setData] = useState({});
   const [pinned, setPinned] = useState(
-    localStorage.getItem("pinned") || '["timestamp"]',
+    JSON.parse(localStorage.getItem("pinned") || '["timestamp"]'),
   );
 
   const [loading, setLoading] = useState(true);
