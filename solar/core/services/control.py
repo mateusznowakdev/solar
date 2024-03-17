@@ -257,8 +257,7 @@ class ControlService:
         self.past_inverter_faults = state.inverter_faults
 
     def _change_priority(self, *, state: StateRaw) -> None:
-        # Change state if necessary
-        # System (naive) time is used
+        self.past_pv_voltages.append(state.pv_voltage)
 
         current_time = datetime.now()
 
