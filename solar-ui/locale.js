@@ -2,13 +2,9 @@ export const STRINGS = {
   ABOUT_SOURCE_CODE: "GitHub",
   AN_ERROR_OCCURRED: "Wystąpił błąd",
   AUTO_CHARGE_PRIORITY: "Automatycznie zmień priorytet ładowania",
-  AUTO_CHARGE_PRIORITY_HINT:
-    'Przełączanie między trybami "Preferuj panele" i "Tylko panele" ' +
-    "w zależności od daty i godziny",
+  AUTO_CHARGE_PRIORITY_HINT: "",
   AUTO_OUTPUT_PRIORITY: "Automatycznie zmień priorytet wyjścia",
-  AUTO_OUTPUT_PRIORITY_HINT:
-    'Przełączanie między trybami "Panel" i "Sieć" ' +
-    "na podstawie średniego napięcia PV z ostatnich 60 sekund",
+  AUTO_OUTPUT_PRIORITY_HINT: "",
   AUTOMATION: "Automatyzacja",
   CHARTS_HINT: "Wybierz poprawny parametr z listy powyżej",
   ERRORS: "Błędy",
