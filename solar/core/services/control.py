@@ -253,13 +253,12 @@ class ControlService:
         self.past_inverter_faults = state.inverter_faults
 
     def _change_priority(self, *, state: StateRaw) -> None:
-        self.past_pv_voltages.append(state.pv_voltage)
-
         current_time = datetime.now()
 
-        is_safe_hour = not (time(0, 30) <= current_time.time() < time(22, 30))
-
+        self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
+
+        is_safe_hour = not time(0, 30) <= current_time.time() < time(22, 30)
         is_high_voltage = avg_pv_voltage >= 230
         is_low_voltage = avg_pv_voltage <= 190
 
