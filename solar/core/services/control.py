@@ -113,20 +113,16 @@ class ControlService:
             timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING
         )
 
-        self.auto_charge_priority = SettingsService.get_setting(
-            name="auto_charge_priority"
-        )
-        self.auto_output_priority = SettingsService.get_setting(
-            name="auto_output_priority"
-        )
+        self.auto_charge_prio = SettingsService.get_setting(name="auto_charge_priority")
+        self.auto_output_prio = SettingsService.get_setting(name="auto_output_priority")
 
         self.past_pv_voltages = collections.deque(maxlen=60)
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
         self.next_settings_refresh_time = datetime.now() + timedelta(seconds=10)
-        self.next_charge_priority_change_time = datetime.now()
-        self.next_output_priority_change_time = datetime.now()
+        self.next_charge_prio_refresh_time = datetime.now()
+        self.next_output_prio_refresh_time = datetime.now()
 
     def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them
@@ -215,22 +211,22 @@ class ControlService:
 
         # Get settings and compare
 
-        auto_charge_priority = SettingsService.get_setting(name="auto_charge_priority")
-        auto_output_priority = SettingsService.get_setting(name="auto_output_priority")
+        auto_charge_prio = SettingsService.get_setting(name="auto_charge_priority")
+        auto_output_prio = SettingsService.get_setting(name="auto_output_priority")
 
-        if auto_charge_priority != self.auto_charge_priority:
+        if auto_charge_prio != self.auto_charge_prio:
             LoggingService.log(
                 timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY
             )
-        if auto_output_priority != self.auto_output_priority:
+        if auto_output_prio != self.auto_output_prio:
             LoggingService.log(
                 timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY
             )
 
         # Store settings for later
 
-        self.auto_charge_priority = auto_charge_priority
-        self.auto_output_priority = auto_output_priority
+        self.auto_charge_prio = auto_charge_prio
+        self.auto_output_prio = auto_output_prio
 
         self.next_settings_refresh_time = current_time + timedelta(seconds=10)
 
@@ -261,36 +257,33 @@ class ControlService:
 
         current_time = datetime.now()
 
-        is_safe_hour = (
-            current_time.time() < time(hour=0, minute=30)
-            or current_time.time() >= time(hour=22, minute=30)
-        )
+        is_safe_hour = not (time(0, 30) <= current_time.time() < time(22, 30))
 
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
         is_high_voltage = avg_pv_voltage >= 230
         is_low_voltage = avg_pv_voltage <= 190
 
-        # (ugly hacks for now)
-
         new_charge_priority = None
         new_output_priority = None
 
-        if is_safe_hour:
-            if self.auto_charge_priority and current_time > self.next_charge_priority_change_time and state.charge_priority != CHARGE_PREFER_PV:
+        if self.auto_charge_prio and current_time > self.next_charge_prio_refresh_time:
+            self.next_charge_prio_refresh_time = current_time + timedelta(seconds=10)
+
+            if is_safe_hour and state.charge_priority != CHARGE_PREFER_PV:
                 new_charge_priority = CHARGE_PREFER_PV
-            if self.auto_output_priority and current_time > self.next_output_priority_change_time and state.output_priority != OUTPUT_PRIORITY_GRID:
+                self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
+            elif not is_safe_hour and state.charge_priority != CHARGE_ONLY_PV:
+                new_charge_priority = CHARGE_ONLY_PV
+                self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
+
+        if self.auto_output_prio and current_time > self.next_output_prio_refresh_time:
+            self.next_output_prio_refresh_time = current_time + timedelta(seconds=10)
+
+            if is_safe_hour and state.output_priority != OUTPUT_PRIORITY_GRID:
                 new_output_priority = OUTPUT_PRIORITY_GRID
-
-        elif is_low_voltage:
-            if self.auto_charge_priority and current_time > self.next_charge_priority_change_time and state.charge_priority != CHARGE_ONLY_PV:
-                new_charge_priority = CHARGE_ONLY_PV
-            if self.auto_output_priority and current_time > self.next_output_priority_change_time and state.output_priority != OUTPUT_PRIORITY_INVERTER:
+            elif is_low_voltage and state.output_priority != OUTPUT_PRIORITY_INVERTER:
                 new_output_priority = OUTPUT_PRIORITY_INVERTER
-
-        elif is_high_voltage:
-            if self.auto_charge_priority and current_time > self.next_charge_priority_change_time and state.charge_priority != CHARGE_ONLY_PV:
-                new_charge_priority = CHARGE_ONLY_PV
-            if self.auto_output_priority and current_time > self.next_output_priority_change_time and state.output_priority != OUTPUT_PRIORITY_PV:
+            elif is_high_voltage and state.output_priority != OUTPUT_PRIORITY_PV:
                 new_output_priority = OUTPUT_PRIORITY_PV
 
         if new_charge_priority is not None:
@@ -301,10 +294,6 @@ class ControlService:
                 value=new_charge_priority,
             )
 
-            self.next_charge_priority_change_time = current_time + timedelta(minutes=1)
-        else:
-            self.next_charge_priority_change_time = current_time + timedelta(seconds=10)
-
         if new_output_priority is not None:
             send_data(self.client, 0xE204, new_output_priority)
             LoggingService.log(
@@ -312,7 +301,3 @@ class ControlService:
                 name=LoggingService.AUTOMATION_OUTPUT_PRIORITY,
                 value=new_output_priority,
             )
-
-            self.next_output_priority_change_time = current_time + timedelta(seconds=30)
-        else:
-            self.next_output_priority_change_time = current_time + timedelta(seconds=10)
