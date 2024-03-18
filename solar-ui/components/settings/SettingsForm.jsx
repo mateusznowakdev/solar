@@ -12,14 +12,7 @@ export default function SettingsForm({ data, setData, submit }) {
         <FormCheck
           checked={data.auto_charge_priority}
           id="auto_charge_priority"
-          label={
-            <>
-              <div>{STRINGS.AUTO_CHARGE_PRIORITY}</div>
-              <div className="text-secondary mt-1">
-                {STRINGS.AUTO_CHARGE_PRIORITY_HINT}
-              </div>
-            </>
-          }
+          label={STRINGS.AUTO_CHARGE_PRIORITY}
           onChange={(e) =>
             setData((d) => ({
               ...d,
@@ -33,14 +26,7 @@ export default function SettingsForm({ data, setData, submit }) {
         <FormCheck
           checked={data.auto_output_priority}
           id="auto_output_priority"
-          label={
-            <>
-              <div>{STRINGS.AUTO_OUTPUT_PRIORITY}</div>
-              <div className="text-secondary mt-1">
-                {STRINGS.AUTO_OUTPUT_PRIORITY_HINT}
-              </div>
-            </>
-          }
+          label={STRINGS.AUTO_OUTPUT_PRIORITY}
           onChange={(e) =>
             setData((d) => ({
               ...d,
