@@ -1,6 +1,8 @@
 services:
   frontend:
     image: ghcr.io/mateusznowakdev/solar/frontend:1.7
+    # build:
+    #   dockerfile: config/frontend/Dockerfile
     deploy:
       restart_policy:
         condition: any
@@ -11,6 +13,8 @@ services:
       - 80:80
   backend:
     image: ghcr.io/mateusznowakdev/solar/backend:1.7
+    # build:
+    #   dockerfile: config/backend/Dockerfile
     command: python manage.py runserver --noreload --nostatic 0.0.0.0:8000
     deploy:
       restart_policy:
@@ -26,6 +30,8 @@ services:
       - 8000:8000
   communicator:
     image: ghcr.io/mateusznowakdev/solar/backend:1.7
+    # build:
+    #   dockerfile: config/backend/Dockerfile
     command: python manage.py run_communicator
     deploy:
       restart_policy:
@@ -43,6 +49,8 @@ services:
     privileged: true
   transformer:
     image: ghcr.io/mateusznowakdev/solar/backend:1.7
+    # build:
+    #   dockerfile: config/backend/Dockerfile
     command: python manage.py run_transformer
     deploy:
       restart_policy:
@@ -68,6 +76,8 @@ services:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
   mqtt:
     image: ghcr.io/mateusznowakdev/solar/mqtt:1.7
+    # build:
+    #   dockerfile: config/mqtt/Dockerfile
     env_file:
       - .env
     deploy:
