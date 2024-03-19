@@ -3,6 +3,10 @@ Project description can be found
 
 **Changelog**
 
+v1.7
+
+- ???
+
 v1.6
 
 - Fix issue where saved favorite parameters are not read properly
