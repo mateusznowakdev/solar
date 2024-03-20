@@ -268,22 +268,27 @@ class ControlService:
         if self.auto_charge_prio and current_time > self.next_charge_prio_refresh_time:
             self.next_charge_prio_refresh_time = current_time + timedelta(seconds=10)
 
-            if is_safe_hour and state.charge_priority != CHARGE_PREFER_PV:
-                new_charge_priority = CHARGE_PREFER_PV
-                self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
-            elif not is_safe_hour and state.charge_priority != CHARGE_ONLY_PV:
-                new_charge_priority = CHARGE_ONLY_PV
-                self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
+            if is_safe_hour:
+                if state.charge_priority != CHARGE_PREFER_PV:
+                    new_charge_priority = CHARGE_PREFER_PV
+                    self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
+            else:
+                if state.charge_priority != CHARGE_ONLY_PV:
+                    new_charge_priority = CHARGE_ONLY_PV
+                    self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
 
         if self.auto_output_prio and current_time > self.next_output_prio_refresh_time:
             self.next_output_prio_refresh_time = current_time + timedelta(seconds=10)
 
-            if is_safe_hour and state.output_priority != OUTPUT_PRIORITY_GRID:
-                new_output_priority = OUTPUT_PRIORITY_GRID
-            elif is_low_voltage and state.output_priority != OUTPUT_PRIORITY_INVERTER:
-                new_output_priority = OUTPUT_PRIORITY_INVERTER
-            elif is_high_voltage and state.output_priority != OUTPUT_PRIORITY_PV:
-                new_output_priority = OUTPUT_PRIORITY_PV
+            if is_safe_hour:
+                if state.output_priority != OUTPUT_PRIORITY_GRID:
+                    new_output_priority = OUTPUT_PRIORITY_GRID
+            elif is_low_voltage:
+                if state.output_priority != OUTPUT_PRIORITY_INVERTER:
+                    new_output_priority = OUTPUT_PRIORITY_INVERTER
+            elif is_high_voltage:
+                if state.output_priority != OUTPUT_PRIORITY_PV:
+                    new_output_priority = OUTPUT_PRIORITY_PV
 
         if new_charge_priority is not None:
             send_data(self.client, 0xE20F, new_charge_priority)
