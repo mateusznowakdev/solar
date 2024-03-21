@@ -258,7 +258,8 @@ class ControlService:
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 
-        is_safe_hour = not time(0, 30) <= current_time.time() < time(22, 30)
+        charging_time = not time(0, 30) <= current_time.time() < time(22, 30)
+        grid_time = not time(6, 0) <= current_time.time() < time(22, 30)
         is_high_voltage = avg_pv_voltage >= 230
         is_low_voltage = avg_pv_voltage <= 190
 
@@ -268,7 +269,7 @@ class ControlService:
         if self.auto_charge_prio and current_time > self.next_charge_prio_refresh_time:
             self.next_charge_prio_refresh_time = current_time + timedelta(seconds=10)
 
-            if is_safe_hour:
+            if charging_time:
                 if state.charge_priority != CHARGE_PREFER_PV:
                     new_charge_priority = CHARGE_PREFER_PV
                     self.next_charge_prio_refresh_time = current_time + timedelta(minutes=1)
@@ -280,7 +281,7 @@ class ControlService:
         if self.auto_output_prio and current_time > self.next_output_prio_refresh_time:
             self.next_output_prio_refresh_time = current_time + timedelta(seconds=10)
 
-            if is_safe_hour:
+            if grid_time:
                 if state.output_priority != OUTPUT_PRIORITY_GRID:
                     new_output_priority = OUTPUT_PRIORITY_GRID
             elif is_low_voltage:
