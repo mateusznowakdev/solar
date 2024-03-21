@@ -1,5 +1,5 @@
 import collections
-from datetime import datetime, timedelta, time
+from datetime import datetime, time, timedelta
 
 from django.utils import timezone
 
@@ -64,6 +64,7 @@ class ControlService(BaseControlService):
         self.next_settings_refresh_time = current_time + timedelta(seconds=10)
 
     def _change_priority(self, *, state: StateRaw) -> None:
+        # pylint:disable=too-many-branches
         current_time = datetime.now()
 
         self.past_pv_voltages.append(state.pv_voltage)
