@@ -20,14 +20,14 @@ class ControlService(BaseControlService):
     def __init__(self, *, device: str) -> None:
         super().__init__(device=device)
 
-        self.auto_charge_prio = SettingsService.get_setting(name="auto_charge_priority")
-        self.auto_output_prio = SettingsService.get_setting(name="auto_output_priority")
+        self.auto_charge = SettingsService.get_setting(name="auto_charge_priority")
+        self.auto_output = SettingsService.get_setting(name="auto_output_priority")
 
         self.past_pv_voltages = collections.deque(maxlen=60)
 
         self.next_settings_refresh_time = datetime.now() + timedelta(seconds=10)
-        self.next_charge_prio_refresh_time = datetime.now()
-        self.next_output_prio_refresh_time = datetime.now()
+        self.next_charge_change_time = datetime.now()
+        self.next_output_change_time = datetime.now()
 
     def postprocess_state(self, *, state: StateRaw) -> None:
         super().postprocess_state(state=state)
@@ -44,22 +44,22 @@ class ControlService(BaseControlService):
 
         # Get settings and compare
 
-        auto_charge_prio = SettingsService.get_setting(name="auto_charge_priority")
-        auto_output_prio = SettingsService.get_setting(name="auto_output_priority")
+        auto_charge = SettingsService.get_setting(name="auto_charge_priority")
+        auto_output = SettingsService.get_setting(name="auto_output_priority")
 
-        if auto_charge_prio != self.auto_charge_prio:
+        if auto_charge != self.auto_charge:
             LoggingService.log(
                 timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY
             )
-        if auto_output_prio != self.auto_output_prio:
+        if auto_output != self.auto_output:
             LoggingService.log(
                 timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY
             )
 
         # Store settings for later
 
-        self.auto_charge_prio = auto_charge_prio
-        self.auto_output_prio = auto_output_prio
+        self.auto_charge = auto_charge
+        self.auto_output = auto_output
 
         self.next_settings_refresh_time = current_time + timedelta(seconds=10)
 
@@ -77,24 +77,20 @@ class ControlService(BaseControlService):
         new_charge_priority = None
         new_output_priority = None
 
-        if self.auto_charge_prio and current_time > self.next_charge_prio_refresh_time:
-            self.next_charge_prio_refresh_time = current_time + timedelta(seconds=10)
+        if self.auto_charge and current_time > self.next_charge_change_time:
+            self.next_charge_change_time = current_time + timedelta(seconds=10)
 
             if charging_time:
                 if state.charge_priority != CHARGE_PREFER_PV:
                     new_charge_priority = CHARGE_PREFER_PV
-                    self.next_charge_prio_refresh_time = current_time + timedelta(
-                        minutes=1
-                    )
+                    self.next_charge_change_time = current_time + timedelta(minutes=1)
             else:
                 if state.charge_priority != CHARGE_ONLY_PV:
                     new_charge_priority = CHARGE_ONLY_PV
-                    self.next_charge_prio_refresh_time = current_time + timedelta(
-                        minutes=1
-                    )
+                    self.next_charge_change_time = current_time + timedelta(minutes=1)
 
-        if self.auto_output_prio and current_time > self.next_output_prio_refresh_time:
-            self.next_output_prio_refresh_time = current_time + timedelta(seconds=10)
+        if self.auto_output and current_time > self.next_output_change_time:
+            self.next_output_change_time = current_time + timedelta(seconds=10)
 
             if grid_time:
                 if state.output_priority != OUTPUT_PRIORITY_GRID:
