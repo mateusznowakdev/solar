@@ -101,7 +101,7 @@ class ModbusLenientSerialClient(ModbusSerialClient):
         self._recv_interval = self._t0 * 24  # wait longer for response
 
 
-class ControlService:
+class BaseControlService:
     def __init__(self, *, device: str) -> None:
         self.client = ModbusLenientSerialClient(
             port=device, baudrate=9600, bytesize=8, method="rtu", stopbits=1, parity="N"
@@ -109,20 +109,12 @@ class ControlService:
         self.client.connect()
         self.connected = False  # based on first successful transmission
 
-        LoggingService.log(
-            timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING
-        )
-
-        self.auto_charge_prio = SettingsService.get_setting(name="auto_charge_priority")
-        self.auto_output_prio = SettingsService.get_setting(name="auto_output_priority")
-
-        self.past_pv_voltages = collections.deque(maxlen=60)
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
-        self.next_settings_refresh_time = datetime.now() + timedelta(seconds=10)
-        self.next_charge_prio_refresh_time = datetime.now()
-        self.next_output_prio_refresh_time = datetime.now()
+        LoggingService.log(
+            timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING
+        )
 
     def get_state(self) -> StateRaw:
         # These variables are not implemented because I can't test them
@@ -197,9 +189,49 @@ class ControlService:
         state.save()
 
     def postprocess_state(self, *, state: StateRaw) -> None:
-        self._refresh_settings()
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
+
+    def _process_controller_faults(self, *, state: StateRaw) -> None:
+        if state.controller_faults:
+            if set(state.controller_faults) != set(self.past_controller_faults):
+                LoggingService.log(
+                    timestamp=state.timestamp,
+                    name=LoggingService.ERRORS_CONTROLLER_FAULTS,
+                    value=state.controller_faults,
+                )
+
+        self.past_controller_faults = state.controller_faults
+
+    def _process_inverter_faults(self, *, state: StateRaw) -> None:
+        if state.inverter_faults:
+            if set(state.inverter_faults) != set(self.past_inverter_faults):
+                LoggingService.log(
+                    timestamp=state.timestamp,
+                    name=LoggingService.ERRORS_INVERTER_FAULTS,
+                    value=state.inverter_faults,
+                )
+
+        self.past_inverter_faults = state.inverter_faults
+
+
+class ControlService(BaseControlService):
+    def __init__(self, *, device: str) -> None:
+        super().__init__(device=device)
+
+        self.auto_charge_prio = SettingsService.get_setting(name="auto_charge_priority")
+        self.auto_output_prio = SettingsService.get_setting(name="auto_output_priority")
+
+        self.past_pv_voltages = collections.deque(maxlen=60)
+
+        self.next_settings_refresh_time = datetime.now() + timedelta(seconds=10)
+        self.next_charge_prio_refresh_time = datetime.now()
+        self.next_output_prio_refresh_time = datetime.now()
+
+    def postprocess_state(self, *, state: StateRaw) -> None:
+        super().postprocess_state(state=state)
+
+        self._refresh_settings()
         self._change_priority(state=state)
 
     def _refresh_settings(self) -> None:
@@ -229,28 +261,6 @@ class ControlService:
         self.auto_output_prio = auto_output_prio
 
         self.next_settings_refresh_time = current_time + timedelta(seconds=10)
-
-    def _process_controller_faults(self, *, state: StateRaw) -> None:
-        if state.controller_faults:
-            if set(state.controller_faults) != set(self.past_controller_faults):
-                LoggingService.log(
-                    timestamp=state.timestamp,
-                    name=LoggingService.ERRORS_CONTROLLER_FAULTS,
-                    value=state.controller_faults,
-                )
-
-        self.past_controller_faults = state.controller_faults
-
-    def _process_inverter_faults(self, *, state: StateRaw) -> None:
-        if state.inverter_faults:
-            if set(state.inverter_faults) != set(self.past_inverter_faults):
-                LoggingService.log(
-                    timestamp=state.timestamp,
-                    name=LoggingService.ERRORS_INVERTER_FAULTS,
-                    value=state.inverter_faults,
-                )
-
-        self.past_inverter_faults = state.inverter_faults
 
     def _change_priority(self, *, state: StateRaw) -> None:
         current_time = datetime.now()
