@@ -46,10 +46,6 @@ def parse_charge_status(source: list[int], offset: int) -> int:
     return source[offset] & 0x00FF
 
 
-def parse_load_on(source: list[int], offset: int) -> bool:
-    return bool(source[offset] & 0x8000)
-
-
 def parse_controller_faults(source: list[int], offset: int) -> list[int]:
     codes = []
 
@@ -106,15 +102,6 @@ class BaseControlService:
         )
 
     def get_state(self) -> StateRaw:
-        # These variables are not implemented because I can't test them
-        #
-        # - controller temperature (0x103)
-        # - battery temperature (0x103)
-        # - brightness (0x10B)
-        # - fault bits (0x200)
-        # - current time (0x20C)
-        # - password protection (0x211)
-
         con = recv_data(self.client, 0x100, 0x10E)
         inv = recv_data(self.client, 0x200, 0x225)
         par = recv_data(self.client, 0xE200, 0xE20F)
@@ -132,14 +119,10 @@ class BaseControlService:
             battery_level_soc=parse_int(con, 0x00),
             battery_voltage=parse_float(con, 0x01),
             battery_current=parse_signed_float(con, 0x02),
-            dc_voltage=parse_float(con, 0x04),
-            dc_current=parse_float2(con, 0x05),
-            dc_power=parse_int(con, 0x06),
             pv_voltage=parse_float(con, 0x07),
             pv_current=parse_float(con, 0x08),
             pv_power=parse_int(con, 0x09),
             charge_status=parse_charge_status(con, 0x0B),
-            load_on=parse_load_on(con, 0x0B),
             controller_faults=parse_controller_faults(con, 0x0C),
             inverter_faults=parse_inverter_faults(inv, 0x04),
             current_state=parse_int(inv, 0x10),
@@ -151,10 +134,8 @@ class BaseControlService:
             inverter_current=parse_float(inv, 0x17),
             inverter_frequency=parse_float2(inv, 0x18),
             load_current=parse_float(inv, 0x19),
-            load_pf=parse_float2(inv, 0x1A),
             load_active_power=parse_int(inv, 0x1B),
             load_apparent_power=parse_int(inv, 0x1C),
-            inverter_dc_component=parse_int(inv, 0x1D),
             mains_charge_current=parse_float(inv, 0x1E),
             load_ratio=parse_int(inv, 0x1F),
             heatsink_a_temperature=parse_float(inv, 0x20),

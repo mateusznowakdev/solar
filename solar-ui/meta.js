@@ -98,18 +98,6 @@ export const PARAMETER_METADATA = {
     description: "Tryb inwertera",
     render: (value) => renderChoice(CURRENT_STATE, value),
   },
-  dc_current: {
-    description: "Prąd DC",
-    unit: "A",
-  },
-  dc_power: {
-    description: "Moc DC",
-    unit: "W",
-  },
-  dc_voltage: {
-    description: "Napięcie DC",
-    unit: "V",
-  },
   grid_current: {
     description: "Prąd sieci",
     unit: "A",
@@ -138,10 +126,6 @@ export const PARAMETER_METADATA = {
     description: "Prąd inwertera",
     unit: "A",
   },
-  inverter_dc_component: {
-    description: "Składowa DC inwertera",
-    unit: "mV",
-  },
   inverter_faults: {
     chart: false,
     description: "Kody błędów inwertera",
@@ -166,14 +150,6 @@ export const PARAMETER_METADATA = {
   load_current: {
     description: "Prąd obciążenia",
     unit: "A",
-  },
-  load_on: {
-    chart: false,
-    description: "Obciążenie",
-    render: (value) => renderBoolean(value),
-  },
-  load_pf: {
-    description: "Współczynnik mocy obciążenia",
   },
   load_ratio: {
     description: "Poziom obciążenia",
