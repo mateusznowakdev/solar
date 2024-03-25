@@ -13,10 +13,10 @@ export const COLORS = {
 };
 
 const CHARGE_PRIORITY = {
-  0: "Preferuj panele",
-  1: "Preferuj sieć",
-  2: "Tryb mieszany",
-  3: "Tylko panele",
+  0: "CSO Preferuj panele",
+  1: "CUB Preferuj sieć",
+  2: "SNU Tryb mieszany",
+  3: "OSO Tylko panele",
 };
 
 const CHARGE_STATUS = {
@@ -51,9 +51,9 @@ const INVERTER_FAULTS = {
 };
 
 const OUTPUT_PRIORITY = {
-  0: "Panel",
-  1: "Sieć",
-  2: "Inwerter",
+  0: "SOL Panel",
+  1: "UTI Sieć",
+  2: "SBU Inwerter",
 };
 
 export const PARAMETER_METADATA = {

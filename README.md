@@ -5,7 +5,8 @@ Project description can be found
 
 v1.7
 
-- ???
+- Add new automation code and separate it from the main code
+- Remove unused parameters
 
 v1.6
 
