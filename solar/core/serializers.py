@@ -57,8 +57,8 @@ class SeriesResponseSerializer(Serializer):
 
 
 class SettingsSerializer(Serializer):
-    auto_charge_priority = serializers.BooleanField()
-    auto_output_priority = serializers.BooleanField()
+    auto_charge_priority = serializers.BooleanField(required=False)
+    auto_output_priority = serializers.BooleanField(required=False)
 
 
 class SettingsRequestSerializer(SettingsSerializer):

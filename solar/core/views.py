@@ -92,7 +92,7 @@ class SettingsAPIView(views.APIView):
         request=SettingsRequestSerializer(),
         responses={200: SettingsResponseSerializer()},
     )
-    def put(self, request: Request) -> Response:
+    def patch(self, request: Request) -> Response:
         in_serializer = SettingsRequestSerializer(data=request.data)
         in_serializer.is_valid(raise_exception=True)
         in_data = in_serializer.validated_data

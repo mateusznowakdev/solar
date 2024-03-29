@@ -33,7 +33,7 @@ export default function Settings() {
     setLoading(true);
 
     getBackendResponse("/api/settings/", {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(data),
       headers: { "content-type": "application/json" },
     }).then(({ data, error }) => {

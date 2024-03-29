@@ -137,6 +137,7 @@ class SettingsAPIService:
     @staticmethod
     def update_settings(*, settings: dict) -> dict:
         for name in ("auto_charge_priority", "auto_output_priority"):
-            SettingsService.put_setting(name=name, checked=settings[name])
+            if name in settings:
+                SettingsService.put_setting(name=name, checked=settings[name])
 
         return SettingsAPIService.get_settings()
