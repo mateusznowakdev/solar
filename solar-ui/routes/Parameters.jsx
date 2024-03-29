@@ -7,6 +7,7 @@ import LoadingText from "../components/generic/LoadingText";
 import LegalNotice from "../components/parameters/LegalNotice";
 import ParameterList from "../components/parameters/ParameterList";
 import { STRINGS } from "../locale";
+import { STORAGE_PINNED, getStorage, setStorage } from "../storage";
 import { dateReviver, toggleItem } from "../utils";
 
 const MQTT_JSON_TOPIC = "solar/json";
@@ -25,9 +26,7 @@ function ParametersContainer({ data, error, loading, pinned, togglePinned }) {
 
 export default function Parameters() {
   const [data, setData] = useState({});
-  const [pinned, setPinned] = useState(
-    JSON.parse(localStorage.getItem("pinned") || '["timestamp"]'),
-  );
+  const [pinned, setPinned] = useState(getStorage(STORAGE_PINNED));
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -79,7 +78,7 @@ export default function Parameters() {
     toggleItem(pinnedCopy, key);
 
     setPinned(pinnedCopy);
-    localStorage.setItem("pinned", JSON.stringify(pinnedCopy));
+    setStorage(STORAGE_PINNED, pinnedCopy);
   }
 
   useEffect(getMQTTClient, []);
