@@ -111,7 +111,7 @@ export default function Chart({ data }) {
 
   return (
     <>
-      <p className="mb-0 mt-3 text-center text-muted">
+      <p className="mb-0 mt-3 text-center text-secondary">
         {PARAMETER_METADATA[data.field].description} (
         {PARAMETER_METADATA[data.field].unit})
       </p>

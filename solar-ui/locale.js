@@ -1,8 +1,6 @@
 export const STRINGS = {
   ABOUT_SOURCE_CODE: "GitHub",
   AN_ERROR_OCCURRED: "Wystąpił błąd",
-  AUTO_CHARGE_PRIORITY: "Automat. zmień priorytet ładowania",
-  AUTO_OUTPUT_PRIORITY: "Automat. zmień priorytet wyjścia",
   AUTOMATION: "Automatyzacja",
   CHARTS_HINT: "Wybierz poprawny parametr z listy powyżej",
   ERRORS: "Błędy",
@@ -17,8 +15,13 @@ export const STRINGS = {
   PRODUCTION_PV: "Produkcja",
   PRODUCTION_TOTAL: "Zużycie",
   SAVE: "Zapisz",
+  SETTINGS_AUTO_CHARGE_PRIORITY: "Zmień priorytet ładowania",
+  SETTINGS_AUTO_OUTPUT_PRIORITY: "Zmień priorytet wyjścia",
+  SETTINGS_AUTOMATION: "Automatyzacja",
   SETTINGS_HINT:
     "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
+  SETTINGS_LOCAL: "Na tym urządzeniu",
+  SETTINGS_SHOW_FULL_LABELS: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",
 };
