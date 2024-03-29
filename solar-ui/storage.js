@@ -1,4 +1,5 @@
 export const STORAGE_FILTERS = "filters";
+export const STORAGE_FULL_NAMES = "fullNames";
 export const STORAGE_PINNED = "pinned";
 
 export function getStorage(key) {
@@ -9,6 +10,8 @@ export function getStorage(key) {
     switch (key) {
       case STORAGE_FILTERS:
         return [];
+      case STORAGE_FULL_NAMES:
+        return true;
       case STORAGE_PINNED:
         return ["timestamp"];
       default:

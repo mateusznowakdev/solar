@@ -6,16 +6,24 @@ import LoadingText from "../components/generic/LoadingText";
 import SettingsAutomationForm from "../components/settings/SettingsAutomationForm";
 import SettingsLocalForm from "../components/settings/SettingsLocalForm";
 import { STRINGS } from "../locale";
+import { STORAGE_FULL_NAMES, getStorage, setStorage } from "../storage";
 import { getBackendResponse } from "../utils";
 
-function SettingsContainer({ data, error, loading, submit }) {
+function SettingsContainer({
+  data,
+  error,
+  loading,
+  localData,
+  localSubmit,
+  submit,
+}) {
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
   return (
     <>
       <SettingsAutomationForm data={data} submit={submit} />
-      <SettingsLocalForm />
+      <SettingsLocalForm data={localData} submit={localSubmit} />
       <HintText hint={STRINGS.SETTINGS_HINT} />
     </>
   );
@@ -23,6 +31,9 @@ function SettingsContainer({ data, error, loading, submit }) {
 
 export default function Settings() {
   const [data, setData] = useState({});
+  const [localData, setLocalData] = useState({
+    fullNames: getStorage(STORAGE_FULL_NAMES),
+  });
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,6 +67,13 @@ export default function Settings() {
     setTimeout(() => putSettings(data), 1000);
   }
 
+  function putLocalSettings(data) {
+    for (const [key, value] of Object.entries(data)) {
+      setStorage(key, value);
+    }
+    setLocalData((prev) => ({ ...prev, ...data }));
+  }
+
   useEffect(getSettings, []);
 
   return (
@@ -65,6 +83,8 @@ export default function Settings() {
         data={data}
         error={error}
         loading={loading}
+        localData={localData}
+        localSubmit={putLocalSettings}
         submit={putSettingsDelayed}
       />
     </>
