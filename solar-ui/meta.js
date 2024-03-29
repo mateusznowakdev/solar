@@ -1,5 +1,4 @@
 import {
-  renderBoolean,
   renderChoice,
   renderDateTime,
   renderMultipleChoices,

@@ -6,11 +6,11 @@ import SettingsForm from "../components/settings/SettingsForm";
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
 
-function SettingsContainer({ data, error, loading, setData, submit }) {
+function SettingsContainer({ data, error, loading, submit }) {
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
-  return <SettingsForm data={data} setData={setData} submit={submit} />;
+  return <SettingsForm data={data} submit={submit} />;
 }
 
 export default function Settings() {
@@ -29,7 +29,7 @@ export default function Settings() {
     });
   }
 
-  function putSettings() {
+  function putSettings(data) {
     setLoading(true);
 
     getBackendResponse("/api/settings/", {
@@ -43,9 +43,9 @@ export default function Settings() {
     });
   }
 
-  function putSettingsDelayed() {
+  function putSettingsDelayed(data) {
     setLoading(true);
-    setTimeout(putSettings, 1000);
+    setTimeout(() => putSettings(data), 1000);
   }
 
   useEffect(getSettings, []);
@@ -57,7 +57,6 @@ export default function Settings() {
         data={data}
         error={error}
         loading={loading}
-        setData={setData}
         submit={putSettingsDelayed}
       />
     </>
