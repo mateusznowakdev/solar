@@ -22,6 +22,6 @@ export const STRINGS = {
     "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
   SETTINGS_LOCAL: "Na tym urządzeniu",
-  SETTINGS_SHOW_FULL_LABELS: "Pokazuj pełne nazwy priorytetów",
+  SETTINGS_SHOW_FULL_NAMES: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",
 };

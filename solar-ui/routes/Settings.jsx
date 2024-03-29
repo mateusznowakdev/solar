@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
 import ErrorText from "../components/generic/ErrorText";
+import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
-import SettingsForm from "../components/settings/SettingsForm";
+import SettingsAutomationForm from "../components/settings/SettingsAutomationForm";
+import SettingsLocalForm from "../components/settings/SettingsLocalForm";
 import { STRINGS } from "../locale";
 import { getBackendResponse } from "../utils";
 
@@ -10,7 +12,13 @@ function SettingsContainer({ data, error, loading, submit }) {
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
-  return <SettingsForm data={data} submit={submit} />;
+  return (
+    <>
+      <SettingsAutomationForm data={data} submit={submit} />
+      <SettingsLocalForm />
+      <HintText hint={STRINGS.SETTINGS_HINT} />
+    </>
+  );
 }
 
 export default function Settings() {
