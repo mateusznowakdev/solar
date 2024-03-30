@@ -69,13 +69,16 @@ class ControlService(BaseControlService):
 
         sunrise = sun_info.get("sunrise")
         sunrise = sunrise.replace(second=0, microsecond=0)
+
         return sunrise
 
     def _change_priority(self, *, state: StateRaw) -> None:
         # pylint:disable=too-many-branches
         now = timezone.now()
         local_now = now.astimezone(timezone.get_default_timezone())
-        local_sunrise = self._get_sunrise(local_now.date(), local_now.tzinfo)
+        local_sunrise = self._get_sunrise(
+            date=local_now.date(), tzinfo=local_now.tzinfo
+        )
 
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
