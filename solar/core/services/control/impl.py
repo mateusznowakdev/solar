@@ -1,5 +1,7 @@
 import collections
+from datetime import date as date_
 from datetime import datetime, time, timedelta
+from datetime import timezone as timezone_
 from functools import cache
 
 from astral import LocationInfo
@@ -61,9 +63,9 @@ class ControlService(BaseControlService):
         self.next_settings_refresh_time = now + timedelta(seconds=10)
 
     @cache
-    def _get_sunrise(self, *, local_time: datetime) -> datetime:
-        city_info = LocationInfo(latitude=settings.LATITUDE, longitude=settings.LONGITUDE)
-        sun_info = sun(city_info.observer, local_time.date(), tzinfo=local_time.tzinfo)
+    def _get_sunrise(self, *, date: date_, tzinfo: timezone_) -> datetime:
+        city = LocationInfo(latitude=settings.LATITUDE, longitude=settings.LONGITUDE)
+        sun_info = sun(city.observer, date, tzinfo=tzinfo)
 
         sunrise = sun_info.get("sunrise")
         sunrise = sunrise.replace(second=0, microsecond=0)
@@ -72,8 +74,8 @@ class ControlService(BaseControlService):
     def _change_priority(self, *, state: StateRaw) -> None:
         # pylint:disable=too-many-branches
         now = timezone.now()
-        local_now = timezone.now().astimezone(timezone.get_default_timezone())
-        local_sunrise = self._get_sunrise(local_now)
+        local_now = now.astimezone(timezone.get_default_timezone())
+        local_sunrise = self._get_sunrise(local_now.date(), local_now.tzinfo)
 
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
