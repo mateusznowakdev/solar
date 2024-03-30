@@ -24,7 +24,7 @@ function SettingsContainer({
     <>
       <SettingsAutomationForm data={data} submit={submit} />
       <SettingsLocalForm data={localData} submit={localSubmit} />
-      <HintText hint={STRINGS.SETTINGS_HINT} />
+      <HintText className="mt-4" hint={STRINGS.SETTINGS_HINT} />
     </>
   );
 }
