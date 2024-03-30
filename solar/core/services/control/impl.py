@@ -1,8 +1,8 @@
 import collections
+import functools
 from datetime import date as date_
 from datetime import datetime, time, timedelta
 from datetime import timezone as timezone_
-from functools import cache
 
 from astral import LocationInfo
 from astral.sun import sun
@@ -62,7 +62,7 @@ class ControlService(BaseControlService):
         self.auto_output = auto_output
         self.next_settings_refresh_time = now + timedelta(seconds=10)
 
-    @cache
+    @functools.lru_cache(maxsize=1)
     def _get_sunrise(self, *, date: date_, tzinfo: timezone_) -> datetime:
         city = LocationInfo(latitude=settings.LATITUDE, longitude=settings.LONGITUDE)
         sun_info = sun(city.observer, date, tzinfo=tzinfo)
