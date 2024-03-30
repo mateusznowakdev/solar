@@ -11,7 +11,7 @@ export default function SettingsLocalForm({ data, submit }) {
       <div className="mt-3">
         <Switch
           checked={data.fullNames}
-          id="show_full_labels"
+          id={STORAGE_FULL_NAMES}
           label={STRINGS.SETTINGS_SHOW_FULL_NAMES}
           onChange={(e) => {
             submit({
