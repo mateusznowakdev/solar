@@ -1,20 +1,22 @@
 """
-These environment variables can be used to configure the application:
+The following environment variables can be used to configure the application:
 
-- DJANGO_ALLOWED_HOSTS=str,str,...
-- DJANGO_ALLOWED_ORIGINS=str,str,...
-- DJANGO_DEBUG=int
-- DJANGO_SECRET_KEY=str
-- MQTT_BROKER=str
-- MQTT_PASSWORD=str
-- MQTT_PORT=str
-- MQTT_USER=str
-- POSTGRES_HOST=str
-- POSTGRES_NAME=str
-- POSTGRES_PASSWORD=str
-- POSTGRES_PORT=str
-- POSTGRES_USER=str
-- TZ=str
+- DJANGO_ALLOWED_HOSTS
+- DJANGO_ALLOWED_ORIGINS
+- DJANGO_DEBUG
+- DJANGO_SECRET_KEY
+- LATITUDE
+- LONGITUDE
+- MQTT_BROKER
+- MQTT_PASSWORD
+- MQTT_PORT
+- MQTT_USER
+- POSTGRES_HOST
+- POSTGRES_NAME
+- POSTGRES_PASSWORD
+- POSTGRES_PORT
+- POSTGRES_USER
+- TZ
 """
 
 import os
@@ -133,3 +135,6 @@ MQTT_BROKER = os.environ.get("MQTT_BROKER", "localhost")
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", "")
 MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
 MQTT_USER = os.environ.get("MQTT_USER", "django")
+
+LATITUDE = float(os.environ.get("LATITUDE", "0.0"))
+LONGITUDE = float(os.environ.get("LONGITUDE", "0.0"))

@@ -1,6 +1,10 @@
 import collections
-from datetime import time, timedelta
+from datetime import datetime, time, timedelta
+from functools import cache
 
+from astral import LocationInfo
+from astral.sun import sun
+from django.conf import settings
 from django.utils import timezone
 
 from solar.core.models import StateRaw
@@ -36,13 +40,9 @@ class ControlService(BaseControlService):
         self._change_priority(state=state)
 
     def _refresh_settings(self) -> None:
-        # Skip refreshing during cooldown period
-
-        current_time = timezone.now()
-        if current_time < self.next_settings_refresh_time:
+        now = timezone.now()
+        if now < self.next_settings_refresh_time:
             return
-
-        # Get settings and compare
 
         auto_charge = SettingsService.get_setting(name="auto_charge_priority")
         auto_output = SettingsService.get_setting(name="auto_output_priority")
@@ -56,43 +56,50 @@ class ControlService(BaseControlService):
                 timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY
             )
 
-        # Store settings for later
-
         self.auto_charge = auto_charge
         self.auto_output = auto_output
+        self.next_settings_refresh_time = now + timedelta(seconds=10)
 
-        self.next_settings_refresh_time = current_time + timedelta(seconds=10)
+    @cache
+    def _get_sunrise(self, *, local_time: datetime) -> datetime:
+        city_info = LocationInfo(latitude=settings.LATITUDE, longitude=settings.LONGITUDE)
+        sun_info = sun(city_info.observer, local_time.date(), tzinfo=local_time.tzinfo)
+
+        sunrise = sun_info.get("sunrise")
+        sunrise = sunrise.replace(second=0, microsecond=0)
+        return sunrise
 
     def _change_priority(self, *, state: StateRaw) -> None:
         # pylint:disable=too-many-branches
-        current_time = timezone.now()
-        local_time = timezone.now().astimezone(timezone.get_default_timezone())
+        now = timezone.now()
+        local_now = timezone.now().astimezone(timezone.get_default_timezone())
+        local_sunrise = self._get_sunrise(local_now)
 
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 
-        charging_time = not time(0, 30) <= local_time.time() < time(22, 30)
-        grid_time = not time(6, 0) <= local_time.time() < time(22, 30)
+        charging_time = not time(0, 30) <= local_now.time() < time(22, 30)
+        grid_time = not local_sunrise.time() <= local_now.time() < time(22, 30)
         is_high_voltage = avg_pv_voltage >= 230
         is_low_voltage = avg_pv_voltage <= 190
 
         new_charge_priority = None
         new_output_priority = None
 
-        if self.auto_charge and current_time > self.next_charge_change_time:
-            self.next_charge_change_time = current_time + timedelta(seconds=10)
+        if self.auto_charge and now > self.next_charge_change_time:
+            self.next_charge_change_time = now + timedelta(seconds=10)
 
             if charging_time:
                 if state.charge_priority != CHARGE_PREFER_PV:
                     new_charge_priority = CHARGE_PREFER_PV
-                    self.next_charge_change_time = current_time + timedelta(minutes=1)
+                    self.next_charge_change_time = now + timedelta(minutes=1)
             else:
                 if state.charge_priority != CHARGE_ONLY_PV:
                     new_charge_priority = CHARGE_ONLY_PV
-                    self.next_charge_change_time = current_time + timedelta(minutes=1)
+                    self.next_charge_change_time = now + timedelta(minutes=1)
 
-        if self.auto_output and current_time > self.next_output_change_time:
-            self.next_output_change_time = current_time + timedelta(seconds=10)
+        if self.auto_output and now > self.next_output_change_time:
+            self.next_output_change_time = now + timedelta(seconds=10)
 
             if grid_time:
                 if state.output_priority != OUTPUT_PRIORITY_GRID:

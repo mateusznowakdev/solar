@@ -15,6 +15,20 @@ files = [
 tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
 
 [[package]]
+name = "astral"
+version = "3.2"
+description = "Calculations for the position of the sun and moon."
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "astral-3.2-py3-none-any.whl", hash = "sha256:cb7b49a3f0d4c64ae666be131276d2a3226134c598db10e672028cf8ff855f83"},
+    {file = "astral-3.2.tar.gz", hash = "sha256:9b7c3b412e9e69d172cfb24be0e6addcc9f1bd01a28db8bebe66d75ccc533d88"},
+]
+
+[package.dependencies]
+tzdata = {version = "*", markers = "sys_platform == \"win32\""}
+
+[[package]]
 name = "astroid"
 version = "3.1.0"
 description = "An abstract syntax tree for Python with inference support."
@@ -803,4 +817,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "ecfdff38484d681a52712756105a7943a045a55aaf17931a8d5792d73b28f298"
+content-hash = "e830bde3eaabcdfb5f117a60dccc5681112f20d4e0f78e2e27526003684fb816"
