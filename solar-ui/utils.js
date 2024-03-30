@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 
+import { STRINGS } from "./locale";
 import { STORAGE_FULL_NAMES, getStorage } from "./storage";
 
 export function dateReviver(key, value) {
@@ -46,7 +47,7 @@ export function getVersion() {
 }
 
 export function renderBoolean(value) {
-  return value ? "Tak" : "Nie";
+  return value ? STRINGS.YES : STRINGS.NO;
 }
 
 export function renderChoice(value, choices, choicesShort = null) {

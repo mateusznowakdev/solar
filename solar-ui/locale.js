@@ -10,6 +10,7 @@ export const STRINGS = {
   MENU_MAIN: "Na żywo",
   MENU_PRODUCTION: "Produkcja",
   MENU_SETTINGS: "Ustawienia",
+  NO: "Nie",
   PRODUCTION_DAYS: "Ostatnie 14 dni",
   PRODUCTION_MONTHS: "Ostatnie 12 miesięcy",
   PRODUCTION_PV: "Produkcja",
@@ -24,4 +25,5 @@ export const STRINGS = {
   SETTINGS_LOCAL: "Na tym urządzeniu",
   SETTINGS_SHOW_FULL_NAMES: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",
+  YES: "Tak",
 };
