@@ -1,8 +1,9 @@
 import time
 import traceback
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.core.management import BaseCommand
+from django.utils import timezone
 
 from solar.core.models import LogEntry, StateArchive, StateT1, StateT2, StateT3, StateT4
 from solar.core.services.transform import TransformService
@@ -48,13 +49,13 @@ def run_every_30min():
 
 
 def run_transformer():
-    time_1min = datetime.now()
-    time_5min = datetime.now()
-    time_15min = datetime.now()
-    time_30min = datetime.now()
+    time_1min = timezone.now()
+    time_5min = timezone.now()
+    time_15min = timezone.now()
+    time_30min = timezone.now()
 
     while True:
-        now = datetime.now()
+        now = timezone.now()
 
         if now > time_1min:
             run_every_1min()

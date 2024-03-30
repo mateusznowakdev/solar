@@ -1,5 +1,5 @@
 import collections
-from datetime import datetime, time, timedelta
+from datetime import time, timedelta
 
 from django.utils import timezone
 
@@ -25,9 +25,9 @@ class ControlService(BaseControlService):
 
         self.past_pv_voltages = collections.deque(maxlen=60)
 
-        self.next_settings_refresh_time = datetime.now() + timedelta(seconds=10)
-        self.next_charge_change_time = datetime.now()
-        self.next_output_change_time = datetime.now()
+        self.next_settings_refresh_time = timezone.now() + timedelta(seconds=10)
+        self.next_charge_change_time = timezone.now()
+        self.next_output_change_time = timezone.now()
 
     def postprocess_state(self, *, state: StateRaw) -> None:
         super().postprocess_state(state=state)
@@ -38,7 +38,7 @@ class ControlService(BaseControlService):
     def _refresh_settings(self) -> None:
         # Skip refreshing during cooldown period
 
-        current_time = datetime.now()
+        current_time = timezone.now()
         if current_time < self.next_settings_refresh_time:
             return
 
@@ -65,13 +65,14 @@ class ControlService(BaseControlService):
 
     def _change_priority(self, *, state: StateRaw) -> None:
         # pylint:disable=too-many-branches
-        current_time = datetime.now()
+        current_time = timezone.now()
+        local_time = timezone.now().astimezone(timezone.get_default_timezone())
 
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 
-        charging_time = not time(0, 30) <= current_time.time() < time(22, 30)
-        grid_time = not time(6, 0) <= current_time.time() < time(22, 30)
+        charging_time = not time(0, 30) <= local_time.time() < time(22, 30)
+        grid_time = not time(6, 0) <= local_time.time() < time(22, 30)
         is_high_voltage = avg_pv_voltage >= 230
         is_low_voltage = avg_pv_voltage <= 190
 
