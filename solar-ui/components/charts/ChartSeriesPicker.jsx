@@ -18,7 +18,8 @@ export default function ChartSeriesPicker({ setValue, value }) {
     .filter(([key]) => shouldHaveChart(key))
     .map(([key, meta]) => {
       let description = meta.description;
-      if (meta.unit) description += ` (${meta.unit})`;
+      let unit = meta.unit;
+      if (unit) description += ` (${unit})`;
 
       return { description, key };
     })

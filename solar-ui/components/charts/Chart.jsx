@@ -109,11 +109,14 @@ export default function Chart({ data }) {
     };
   }, [data]);
 
+  const description = PARAMETER_METADATA[data.field].description;
+  const unit = PARAMETER_METADATA[data.field].unit;
+
   return (
     <>
       <p className="mb-0 mt-3 text-center text-secondary">
-        {PARAMETER_METADATA[data.field].description} (
-        {PARAMETER_METADATA[data.field].unit})
+        {description}
+        {unit && <> ({unit})</>}
       </p>
       <div>
         <canvas height="256px" id={"canvas-" + data.field}></canvas>
