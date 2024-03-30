@@ -12,10 +12,17 @@ export const COLORS = {
 };
 
 const CHARGE_PRIORITY = {
-  0: "CSO Preferuj panele",
-  1: "CUB Preferuj sieć",
-  2: "SNU Tryb mieszany",
-  3: "OSO Tylko panele",
+  0: "Preferuj panele",
+  1: "Preferuj sieć",
+  2: "Tryb mieszany",
+  3: "Tylko panele",
+};
+
+const CHARGE_PRIORITY_S = {
+  0: "CSO",
+  1: "CUB",
+  2: "SNU",
+  3: "OSO",
 };
 
 const CHARGE_STATUS = {
@@ -50,9 +57,15 @@ const INVERTER_FAULTS = {
 };
 
 const OUTPUT_PRIORITY = {
-  0: "SOL Panel",
-  1: "UTI Sieć",
-  2: "SBU Inwerter",
+  0: "Panel",
+  1: "Sieć",
+  2: "Inwerter",
+};
+
+const OUTPUT_PRIORITY_S = {
+  0: "SOL",
+  1: "UTI",
+  2: "SBU",
 };
 
 export const PARAMETER_METADATA = {
@@ -82,20 +95,20 @@ export const PARAMETER_METADATA = {
   },
   charge_priority: {
     description: "Priorytet ładowania",
-    render: (value) => renderChoice(CHARGE_PRIORITY, value),
+    render: (value) => renderChoice(value, CHARGE_PRIORITY, CHARGE_PRIORITY_S),
   },
   charge_status: {
     description: "Tryb ładowania",
-    render: (value) => renderChoice(CHARGE_STATUS, value),
+    render: (value) => renderChoice(value, CHARGE_STATUS),
   },
   controller_faults: {
     chart: false,
     description: "Kody błędów sterownika",
-    render: (value) => renderMultipleChoices(CONTROLLER_FAULTS, value),
+    render: (value) => renderMultipleChoices(value, CONTROLLER_FAULTS),
   },
   current_state: {
     description: "Tryb inwertera",
-    render: (value) => renderChoice(CURRENT_STATE, value),
+    render: (value) => renderChoice(value, CURRENT_STATE),
   },
   grid_current: {
     description: "Prąd sieci",
@@ -128,7 +141,7 @@ export const PARAMETER_METADATA = {
   inverter_faults: {
     chart: false,
     description: "Kody błędów inwertera",
-    render: (value) => renderMultipleChoices(INVERTER_FAULTS, value),
+    render: (value) => renderMultipleChoices(value, INVERTER_FAULTS),
   },
   inverter_frequency: {
     description: "Częstotliwość inwertera",
@@ -160,7 +173,7 @@ export const PARAMETER_METADATA = {
   },
   output_priority: {
     description: "Priorytet wyjścia",
-    render: (value) => renderChoice(OUTPUT_PRIORITY, value),
+    render: (value) => renderChoice(value, OUTPUT_PRIORITY, OUTPUT_PRIORITY_S),
   },
   pv_buck_current_1: {
     description: "Zbiorczy prąd paneli 1",

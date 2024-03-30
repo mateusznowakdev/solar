@@ -1,5 +1,7 @@
 import { DateTime } from "luxon";
 
+import { STORAGE_FULL_NAMES, getStorage } from "./storage";
+
 export function dateReviver(key, value) {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value))
     return DateTime.fromISO(value);
@@ -47,8 +49,12 @@ export function renderBoolean(value) {
   return value ? "Tak" : "Nie";
 }
 
-export function renderChoice(choices, value) {
-  return choices[value] || value;
+export function renderChoice(value, choices, choicesShort = null) {
+  if (choicesShort && !getStorage(STORAGE_FULL_NAMES)) {
+    return choicesShort[value] || value;
+  } else {
+    return choices[value] || value;
+  }
 }
 
 export function renderDate(date, options) {
@@ -82,10 +88,10 @@ export function renderMonth(date, options) {
   });
 }
 
-export function renderMultipleChoices(choices, values) {
+export function renderMultipleChoices(values, choices) {
   if (!values || values.length === 0) return "---";
 
-  return values.map((value) => renderChoice(choices, value)).join(", ");
+  return values.map((value) => renderChoice(value, choices)).join(", ");
 }
 
 export function renderNumber(number, options) {
