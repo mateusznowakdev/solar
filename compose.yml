@@ -10,8 +10,6 @@ services:
         delay: 5s
     logging:
       driver: journald
-    ports:
-      - 80:80
   backend:
     image: ghcr.io/mateusznowakdev/solar/backend:1.7
     # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
@@ -95,3 +93,15 @@ services:
     ports:
       - 1883:1883
       - 8883:8883
+  nginx:
+    image: ghcr.io/mateusznowakdev/solar/nginx:1.7
+    build:
+      dockerfile: config/nginx/Dockerfile
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+    logging:
+      driver: journald
+    ports:
+      - 80:80
