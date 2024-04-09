@@ -34,8 +34,10 @@ export default function Parameters() {
   const [lostConnection, setLostConnection] = useState(false);
 
   function getMQTTClient() {
-    const clientName = "sub" + Math.floor(Math.random() * 1000000);
-    const client = new Client(window.location.hostname, 8883, "/", clientName);
+    const host = window.location.hostname;
+    const port = window.location.protocol === "https" ? 443 : 80;
+    const name = "sub" + Math.floor(Math.random() * 1000000);
+    const client = new Client(host, port, "/ws/", name);
 
     client.onMessageArrived = (message) => {
       try {

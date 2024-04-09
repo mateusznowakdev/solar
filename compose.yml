@@ -92,7 +92,6 @@ services:
       driver: journald
     ports:
       - 1883:1883
-      - 8883:8883
   nginx:
     image: ghcr.io/mateusznowakdev/solar/nginx:1.7
     build:
