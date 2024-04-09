@@ -17,8 +17,6 @@ jobs:
             file: config/backend/Dockerfile
           - image: frontend
             file: config/frontend/Dockerfile
-          - image: mqtt
-            file: config/mqtt/Dockerfile
     steps:
       - uses: actions/checkout@v4
         id: checkout
