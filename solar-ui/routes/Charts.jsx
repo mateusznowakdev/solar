@@ -8,10 +8,11 @@ import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
 import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 import ErrorText from "../components/generic/ErrorText";
+import ExternalText from "../components/generic/ExternalText";
 import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
 import { STRINGS } from "../locale";
-import { getBackendResponse, getDatesForOffset } from "../utils";
+import { getBackendResponse, getDatesForOffset, isExternal } from "../utils";
 
 const OFFSETS = {
   "10m": 60 * 10,
@@ -22,6 +23,8 @@ const OFFSETS = {
 };
 
 function ChartContainer({ data, error, loading }) {
+  if (!isExternal()) return <ExternalText />;
+
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 

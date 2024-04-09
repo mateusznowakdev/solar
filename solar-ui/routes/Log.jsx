@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
 
 import ErrorText from "../components/generic/ErrorText";
+import ExternalText from "../components/generic/ExternalText";
 import LoadingText from "../components/generic/LoadingText";
 import LogFilters from "../components/log/LogFilters";
 import LogList from "../components/log/LogList";
 import { STRINGS } from "../locale";
 import { STORAGE_FILTERS, getStorage, setStorage } from "../storage";
-import { getBackendResponse, renderDate, toggleItem } from "../utils";
+import {
+  getBackendResponse,
+  isExternal,
+  renderDate,
+  toggleItem,
+} from "../utils";
 
 function LogContainer({ data, error, loading }) {
+  if (!isExternal()) return <ExternalText />;
+
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 

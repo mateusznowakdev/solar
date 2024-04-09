@@ -46,6 +46,15 @@ export function getVersion() {
   return import.meta.env.PACKAGE_VERSION;
 }
 
+export function isExternal() {
+  const hostname = window.location.hostname;
+  return (
+    /[a-zA-Z]/.test(hostname) &&
+    hostname !== "localhost" &&
+    !hostname.endsWith(".local")
+  );
+}
+
 export function renderBoolean(value) {
   return value ? STRINGS.YES : STRINGS.NO;
 }

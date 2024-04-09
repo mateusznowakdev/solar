@@ -4,6 +4,7 @@ export const STRINGS = {
   AUTOMATION: "Automatyzacja",
   CHARTS_HINT: "Wybierz poprawny parametr z listy powyżej",
   ERRORS: "Błędy",
+  EXTERNAL_TEXT: "Ta funkcja nie jest dostępna publicznie.",
   LOADING: "Wczytywanie",
   MENU_CHARTS: "Wykresy",
   MENU_LOG: "Dziennik",
