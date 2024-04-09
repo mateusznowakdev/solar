@@ -11,6 +11,8 @@ export function dateReviver(key, value) {
 }
 
 export function getBackendResponse(path, options) {
+  if (isExternal()) return new Promise((resolve) => resolve({}));
+
   return fetch(getBackendURI() + path, options)
     .then(async (response) => {
       const status = response.status;
