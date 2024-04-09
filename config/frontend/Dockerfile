@@ -17,8 +17,9 @@ RUN npm run build
 
 # ---
 
-FROM nginx:1.25.4-alpine3.18 AS target
+FROM python:3.12.2-alpine3.19 AS target
 WORKDIR /app
 
-COPY config/frontend/nginx.conf /etc/nginx/nginx.conf
 COPY --from=intermediate /app/solar-ui/dist .
+
+ENTRYPOINT ["python", "-m", "http.server", "80"]
