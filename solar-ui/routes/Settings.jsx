@@ -18,7 +18,7 @@ function SettingsContainer({
   localSubmit,
   submit,
 }) {
-  if (!isExternal()) return <ExternalText />;
+  if (isExternal()) return <ExternalText />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;

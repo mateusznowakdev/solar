@@ -13,7 +13,7 @@ import { STRINGS } from "../locale";
 import { getBackendResponse, isExternal } from "../utils";
 
 function ProductionContainer({ data, error, loading, mode }) {
-  if (!isExternal()) return <ExternalText />;
+  if (isExternal()) return <ExternalText />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;

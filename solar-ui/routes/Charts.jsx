@@ -23,7 +23,7 @@ const OFFSETS = {
 };
 
 function ChartContainer({ data, error, loading }) {
-  if (!isExternal()) return <ExternalText />;
+  if (isExternal()) return <ExternalText />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
