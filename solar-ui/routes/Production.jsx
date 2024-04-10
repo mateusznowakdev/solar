@@ -6,14 +6,14 @@ import FormSelect from "react-bootstrap/FormSelect";
 import Row from "react-bootstrap/Row";
 
 import ErrorText from "../components/generic/ErrorText";
-import ExternalText from "../components/generic/ExternalText";
 import LoadingText from "../components/generic/LoadingText";
+import NetworkText from "../components/generic/NetworkText";
 import ProductionList from "../components/production/ProductionList";
 import { STRINGS } from "../locale";
-import { getBackendResponse, isExternal } from "../utils";
+import { getBackendResponse, isExternalNetwork } from "../utils";
 
 function ProductionContainer({ data, error, loading, mode }) {
-  if (isExternal()) return <ExternalText />;
+  if (isExternalNetwork()) return <NetworkText />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;

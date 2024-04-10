@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
 import ErrorText from "../components/generic/ErrorText";
-import ExternalText from "../components/generic/ExternalText";
 import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
+import NetworkText from "../components/generic/NetworkText";
 import SettingsAutomationForm from "../components/settings/SettingsAutomationForm";
 import SettingsLocalForm from "../components/settings/SettingsLocalForm";
 import { STRINGS } from "../locale";
 import { STORAGE_FULL_NAMES, getStorage, setStorage } from "../storage";
-import { getBackendResponse, isExternal } from "../utils";
+import { getBackendResponse, isExternalNetwork } from "../utils";
 
 function SettingsContainer({
   data,
@@ -18,7 +18,7 @@ function SettingsContainer({
   localSubmit,
   submit,
 }) {
-  if (isExternal()) return <ExternalText />;
+  if (isExternalNetwork()) return <NetworkText />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;

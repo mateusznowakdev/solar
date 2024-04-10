@@ -11,7 +11,7 @@ export function dateReviver(key, value) {
 }
 
 export function getBackendResponse(path, options) {
-  if (isExternal()) return new Promise((resolve) => resolve({}));
+  if (isExternalNetwork()) return new Promise((resolve) => resolve({}));
 
   return fetch(getBackendURI() + path, options)
     .then(async (response) => {
@@ -48,7 +48,7 @@ export function getVersion() {
   return import.meta.env.PACKAGE_VERSION;
 }
 
-export function isExternal() {
+export function isExternalNetwork() {
   const hostname = window.location.hostname;
   return (
     /[a-zA-Z]/.test(hostname) &&
