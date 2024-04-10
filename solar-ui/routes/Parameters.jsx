@@ -35,7 +35,8 @@ export default function Parameters() {
 
   function getMQTTClient() {
     const host = window.location.hostname;
-    const port = window.location.protocol === "https" ? 443 : 80;
+    const ssl = window.location.protocol === "https";
+    const port = ssl ? 443 : 80;
     const name = "sub" + Math.floor(Math.random() * 1000000);
     const client = new Client(host, port, "/ws/", name);
 
@@ -62,6 +63,7 @@ export default function Parameters() {
         setError(e.errorMessage);
       },
       timeout: 5.0,
+      useSSL: ssl,
     });
 
     return () => {
