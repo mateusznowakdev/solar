@@ -6,6 +6,7 @@ Project description can be found
 v1.7
 
 - Add new automation code and separate it from the main code
+- Display short parameter names if preferred
 - Remove unused parameters
 
 v1.6
