@@ -8,7 +8,7 @@ import LegalNotice from "../components/parameters/LegalNotice";
 import ParameterList from "../components/parameters/ParameterList";
 import { STRINGS } from "../locale";
 import { STORAGE_PINNED, getStorage, setStorage } from "../storage";
-import { dateReviver, toggleItem } from "../utils";
+import { dateReviver, isSecureNetwork, toggleItem } from "../utils";
 
 const MQTT_JSON_TOPIC = "solar/json";
 
@@ -35,8 +35,7 @@ export default function Parameters() {
 
   function getMQTTClient() {
     const host = window.location.hostname;
-    const ssl = window.location.protocol === "https";
-    const port = ssl ? 443 : 80;
+    const port = isSecureNetwork() ? 443 : 80;
     const name = "sub" + Math.floor(Math.random() * 1000000);
     const client = new Client(host, port, "/ws/", name);
 
@@ -63,7 +62,7 @@ export default function Parameters() {
         setError(e.errorMessage);
       },
       timeout: 5.0,
-      useSSL: ssl,
+      useSSL: isSecureNetwork(),
     });
 
     return () => {

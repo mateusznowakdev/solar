@@ -57,6 +57,10 @@ export function isExternalNetwork() {
   );
 }
 
+export function isSecureNetwork() {
+  return window.location.protocol === "https:";
+}
+
 export function renderBoolean(value) {
   return value ? STRINGS.YES : STRINGS.NO;
 }
