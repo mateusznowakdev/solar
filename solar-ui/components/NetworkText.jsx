@@ -1,6 +1,6 @@
 import Home from "lucide-react/dist/esm/icons/home";
 
-import { STRINGS } from "../../locale";
+import { STRINGS } from "../locale";
 
 export default function NetworkText() {
   return (

@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
 
+import NetworkText from "../components/NetworkText";
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
@@ -10,7 +11,6 @@ import ChartSeriesPicker from "../components/charts/ChartSeriesPicker";
 import ErrorText from "../components/generic/ErrorText";
 import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
-import NetworkText from "../components/generic/NetworkText";
 import { STRINGS } from "../locale";
 import {
   getBackendResponse,

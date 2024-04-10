@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
+import NetworkText from "../components/NetworkText";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
-import NetworkText from "../components/generic/NetworkText";
 import LogFilters from "../components/log/LogFilters";
 import LogList from "../components/log/LogList";
 import { STRINGS } from "../locale";

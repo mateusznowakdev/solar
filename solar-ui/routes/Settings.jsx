@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
+import NetworkText from "../components/NetworkText";
 import ErrorText from "../components/generic/ErrorText";
 import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
-import NetworkText from "../components/generic/NetworkText";
 import SettingsAutomationForm from "../components/settings/SettingsAutomationForm";
 import SettingsLocalForm from "../components/settings/SettingsLocalForm";
 import { STRINGS } from "../locale";

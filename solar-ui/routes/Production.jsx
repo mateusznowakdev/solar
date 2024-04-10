@@ -5,9 +5,9 @@ import FormGroup from "react-bootstrap/FormGroup";
 import FormSelect from "react-bootstrap/FormSelect";
 import Row from "react-bootstrap/Row";
 
+import NetworkText from "../components/NetworkText";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
-import NetworkText from "../components/generic/NetworkText";
 import ProductionList from "../components/production/ProductionList";
 import { STRINGS } from "../locale";
 import { getBackendResponse, isExternalNetwork } from "../utils";

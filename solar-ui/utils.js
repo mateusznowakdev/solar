@@ -52,7 +52,7 @@ export function isExternalNetwork() {
   const hostname = window.location.hostname;
   return (
     /[a-zA-Z]/.test(hostname) &&
-    hostname !== "localhost" &&
+    !hostname.includes("localhost") &&
     !hostname.endsWith(".local")
   );
 }
