@@ -1,7 +1,7 @@
 import { Client } from "paho-mqtt/paho-mqtt";
 import { useEffect, useState } from "react";
 
-import RefreshIcon from "../components/RefreshIcon";
+import RefreshButton from "../components/RefreshButton";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
 import LegalNotice from "../components/parameters/LegalNotice";
@@ -105,7 +105,7 @@ export default function Parameters() {
         pinned={pinned}
         togglePinned={togglePinned}
       />
-      {lostConnection && <RefreshIcon />}
+      {lostConnection && <RefreshButton />}
     </div>
   );
 }

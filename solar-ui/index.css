@@ -71,6 +71,13 @@ h1 {
   font-weight: 500;
 }
 
+.network-indicator {
+  position: fixed;
+  right: 0.25rem;
+  top: 0.25rem;
+  z-index: 100;
+}
+
 .pin-icon {
   cursor: pointer;
   padding: 0.5rem 0.5rem 0.5rem 0;

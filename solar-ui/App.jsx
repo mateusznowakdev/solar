@@ -1,6 +1,7 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 
 import NavigationBar from "./components/NavigationBar";
+import NetworkIndicator from "./components/NetworkIndicator";
 import Charts from "./routes/Charts";
 import Log from "./routes/Log";
 import Parameters from "./routes/Parameters";
@@ -18,6 +19,7 @@ export default function App() {
         <Route element={<Settings />} path="/settings" />
       </Routes>
       <NavigationBar />
+      <NetworkIndicator />
     </HashRouter>
   );
 }

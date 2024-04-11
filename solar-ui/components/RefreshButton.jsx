@@ -1,7 +1,7 @@
 import RefreshCw from "lucide-react/dist/esm/icons/refresh-cw";
 import Button from "react-bootstrap/Button";
 
-export default function RefreshIcon() {
+export default function RefreshButton() {
   return (
     <Button
       className="refresh-button"
