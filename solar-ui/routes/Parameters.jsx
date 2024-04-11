@@ -35,9 +35,18 @@ export default function Parameters() {
 
   function getMQTTClient() {
     const host = window.location.hostname;
-    const port = isSecureNetwork() ? 443 : 80;
     const name = "sub" + Math.floor(Math.random() * 1000000);
-    const client = new Client(host, port, "/ws/", name);
+
+    let port, path;
+    if (!import.meta.env.DEV) {
+      port = isSecureNetwork() ? 443 : 80;
+      path = "/ws/";
+    } else {
+      port = 8883;
+      path = "/";
+    }
+
+    const client = new Client(host, port, path, name);
 
     client.onMessageArrived = (message) => {
       try {
