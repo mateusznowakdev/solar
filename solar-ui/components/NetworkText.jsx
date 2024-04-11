@@ -10,6 +10,10 @@ export default function NetworkText() {
     getStorage(STORAGE_INTERNAL_URL),
   );
 
+  function navigate() {
+    window.location.href = internalURL;
+  }
+
   function showModal() {
     const response = prompt(
       STRINGS.EXTERNAL_NETWORK_SETUP_HINT,
@@ -26,9 +30,12 @@ export default function NetworkText() {
     <div className="my-3 text-secondary">
       <Home className="mb-2" strokeWidth={1.5} />
       <br />
-      {STRINGS.EXTERNAL_NETWORK_HINT}
-      <br />
-      {internalURL}
+      <p className="mb-1">{STRINGS.EXTERNAL_NETWORK_HINT}</p>
+      {internalURL && (
+        <Button className="text-secondary" onClick={navigate} variant="link">
+          {STRINGS.EXTERNAL_NETWORK_SWITCH_TO} {internalURL}
+        </Button>
+      )}
       <Button className="text-secondary" onClick={showModal} variant="link">
         {STRINGS.EXTERNAL_NETWORK_SETUP}
       </Button>
