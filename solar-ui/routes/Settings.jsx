@@ -18,7 +18,7 @@ function SettingsContainer({
   localSubmit,
   submit,
 }) {
-  if (isExternalNetwork()) return <NetworkText />;
+  if (isExternalNetwork()) return <NetworkText full />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;

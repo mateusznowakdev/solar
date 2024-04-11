@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import { STRINGS } from "../locale";
 import { STORAGE_INTERNAL_URL, getStorage, setStorage } from "../storage";
 
-export default function NetworkText() {
+export default function NetworkText({ full }) {
   const [internalURL, setInternalURL] = useState(
     getStorage(STORAGE_INTERNAL_URL),
   );
@@ -36,9 +36,15 @@ export default function NetworkText() {
           {STRINGS.EXTERNAL_NETWORK_SWITCH_TO} {internalURL}
         </Button>
       )}
-      <Button className="text-secondary" onClick={showModal} variant="link">
-        {STRINGS.EXTERNAL_NETWORK_SETUP}
-      </Button>
+      {full && (
+        <Button
+          className="text-secondary pt-0"
+          onClick={showModal}
+          variant="link"
+        >
+          {STRINGS.EXTERNAL_NETWORK_SETUP}
+        </Button>
+      )}
     </div>
   );
 }
