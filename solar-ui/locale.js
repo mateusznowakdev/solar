@@ -4,7 +4,12 @@ export const STRINGS = {
   AUTOMATION: "Automatyzacja",
   CHARTS_HINT: "Wybierz poprawny parametr z listy powyżej",
   ERRORS: "Błędy",
-  EXTERNAL_NETWORK_TEXT: "Ta funkcja jest dostępna tylko z poziomu sieci domowej.",
+  EXTERNAL_NETWORK_HINT:
+    "Ta funkcja jest dostępna tylko z poziomu sieci domowej.",
+  EXTERNAL_NETWORK_SETUP: "Zmień docelowy adres",
+  EXTERNAL_NETWORK_SETUP_HINT:
+    "Wprowadź pełny adres URL, w formacie protokół://host:port/ścieżka, " +
+    "który prowadzi do tej aplikacji w sieci domowej.",
   LOADING: "Wczytywanie",
   MENU_CHARTS: "Wykresy",
   MENU_LOG: "Dziennik",
