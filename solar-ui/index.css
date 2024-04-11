@@ -1,5 +1,5 @@
 :root {
-  --bs-body-font-family: "Inter", system-ui, sans-serif;
+  --bs-body-font-family: system-ui, sans-serif;
 }
 
 body {

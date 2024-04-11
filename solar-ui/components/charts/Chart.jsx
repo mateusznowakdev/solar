@@ -28,7 +28,7 @@ BaseChart.register(
   Title,
   Tooltip,
 );
-BaseChart.defaults.font.family = '"Inter", system-ui, sans-serif';
+BaseChart.defaults.font.family = "system-ui, sans-serif";
 
 const Y_AXIS_WIDTH = 48;
 
