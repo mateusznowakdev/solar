@@ -1,7 +1,5 @@
-# npm is downgraded due to critical network bugs
-# node 20.6.1 is the latest version with npm 9
-# https://github.com/npm/cli/issues/7024
-# https://github.com/npm/cli/issues/7072
+# https://github.com/npm/cli/issues/7072 is fixed
+# but npm 10.5.1 is not present in nodejs yet
 FROM node:20.6.1-alpine3.18 AS intermediate
 WORKDIR /app
 
@@ -17,7 +15,7 @@ RUN npm run build
 
 # ---
 
-FROM python:3.12.2-alpine3.19 AS target
+FROM python:3.12.3-alpine3.19 AS target
 WORKDIR /app
 
 COPY --from=intermediate /app/solar-ui/dist .
