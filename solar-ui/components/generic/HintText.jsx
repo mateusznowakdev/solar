@@ -4,8 +4,7 @@ export default function HintText({ className, hint }) {
   return (
     <div className={`my-3 text-secondary ${className}`}>
       <Info className="mb-2" strokeWidth={1.5} />
-      <br />
-      {hint}
+      <p>{hint}</p>
     </div>
   );
 }

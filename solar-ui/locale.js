@@ -3,6 +3,10 @@ export const STRINGS = {
   AN_ERROR_OCCURRED: "Wystąpił błąd",
   AUTOMATION: "Automatyzacja",
   CHARTS_HINT: "Wybierz poprawny parametr z listy powyżej",
+  CRITICAL_ERROR_OCCURRED:
+    "Ten błąd nie został poprawnie obsłużony i\u00a0należy go zgłosić. " +
+    "Dodatkowe informacje mogą być dostępne po otwarciu okna narzędzi " +
+    "programistycznych.",
   ERRORS: "Błędy",
   EXTERNAL_NETWORK_HINT:
     "Ta funkcja jest dostępna tylko z poziomu sieci domowej.",
@@ -22,6 +26,7 @@ export const STRINGS = {
   PRODUCTION_MONTHS: "Ostatnie 12 miesięcy",
   PRODUCTION_PV: "Produkcja",
   PRODUCTION_TOTAL: "Zużycie",
+  REFRESH: "Odśwież",
   SAVE: "Zapisz",
   SETTINGS_AUTO_CHARGE_PRIORITY: "Zmień priorytet ładowania",
   SETTINGS_AUTO_OUTPUT_PRIORITY: "Zmień priorytet wyjścia",

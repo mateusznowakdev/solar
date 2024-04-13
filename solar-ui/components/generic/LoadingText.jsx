@@ -6,8 +6,7 @@ export default function LoadingText() {
   return (
     <div className="my-3 text-secondary">
       <Loader2 className="mb-2 rotate" strokeWidth={1.5} />
-      <br />
-      {STRINGS.LOADING}...
+      <p>{STRINGS.LOADING}...</p>
     </div>
   );
 }
