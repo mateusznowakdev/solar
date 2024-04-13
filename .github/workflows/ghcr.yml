@@ -1,6 +1,6 @@
 on:
   push:
-    branches:
+    tags:
       - "1.7"
 env:
   REGISTRY: ghcr.io
