@@ -26,7 +26,7 @@ export function getStorage(key) {
   const raw = localStorage.getItem(key);
   const parsed = JSON.parse(raw);
 
-  return parsed != null ? getDefaultValue(key) : parsed;
+  return parsed != null ? parsed : getDefaultValue(key);
 }
 
 export function setStorage(key, value) {
