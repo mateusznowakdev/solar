@@ -8,13 +8,6 @@ export const STRINGS = {
     "Dodatkowe informacje mogą być dostępne po otwarciu okna narzędzi " +
     "programistycznych.",
   ERRORS: "Błędy",
-  EXTERNAL_NETWORK_HINT:
-    "Ta funkcja jest dostępna tylko z poziomu sieci domowej.",
-  EXTERNAL_NETWORK_SETUP: "Zmień docelowy adres",
-  EXTERNAL_NETWORK_SETUP_HINT:
-    "Wprowadź pełny adres URL, w formacie [protokół://host:port], " +
-    "który prowadzi do tej aplikacji w sieci domowej.",
-  EXTERNAL_NETWORK_SWITCH_TO: "Przejdź do",
   LOADING: "Wczytywanie",
   MENU_CHARTS: "Wykresy",
   MENU_LOG: "Dziennik",
