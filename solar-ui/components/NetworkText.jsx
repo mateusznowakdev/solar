@@ -3,11 +3,11 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
 import { STRINGS } from "../locale";
-import { STORAGE_INTERNAL_URL, getStorage, setStorage } from "../storage";
+import { STORAGE_KEYS, getStorage, setStorage } from "../storage";
 
 export default function NetworkText({ full }) {
   const [internalURL, setInternalURL] = useState(
-    getStorage(STORAGE_INTERNAL_URL),
+    getStorage(STORAGE_KEYS.INTERNAL_URL),
   );
 
   function navigate() {
@@ -22,7 +22,7 @@ export default function NetworkText({ full }) {
 
     if (response !== null) {
       setInternalURL(response);
-      setStorage(STORAGE_INTERNAL_URL, response);
+      setStorage(STORAGE_KEYS.INTERNAL_URL, response);
     }
   }
 

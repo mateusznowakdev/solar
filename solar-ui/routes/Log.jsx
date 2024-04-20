@@ -6,7 +6,7 @@ import LoadingText from "../components/generic/LoadingText";
 import LogFilters from "../components/log/LogFilters";
 import LogList from "../components/log/LogList";
 import { STRINGS } from "../locale";
-import { STORAGE_FILTERS, getStorage, setStorage } from "../storage";
+import { STORAGE_KEYS, getStorage, setStorage } from "../storage";
 import {
   getBackendResponse,
   isExternalNetwork,
@@ -25,7 +25,7 @@ function LogContainer({ data, error, loading }) {
 
 export default function Log() {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState(getStorage(STORAGE_FILTERS));
+  const [filters, setFilters] = useState(getStorage(STORAGE_KEYS.FILTERS));
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,7 +52,7 @@ export default function Log() {
     toggleItem(filtersCopy, filter);
 
     setFilters(filtersCopy);
-    setStorage(STORAGE_FILTERS, filtersCopy);
+    setStorage(STORAGE_KEYS.FILTERS, filtersCopy);
   }
 
   useEffect(getLogs, [filters]);

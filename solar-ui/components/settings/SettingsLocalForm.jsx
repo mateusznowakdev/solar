@@ -5,12 +5,21 @@ import Form from "react-bootstrap/Form";
 import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
-import { STORAGE_FULL_NAMES, getStorage, setStorage } from "../../storage";
+import { STORAGE_KEYS, getStorage, setStorage } from "../../storage";
 
 export default function SettingsLocalForm() {
   const [data, setData] = useState({
-    fullNames: getStorage(STORAGE_FULL_NAMES),
+    [STORAGE_KEYS.FULL_NAMES]: getStorage(STORAGE_KEYS.FULL_NAMES),
+    [STORAGE_KEYS.WEBSOCKET_URL]: getStorage(STORAGE_KEYS.WEBSOCKET_URL),
+    [STORAGE_KEYS.API_URL]: getStorage(STORAGE_KEYS.API_URL),
   });
+
+  function showPrompt(key) {
+    const response = prompt(undefined, data[key]);
+    if (!!response) {
+      updateSettings({ [key]: response });
+    }
+  }
 
   function updateSettings(data) {
     for (const [key, value] of Object.entries(data)) {
@@ -23,12 +32,12 @@ export default function SettingsLocalForm() {
     <Form>
       <div className="mt-3">
         <Switch
-          checked={data.fullNames}
-          id={STORAGE_FULL_NAMES}
+          checked={data[STORAGE_KEYS.FULL_NAMES]}
+          id={STORAGE_KEYS.FULL_NAMES}
           label={STRINGS.SETTINGS_SHOW_FULL_NAMES}
           onChange={(e) => {
             updateSettings({
-              [STORAGE_FULL_NAMES]: !!e.target.checked,
+              [STORAGE_KEYS.FULL_NAMES]: !!e.target.checked,
             });
           }}
         />
@@ -37,23 +46,35 @@ export default function SettingsLocalForm() {
         {STRINGS.SETTINGS_NETWORK}
       </div>
       <div className="align-items-start d-flex mt-3">
-        <Button className="px-2 me-2" variant="light">
+        <Button
+          className="px-2 me-2"
+          onClick={() => showPrompt(STORAGE_KEYS.WEBSOCKET_URL)}
+          variant="light"
+        >
           <Pencil strokeWidth={1.5} size={17} />
         </Button>
         <div>
           {STRINGS.SETTINGS_NETWORK_WS}
           <br />
-          <span className="text-small">http://localhost:5173/ws/</span>
+          <span className="text-secondary text-small">
+            {data[STORAGE_KEYS.WEBSOCKET_URL]}
+          </span>
         </div>
       </div>
       <div className="align-items-start d-flex mt-3">
-        <Button className="px-2 me-2" variant="light">
+        <Button
+          className="px-2 me-2"
+          onClick={() => showPrompt(STORAGE_KEYS.API_URL)}
+          variant="light"
+        >
           <Pencil strokeWidth={1.5} size={17} />
         </Button>
         <div>
           {STRINGS.SETTINGS_NETWORK_API}
           <br />
-          <span className="text-small">http://localhost:8000/api/</span>
+          <span className="text-secondary text-small">
+            {data[STORAGE_KEYS.API_URL]}
+          </span>
         </div>
       </div>
     </Form>
