@@ -5,7 +5,12 @@ import Form from "react-bootstrap/Form";
 import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
-import { STORAGE_KEYS, getStorage, setStorage } from "../../storage";
+import {
+  STORAGE_KEYS,
+  getDefaultValue,
+  getStorage,
+  setStorage,
+} from "../../storage";
 
 export default function SettingsLocalForm() {
   const [data, setData] = useState({
@@ -15,8 +20,8 @@ export default function SettingsLocalForm() {
 
   function showURLPrompt(key) {
     const response = prompt(undefined, data[key]);
-    if (!!response) {
-      updateSettings({ [key]: response });
+    if (response != null) {
+      updateSettings({ [key]: response || getDefaultValue(key) });
     }
   }
 
