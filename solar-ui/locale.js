@@ -21,16 +21,16 @@ export const STRINGS = {
   PRODUCTION_TOTAL: "Zużycie",
   REFRESH: "Odśwież",
   SAVE: "Zapisz",
-  SETTINGS_APPEARANCE: "Wygląd",
-  SETTINGS_AUTOMATION: "Automatyzacja",
   SETTINGS_ADVANCED: "Zaawansowane",
   SETTINGS_API_URL: "Pełny adres API",
+  SETTINGS_APPEARANCE: "Wygląd",
+  SETTINGS_AUTOMATION: "Automatyzacja",
+  SETTINGS_AUTOMATION_HINT:
+    "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
+    "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
   SETTINGS_AUTO_CHARGE_PRIORITY: "Zmień priorytet ładowania",
   SETTINGS_AUTO_OUTPUT_PRIORITY: "Zmień priorytet wyjścia",
   SETTINGS_MAIN: "Ogólne",
-  SETTINGS_MAIN_HINT:
-    "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
-    "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
   SETTINGS_NETWORK: "Sieć",
   SETTINGS_SHOW_FULL_NAMES: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",

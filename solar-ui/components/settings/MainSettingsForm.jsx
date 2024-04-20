@@ -76,7 +76,7 @@ export default function MainSettingsForm() {
           }
         />
       </div>
-      <HintText className="mt-4" hint={STRINGS.SETTINGS_MAIN_HINT} />
+      <HintText className="mt-4" hint={STRINGS.SETTINGS_AUTOMATION_HINT} />
     </Form>
   );
 }
