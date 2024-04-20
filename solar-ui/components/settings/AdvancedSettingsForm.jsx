@@ -12,7 +12,7 @@ import {
   setStorage,
 } from "../../storage";
 
-export default function SettingsLocalForm() {
+export default function AdvancedSettingsForm() {
   const [data, setData] = useState({
     [STORAGE_KEYS.FULL_NAMES]: getStorage(STORAGE_KEYS.FULL_NAMES),
     [STORAGE_KEYS.API_URL]: getStorage(STORAGE_KEYS.API_URL),
@@ -34,6 +34,9 @@ export default function SettingsLocalForm() {
 
   return (
     <Form>
+      <div className="mt-3 text-secondary text-small text-uppercase">
+        {STRINGS.SETTINGS_APPEARANCE}
+      </div>
       <div className="mt-3">
         <Switch
           checked={data[STORAGE_KEYS.FULL_NAMES]}
@@ -45,6 +48,9 @@ export default function SettingsLocalForm() {
             });
           }}
         />
+      </div>
+      <div className="mt-4 text-secondary text-small text-uppercase">
+        {STRINGS.SETTINGS_NETWORK}
       </div>
       <div className="align-items-center d-flex mt-3">
         <Button

@@ -8,7 +8,7 @@ import ErrorText from "../generic/ErrorText";
 import HintText from "../generic/HintText";
 import LoadingText from "../generic/LoadingText";
 
-export default function SettingsAutomationForm() {
+export default function MainSettingsForm() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,6 +49,9 @@ export default function SettingsAutomationForm() {
 
   return (
     <Form>
+      <div className="mt-3 text-secondary text-small text-uppercase">
+        {STRINGS.SETTINGS_AUTOMATION}
+      </div>
       <div className="mt-3">
         <Switch
           checked={data.auto_charge_priority}

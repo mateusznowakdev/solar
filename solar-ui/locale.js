@@ -21,6 +21,8 @@ export const STRINGS = {
   PRODUCTION_TOTAL: "Zużycie",
   REFRESH: "Odśwież",
   SAVE: "Zapisz",
+  SETTINGS_APPEARANCE: "Wygląd",
+  SETTINGS_AUTOMATION: "Automatyzacja",
   SETTINGS_ADVANCED: "Zaawansowane",
   SETTINGS_API_URL: "Pełny adres API",
   SETTINGS_AUTO_CHARGE_PRIORITY: "Zmień priorytet ładowania",
@@ -29,6 +31,7 @@ export const STRINGS = {
   SETTINGS_MAIN_HINT:
     "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
+  SETTINGS_NETWORK: "Sieć",
   SETTINGS_SHOW_FULL_NAMES: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",
   YES: "Tak",
