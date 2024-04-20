@@ -28,13 +28,13 @@ export const STRINGS = {
   PRODUCTION_TOTAL: "Zużycie",
   REFRESH: "Odśwież",
   SAVE: "Zapisz",
+  SETTINGS_ADVANCED: "Zaawansowane",
   SETTINGS_AUTO_CHARGE_PRIORITY: "Zmień priorytet ładowania",
   SETTINGS_AUTO_OUTPUT_PRIORITY: "Zmień priorytet wyjścia",
-  SETTINGS_AUTOMATION: "Automatyzacja",
-  SETTINGS_HINT:
+  SETTINGS_MAIN: "Ogólne",
+  SETTINGS_MAIN_HINT:
     "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
-  SETTINGS_LOCAL: "Na tym urządzeniu",
   SETTINGS_SHOW_FULL_NAMES: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",
   YES: "Tak",
