@@ -40,8 +40,14 @@ h1 {
   border-color: var(--bs-success);
 }
 
+.form-switch {
+  padding-left: 2.7rem;
+}
+
 .form-switch .form-check-input {
   height: 1.5rem;
+  margin-left: -2.7rem;
+  width: 2.2rem;
 }
 
 .form-switch .form-check-label {

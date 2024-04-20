@@ -35,6 +35,9 @@ export const STRINGS = {
   SETTINGS_MAIN_HINT:
     "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
     "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
+  SETTINGS_NETWORK: "Ustawienia sieciowe",
+  SETTINGS_NETWORK_API: "Pełny adres API",
+  SETTINGS_NETWORK_WS: "Pełny adres MQTT/WebSocket",
   SETTINGS_SHOW_FULL_NAMES: "Pokazuj pełne nazwy priorytetów",
   SYSTEM: "System",
   YES: "Tak",

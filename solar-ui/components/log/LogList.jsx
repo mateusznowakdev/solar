@@ -28,13 +28,14 @@ function LogListItemGroup({ data }) {
     </ListGroup>
   );
 }
+
 export default function LogList({ data }) {
   return (
     <>
       {Object.entries(data).map(([day, entries]) => (
         <Fragment key={day}>
           <p className="align-items-center d-flex my-2 pt-1">
-            <CalendarDays size={17} />
+            <CalendarDays strokeWidth={1.5} size={17} />
             &nbsp;{day}
           </p>
           <LogListItemGroup data={entries} />

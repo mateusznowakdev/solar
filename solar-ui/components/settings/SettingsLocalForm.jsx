@@ -1,4 +1,6 @@
+import Pencil from "lucide-react/dist/esm/icons/pencil";
 import { useState } from "react";
+import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Switch from "react-bootstrap/Switch";
 
@@ -19,7 +21,6 @@ export default function SettingsLocalForm() {
 
   return (
     <Form>
-      <div className="mt-3 text-secondary">{STRINGS.SETTINGS_LOCAL}</div>
       <div className="mt-3">
         <Switch
           checked={data.fullNames}
@@ -31,6 +32,29 @@ export default function SettingsLocalForm() {
             });
           }}
         />
+      </div>
+      <div className="mt-4 text-secondary text-small text-uppercase">
+        {STRINGS.SETTINGS_NETWORK}
+      </div>
+      <div className="align-items-start d-flex mt-3">
+        <Button className="px-2 me-2" variant="light">
+          <Pencil strokeWidth={1.5} size={17} />
+        </Button>
+        <div>
+          {STRINGS.SETTINGS_NETWORK_WS}
+          <br />
+          <span className="text-small">http://localhost:5173/ws/</span>
+        </div>
+      </div>
+      <div className="align-items-start d-flex mt-3">
+        <Button className="px-2 me-2" variant="light">
+          <Pencil strokeWidth={1.5} size={17} />
+        </Button>
+        <div>
+          {STRINGS.SETTINGS_NETWORK_API}
+          <br />
+          <span className="text-small">http://localhost:8000/api/</span>
+        </div>
       </div>
     </Form>
   );
