@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import RefreshButton from "../components/RefreshButton";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
-import LegalNotice from "../components/parameters/LegalNotice";
 import ParameterList from "../components/parameters/ParameterList";
 import { STRINGS } from "../locale";
 import { STORAGE_KEYS, getStorage, setStorage } from "../storage";
@@ -16,12 +15,7 @@ function ParametersContainer({ data, error, loading, pinned, togglePinned }) {
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
-  return (
-    <>
-      <ParameterList data={data} pinned={pinned} togglePinned={togglePinned} />
-      <LegalNotice />
-    </>
-  );
+  return <ParameterList data={data} pinned={pinned} togglePinned={togglePinned} />;
 }
 
 export default function Parameters() {
