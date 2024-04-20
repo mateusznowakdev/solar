@@ -5,16 +5,13 @@ import FormGroup from "react-bootstrap/FormGroup";
 import FormSelect from "react-bootstrap/FormSelect";
 import Row from "react-bootstrap/Row";
 
-import NetworkText from "../components/NetworkText";
 import ErrorText from "../components/generic/ErrorText";
 import LoadingText from "../components/generic/LoadingText";
 import ProductionList from "../components/production/ProductionList";
 import { STRINGS } from "../locale";
-import { getBackendResponse, isExternalNetwork } from "../utils";
+import { getBackendResponse } from "../utils";
 
 function ProductionContainer({ data, error, loading, mode }) {
-  if (isExternalNetwork()) return <NetworkText />;
-
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
@@ -31,7 +28,7 @@ export default function Production() {
   function getProduction() {
     setLoading(true);
 
-    getBackendResponse(`/api/production/${mode}/`).then(({ data, error }) => {
+    getBackendResponse(`/production/${mode}/`).then(({ data, error }) => {
       setData(data);
       setError(error);
       setLoading(false);

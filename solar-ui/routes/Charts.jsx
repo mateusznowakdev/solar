@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
 
-import NetworkText from "../components/NetworkText";
 import Chart from "../components/charts/Chart";
 import ChartDateTimePicker from "../components/charts/ChartDateTimePicker";
 import ChartPresetButtonGroup from "../components/charts/ChartPresetButtonGroup";
@@ -12,11 +11,7 @@ import ErrorText from "../components/generic/ErrorText";
 import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
 import { STRINGS } from "../locale";
-import {
-  getBackendResponse,
-  getDatesForOffset,
-  isExternalNetwork,
-} from "../utils";
+import { getBackendResponse, getDatesForOffset } from "../utils";
 
 const OFFSETS = {
   "10m": 60 * 10,
@@ -27,8 +22,6 @@ const OFFSETS = {
 };
 
 function ChartContainer({ data, error, loading }) {
-  if (isExternalNetwork()) return <NetworkText />;
-
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
@@ -69,7 +62,7 @@ export default function Charts() {
 
     setLoading(true);
 
-    getBackendResponse("/api/series/?" + new URLSearchParams(params)).then(
+    getBackendResponse("/series/?" + new URLSearchParams(params)).then(
       ({ data, error }) => {
         setData(data);
         setError(error);

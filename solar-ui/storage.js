@@ -20,7 +20,7 @@ export function getStorage(key) {
           window.location.protocol +
           "//" +
           window.location.hostname +
-          ":8000/api/"
+          ":8000/api"
         );
       case STORAGE_KEYS.FILTERS:
         return [];

@@ -2,7 +2,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
 import NavigationBar from "./components/NavigationBar";
-import NetworkIndicator from "./components/NetworkIndicator";
 import ErrorText from "./components/generic/ErrorText";
 import Charts from "./routes/Charts";
 import Log from "./routes/Log";
@@ -26,7 +25,6 @@ export default function App() {
           <Route element={<Settings />} path="/settings" />
         </Routes>
         <NavigationBar />
-        <NetworkIndicator />
       </HashRouter>
     </ErrorBoundary>
   );

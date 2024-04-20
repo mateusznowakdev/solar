@@ -3,8 +3,7 @@ import Form from "react-bootstrap/Form";
 import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
-import { getBackendResponse, isExternalNetwork } from "../../utils";
-import NetworkText from "../NetworkText";
+import { getBackendResponse } from "../../utils";
 import ErrorText from "../generic/ErrorText";
 import HintText from "../generic/HintText";
 import LoadingText from "../generic/LoadingText";
@@ -17,7 +16,7 @@ export default function SettingsAutomationForm() {
   function getSettings() {
     setLoading(true);
 
-    getBackendResponse("/api/settings/").then(({ data, error }) => {
+    getBackendResponse("/settings/").then(({ data, error }) => {
       setData(data);
       setError(error);
       setLoading(false);
@@ -27,7 +26,7 @@ export default function SettingsAutomationForm() {
   function putSettings(data) {
     setLoading(true);
 
-    getBackendResponse("/api/settings/", {
+    getBackendResponse("/settings/", {
       method: "PATCH",
       body: JSON.stringify(data),
       headers: { "content-type": "application/json" },
@@ -44,8 +43,6 @@ export default function SettingsAutomationForm() {
   }
 
   useEffect(getSettings, []);
-
-  if (isExternalNetwork()) return <NetworkText full />;
 
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;

@@ -11,9 +11,9 @@ export function dateReviver(key, value) {
 }
 
 export function getBackendResponse(path, options) {
-  if (isExternalNetwork()) return new Promise((resolve) => resolve({}));
+  const backendURI = getStorage(STORAGE_KEYS.API_URL);
 
-  return fetch(getBackendURI() + path, options)
+  return fetch(backendURI + path, options)
     .then(async (response) => {
       const status = response.status;
       const text = await response.text();
@@ -31,10 +31,6 @@ export function getBackendResponse(path, options) {
     }));
 }
 
-export function getBackendURI() {
-  return `${window.location.protocol}//${window.location.hostname}:8000`;
-}
-
 export function getDatesForOffset(value) {
   const stopDate = DateTime.now()
     .set({ second: 0, millisecond: 0 })
@@ -46,15 +42,6 @@ export function getDatesForOffset(value) {
 
 export function getVersion() {
   return import.meta.env.PACKAGE_VERSION;
-}
-
-export function isExternalNetwork() {
-  const hostname = window.location.hostname;
-  return (
-    /[a-zA-Z]/.test(hostname) &&
-    !hostname.includes("localhost") &&
-    !hostname.endsWith(".local")
-  );
 }
 
 export function isSecureNetwork() {
