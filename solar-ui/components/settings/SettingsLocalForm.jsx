@@ -10,11 +10,10 @@ import { STORAGE_KEYS, getStorage, setStorage } from "../../storage";
 export default function SettingsLocalForm() {
   const [data, setData] = useState({
     [STORAGE_KEYS.FULL_NAMES]: getStorage(STORAGE_KEYS.FULL_NAMES),
-    [STORAGE_KEYS.WEBSOCKET_URL]: getStorage(STORAGE_KEYS.WEBSOCKET_URL),
     [STORAGE_KEYS.API_URL]: getStorage(STORAGE_KEYS.API_URL),
   });
 
-  function showPrompt(key) {
+  function showURLPrompt(key) {
     const response = prompt(undefined, data[key]);
     if (!!response) {
       updateSettings({ [key]: response });
@@ -42,35 +41,16 @@ export default function SettingsLocalForm() {
           }}
         />
       </div>
-      <div className="mt-4 text-secondary text-small text-uppercase">
-        {STRINGS.SETTINGS_NETWORK}
-      </div>
-      <div className="align-items-start d-flex mt-3">
+      <div className="align-items-center d-flex mt-3">
         <Button
           className="px-2 me-2"
-          onClick={() => showPrompt(STORAGE_KEYS.WEBSOCKET_URL)}
+          onClick={() => showURLPrompt(STORAGE_KEYS.API_URL)}
           variant="light"
         >
           <Pencil strokeWidth={1.5} size={17} />
         </Button>
         <div>
-          {STRINGS.SETTINGS_NETWORK_WS}
-          <br />
-          <span className="text-secondary text-small">
-            {data[STORAGE_KEYS.WEBSOCKET_URL]}
-          </span>
-        </div>
-      </div>
-      <div className="align-items-start d-flex mt-3">
-        <Button
-          className="px-2 me-2"
-          onClick={() => showPrompt(STORAGE_KEYS.API_URL)}
-          variant="light"
-        >
-          <Pencil strokeWidth={1.5} size={17} />
-        </Button>
-        <div>
-          {STRINGS.SETTINGS_NETWORK_API}
+          {STRINGS.SETTINGS_API_URL}
           <br />
           <span className="text-secondary text-small">
             {data[STORAGE_KEYS.API_URL]}
