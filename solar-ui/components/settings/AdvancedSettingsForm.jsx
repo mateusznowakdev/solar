@@ -31,7 +31,7 @@ export default function AdvancedSettingsForm() {
   return (
     <Form>
       <Separator text={STRINGS.SETTINGS_APPEARANCE} />
-      <div className="mt-3">
+      <div className="mt-3 mb-4">
         <Switch
           checked={data[STORAGE_KEYS.FULL_NAMES]}
           id={STORAGE_KEYS.FULL_NAMES}
