@@ -50,12 +50,7 @@ export default function Production() {
           </Col>
         </FormGroup>
       </Form>
-      <ProductionContainer
-        data={data}
-        error={error}
-        loading={loading}
-        mode={mode}
-      />
+      <ProductionContainer data={data} error={error} loading={loading} mode={mode} />
     </>
   );
 }

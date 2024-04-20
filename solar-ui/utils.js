@@ -32,9 +32,7 @@ export function getBackendResponse(path, options) {
 }
 
 export function getDatesForOffset(value) {
-  const stopDate = DateTime.now()
-    .set({ second: 0, millisecond: 0 })
-    .plus({ minutes: 1 });
+  const stopDate = DateTime.now().set({ second: 0, millisecond: 0 }).plus({ minutes: 1 });
   const startDate = stopDate.minus({ seconds: value });
 
   return [startDate, stopDate];

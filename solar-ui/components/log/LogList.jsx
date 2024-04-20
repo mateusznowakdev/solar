@@ -1,10 +1,10 @@
-import CalendarDays from "lucide-react/dist/esm/icons/calendar-days";
 import { Fragment } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 import { METADATA } from "../../meta";
 import { renderTime } from "../../utils";
+import Separator from "../generic/Separator";
 
 function LogListItem({ data }) {
   return (
@@ -34,10 +34,7 @@ export default function LogList({ data }) {
     <>
       {Object.entries(data).map(([day, entries]) => (
         <Fragment key={day}>
-          <p className="align-items-center d-flex my-2 pt-1">
-            <CalendarDays strokeWidth={1.5} size={17} />
-            &nbsp;{day}
-          </p>
+          <Separator text={day} />
           <LogListItemGroup data={entries} />
         </Fragment>
       ))}

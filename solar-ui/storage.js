@@ -1,5 +1,3 @@
-import { isSecureNetwork } from "./utils";
-
 export const STORAGE_KEYS = {
   API_URL: "apiUrl",
   FILTERS: "filters",

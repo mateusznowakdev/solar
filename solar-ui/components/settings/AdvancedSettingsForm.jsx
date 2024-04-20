@@ -5,12 +5,8 @@ import Form from "react-bootstrap/Form";
 import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
-import {
-  STORAGE_KEYS,
-  getDefaultValue,
-  getStorage,
-  setStorage,
-} from "../../storage";
+import { STORAGE_KEYS, getDefaultValue, getStorage, setStorage } from "../../storage";
+import Separator from "../generic/Separator";
 
 export default function AdvancedSettingsForm() {
   const [data, setData] = useState({
@@ -34,9 +30,7 @@ export default function AdvancedSettingsForm() {
 
   return (
     <Form>
-      <div className="mt-3 text-secondary text-small text-uppercase">
-        {STRINGS.SETTINGS_APPEARANCE}
-      </div>
+      <Separator text={STRINGS.SETTINGS_APPEARANCE} />
       <div className="mt-3">
         <Switch
           checked={data[STORAGE_KEYS.FULL_NAMES]}
@@ -49,9 +43,7 @@ export default function AdvancedSettingsForm() {
           }}
         />
       </div>
-      <div className="mt-4 text-secondary text-small text-uppercase">
-        {STRINGS.SETTINGS_NETWORK}
-      </div>
+      <Separator text={STRINGS.SETTINGS_NETWORK} />
       <div className="align-items-center d-flex mt-3">
         <Button
           className="px-2 me-2"
@@ -63,9 +55,7 @@ export default function AdvancedSettingsForm() {
         <div>
           {STRINGS.SETTINGS_API_URL}
           <br />
-          <span className="text-secondary text-small">
-            {data[STORAGE_KEYS.API_URL]}
-          </span>
+          <span className="text-secondary text-small">{data[STORAGE_KEYS.API_URL]}</span>
         </div>
       </div>
     </Form>

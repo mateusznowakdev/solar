@@ -18,7 +18,7 @@ function LogFilter({ name, description, filters, toggleFilter }) {
 
 export default function LogFilters({ filters, toggleFilter }) {
   return (
-    <Stack className="mb-3" direction="horizontal" gap={2}>
+    <Stack className="mb-3 pb-2" direction="horizontal" gap={2}>
       <LogFilter
         name="errors"
         description={STRINGS.ERRORS}

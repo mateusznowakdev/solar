@@ -16,10 +16,7 @@ function sortByPinned(a, b) {
 
 function ParameterListItem({ data, togglePinned }) {
   return (
-    <LinkContainer
-      state={{ choice: data.chart ? data.key : null }}
-      to="/charts"
-    >
+    <LinkContainer state={{ choice: data.chart ? data.key : null }} to="/charts">
       <ListGroupItem
         action
         active={false}
@@ -62,11 +59,7 @@ export default function ParameterList({ data, pinned, togglePinned }) {
   return (
     <ListGroup variant="flush">
       {finalData.map((item) => (
-        <ParameterListItem
-          data={item}
-          key={item.key}
-          togglePinned={togglePinned}
-        />
+        <ParameterListItem data={item} key={item.key} togglePinned={togglePinned} />
       ))}
     </ListGroup>
   );

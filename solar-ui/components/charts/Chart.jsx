@@ -67,8 +67,7 @@ export default function Chart({ data }) {
             borderColor: "#aaaaaa",
             borderWidth: 0.5,
             callbacks: {
-              label: (context) =>
-                PARAMETER_METADATA[data.field].render(context.raw),
+              label: (context) => PARAMETER_METADATA[data.field].render(context.raw),
             },
             titleColor: "#000000",
           },

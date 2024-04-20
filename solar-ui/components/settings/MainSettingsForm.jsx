@@ -7,6 +7,7 @@ import { getBackendResponse } from "../../utils";
 import ErrorText from "../generic/ErrorText";
 import HintText from "../generic/HintText";
 import LoadingText from "../generic/LoadingText";
+import Separator from "../generic/Separator";
 
 export default function MainSettingsForm() {
   const [data, setData] = useState({});
@@ -49,9 +50,7 @@ export default function MainSettingsForm() {
 
   return (
     <Form>
-      <div className="mt-3 text-secondary text-small text-uppercase">
-        {STRINGS.SETTINGS_AUTOMATION}
-      </div>
+      <Separator text={STRINGS.SETTINGS_AUTOMATION} />
       <div className="mt-3">
         <Switch
           checked={data.auto_charge_priority}
