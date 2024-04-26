@@ -1,6 +1,4 @@
-# https://github.com/npm/cli/issues/7072 is fixed
-# but npm 10.5.1 is not present in nodejs yet
-FROM node:20.6.1-alpine3.18 AS intermediate
+FROM node:22.0.0-alpine3.19 AS intermediate
 WORKDIR /app
 
 COPY package.json .
