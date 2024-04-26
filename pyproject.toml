@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "solar"
-version = "1.7.0"
+version = "1.8.0"
 description = ""
 authors = []
 
@@ -13,12 +13,12 @@ djangorestframework = "^3.15.1"
 drf-spectacular = "^0.27.2"
 paho-mqtt = "^2.0.0"
 psycopg = {extras = ["binary"], version = "^3.1.18"}
-pymodbus = "^3.6.7"
+pymodbus = "^3.6.8"
 pyserial = "^3.5"
 python-dateutil = "^2.9.0.post0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.4.0"
+black = "^24.4.2"
 isort = "^5.13.2"
 pylint = "^3.1.0"
 pylint-django = "^2.5.5"
