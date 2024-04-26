@@ -2,6 +2,7 @@ on:
   push:
     tags:
       - "1.7"
+      - "1.8"
     branches:
       - "1.8b0"
 env:
