@@ -3,6 +3,10 @@ Project description can be found
 
 **Changelog**
 
+v1.8
+
+- Allow public app to access user-defined API
+
 v1.7
 
 - Add new automation code and separate it from the main code
