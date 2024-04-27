@@ -26,7 +26,7 @@ export default function Log() {
     setLoading(true);
 
     const params = filters.map((f) => ["category", f]);
-    getBackendResponse("/log/?" + new URLSearchParams(params)).then(({ data, error }) => {
+    getBackendResponse("/api/log/?" + new URLSearchParams(params)).then(({ data, error }) => {
       if (data) {
         const items = Object.groupBy(data, (f) => renderDate(f.timestamp));
         setData(items);

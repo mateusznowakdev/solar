@@ -62,7 +62,7 @@ export default function Charts() {
 
     setLoading(true);
 
-    getBackendResponse("/series/?" + new URLSearchParams(params)).then(
+    getBackendResponse("/api/series/?" + new URLSearchParams(params)).then(
       ({ data, error }) => {
         setData(data);
         setError(error);

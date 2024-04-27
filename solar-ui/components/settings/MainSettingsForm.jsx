@@ -17,7 +17,7 @@ export default function MainSettingsForm() {
   function getSettings() {
     setLoading(true);
 
-    getBackendResponse("/settings/").then(({ data, error }) => {
+    getBackendResponse("/api/settings/").then(({ data, error }) => {
       setData(data);
       setError(error);
       setLoading(false);
@@ -27,7 +27,7 @@ export default function MainSettingsForm() {
   function putSettings(data) {
     setLoading(true);
 
-    getBackendResponse("/settings/", {
+    getBackendResponse("/api/settings/", {
       method: "PATCH",
       body: JSON.stringify(data),
       headers: { "content-type": "application/json" },

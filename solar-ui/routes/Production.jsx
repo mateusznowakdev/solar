@@ -28,7 +28,7 @@ export default function Production() {
   function getProduction() {
     setLoading(true);
 
-    getBackendResponse(`/production/${mode}/`).then(({ data, error }) => {
+    getBackendResponse(`/api/production/${mode}/`).then(({ data, error }) => {
       setData(data);
       setError(error);
       setLoading(false);
