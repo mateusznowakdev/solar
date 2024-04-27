@@ -22,7 +22,7 @@ export const STRINGS = {
   REFRESH: "Odśwież",
   SAVE: "Zapisz",
   SETTINGS_ADVANCED: "Zaawansowane",
-  SETTINGS_API_URL: "Pełny adres API",
+  SETTINGS_API_URL: "Adres serwera API",
   SETTINGS_APPEARANCE: "Wygląd",
   SETTINGS_AUTO_CHARGE_PRIORITY: "Zmień priorytet ładowania",
   SETTINGS_AUTO_OUTPUT_PRIORITY: "Zmień priorytet wyjścia",
