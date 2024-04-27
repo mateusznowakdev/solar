@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/mateusznowakdev/solar/frontend:1.7
+    image: ghcr.io/mateusznowakdev/solar/frontend:1.8
     # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
     # build:
     #   dockerfile: config/frontend/Dockerfile
@@ -11,7 +11,7 @@ services:
     logging:
       driver: journald
   backend:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.7
+    image: ghcr.io/mateusznowakdev/solar/backend:1.8
     # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
     # build:
     #   dockerfile: config/backend/Dockerfile
@@ -29,7 +29,7 @@ services:
     ports:
       - 8000:8000
   communicator:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.7
+    image: ghcr.io/mateusznowakdev/solar/backend:1.8
     # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
     # build:
     #   dockerfile: config/backend/Dockerfile
@@ -49,7 +49,7 @@ services:
       driver: journald
     privileged: true
   transformer:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.7
+    image: ghcr.io/mateusznowakdev/solar/backend:1.8
     # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
     # build:
     #   dockerfile: config/backend/Dockerfile
@@ -65,7 +65,7 @@ services:
     logging:
       driver: journald
   db:
-    image: ghcr.io/mateusznowakdev/solar/db:1.7
+    image: ghcr.io/mateusznowakdev/solar/db:1.8
     build:
       dockerfile: config/db/Dockerfile
     deploy:
@@ -79,7 +79,7 @@ services:
     volumes:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
   mqtt:
-    image: ghcr.io/mateusznowakdev/solar/mqtt:1.7
+    image: ghcr.io/mateusznowakdev/solar/mqtt:1.8
     build:
       dockerfile: config/mqtt/Dockerfile
     env_file:
@@ -93,7 +93,7 @@ services:
     ports:
       - 1883:1883
   nginx:
-    image: ghcr.io/mateusznowakdev/solar/nginx:1.7
+    image: ghcr.io/mateusznowakdev/solar/nginx:1.8
     build:
       dockerfile: config/nginx/Dockerfile
     deploy:
