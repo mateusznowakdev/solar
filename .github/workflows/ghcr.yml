@@ -3,8 +3,6 @@ on:
     tags:
       - "1.7"
       - "1.8"
-    branches:
-      - "1.8b0"
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
