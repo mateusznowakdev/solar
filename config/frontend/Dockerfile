@@ -2,14 +2,14 @@ FROM node:22.0.0-alpine3.19 AS intermediate
 WORKDIR /app
 
 COPY package.json .
-COPY package-lock.json .
+COPY yarn.lock .
 
-RUN npm install --loglevel info --maxsockets 1
+RUN yarn install
 
 COPY solar-ui solar-ui
 COPY vite.config.mjs .
 
-RUN npm run build
+RUN yarn run build
 
 # ---
 
