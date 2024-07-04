@@ -3,6 +3,10 @@ Project description can be found
 
 **Changelog**
 
+v1.8.1
+
+- Update base images to address recent security vulnerabilities
+
 v1.8
 
 - Allow public app to access user-defined API

@@ -3,6 +3,7 @@ on:
     tags:
       - "1.7"
       - "1.8"
+      - "1.8.1"
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
