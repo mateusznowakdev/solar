@@ -3,6 +3,10 @@ Project description can be found
 
 **Changelog**
 
+v1.9.0
+
+- Enable chart panning and zooming
+
 v1.8.1
 
 - Update base images to address recent security vulnerabilities

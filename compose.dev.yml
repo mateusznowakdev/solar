@@ -1,6 +1,6 @@
 services:
   db:
-    image: ghcr.io/mateusznowakdev/solar/db:1.8.1
+    image: ghcr.io/mateusznowakdev/solar/db:1.9.0
     build:
       dockerfile: config/db/Dockerfile
     env_file:
@@ -10,7 +10,7 @@ services:
     volumes:
       - ./config/db/data:/var/lib/postgresql/data
   mqtt:
-    image: ghcr.io/mateusznowakdev/solar/mqtt:1.8.1
+    image: ghcr.io/mateusznowakdev/solar/mqtt:1.9.0
     build:
       dockerfile: config/mqtt/Dockerfile
     env_file:
