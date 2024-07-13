@@ -26,6 +26,20 @@ CHART_DATA_MODELS = (
 MAX_DATA_POINTS = 750
 
 
+def date_round_minutes_down(date: datetime) -> datetime:
+    if date.second != 0 or date.microsecond != 0:
+        date = date.replace(second=0, microsecond=0)
+
+    return date
+
+
+def date_round_minutes_up(date: datetime) -> datetime:
+    if date.second != 0 or date.microsecond != 0:
+        date = date.replace(second=0, microsecond=0) + timedelta(minutes=1)
+
+    return date
+
+
 class LogAPIService:
     @staticmethod
     def get_logs(*, categories: list[str]) -> QuerySet[LogEntry]:
@@ -92,12 +106,10 @@ class SeriesAPIService:
         if date_from > date_to:
             date_from, date_to = date_to, date_from
 
-        if date_from.second != 0 or date_from.microsecond != 0:
-            date_from = date_from.replace(second=0, microsecond=0)
-        if date_to.second != 0 or date_to.microsecond != 0:
-            date_to = date_to.replace(second=0, microsecond=0) + timedelta(minutes=1)
-
+        date_from = date_round_minutes_down(date_from)
+        date_to = date_round_minutes_up(date_to)
         date_to = min(date_to, date_from + CHART_DATA_MODELS[-1][1])
+
         fields = list(dict.fromkeys(fields))
 
         requested_range = date_to - date_from
@@ -120,6 +132,10 @@ class SeriesAPIService:
         data = list(data)
         if len(data) > MAX_DATA_POINTS:
             data = data[:: len(data) // MAX_DATA_POINTS + 1]
+
+        if data:
+            date_from = date_round_minutes_down(data[0][0])
+            date_to = date_round_minutes_up(data[-1][0])
 
         return {
             "date_from": date_from,
