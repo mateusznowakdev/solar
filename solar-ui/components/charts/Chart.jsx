@@ -35,6 +35,9 @@ BaseChart.defaults.font.family = "system-ui, sans-serif";
 const Y_AXIS_WIDTH = 48;
 
 export default function Chart({ data }) {
+  let panTimeout = null;
+  let zoomTimeout = null;
+
   useEffect(() => {
     const chartOptions = {
       data: {
@@ -77,7 +80,10 @@ export default function Chart({ data }) {
             pan: {
               enabled: true,
               mode: "x",
-              onPanComplete: () => console.log("pan complete"),
+              onPanComplete: () => {
+                if (panTimeout) clearTimeout(panTimeout);
+                panTimeout = setTimeout(() => console.log("pan complete"), 500);
+              },
             },
             zoom: {
               wheel: {
@@ -87,7 +93,10 @@ export default function Chart({ data }) {
                 enabled: true,
               },
               mode: "x",
-              onZoomComplete: () => console.log("zoom complete"),
+              onZoomComplete: () => {
+                if (zoomTimeout) clearTimeout(zoomTimeout);
+                zoomTimeout = setTimeout(() => console.log("zoom complete"), 500);
+              },
             },
           },
         },
