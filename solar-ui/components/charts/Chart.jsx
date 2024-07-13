@@ -82,7 +82,10 @@ export default function Chart({ data }) {
               mode: "x",
               onPanComplete: () => {
                 if (panTimeout) clearTimeout(panTimeout);
-                panTimeout = setTimeout(() => console.log("pan complete"), 500);
+                panTimeout = setTimeout(() => {
+                  const { min, max } = chart.scales.x;
+                  console.log(`PAN complete ${min} ${max}`);
+                }, 500);
               },
             },
             zoom: {
@@ -95,7 +98,10 @@ export default function Chart({ data }) {
               mode: "x",
               onZoomComplete: () => {
                 if (zoomTimeout) clearTimeout(zoomTimeout);
-                zoomTimeout = setTimeout(() => console.log("zoom complete"), 500);
+                zoomTimeout = setTimeout(() => {
+                  const { min, max } = chart.scales.x;
+                  console.log(`ZOOM complete ${min} ${max}`);
+                }, 500);
               },
             },
           },
