@@ -35,8 +35,7 @@ BaseChart.defaults.font.family = "system-ui, sans-serif";
 const Y_AXIS_WIDTH = 48;
 
 export default function Chart({ data }) {
-  let panTimeout = null;
-  let zoomTimeout = null;
+  let panZoomTimeout = null;
 
   useEffect(() => {
     const chartOptions = {
@@ -80,13 +79,7 @@ export default function Chart({ data }) {
             pan: {
               enabled: true,
               mode: "x",
-              onPanComplete: () => {
-                if (panTimeout) clearTimeout(panTimeout);
-                panTimeout = setTimeout(() => {
-                  const { min, max } = chart.scales.x;
-                  console.log(`PAN complete ${min} ${max}`);
-                }, 500);
-              },
+              onPanComplete: onPanZoomComplete,
             },
             zoom: {
               wheel: {
@@ -96,13 +89,7 @@ export default function Chart({ data }) {
                 enabled: true,
               },
               mode: "x",
-              onZoomComplete: () => {
-                if (zoomTimeout) clearTimeout(zoomTimeout);
-                zoomTimeout = setTimeout(() => {
-                  const { min, max } = chart.scales.x;
-                  console.log(`ZOOM complete ${min} ${max}`);
-                }, 500);
-              },
+              onZoomComplete: onPanZoomComplete,
             },
           },
         },
@@ -136,6 +123,16 @@ export default function Chart({ data }) {
       document.getElementById("canvas-" + data.field),
       chartOptions,
     );
+
+    function onPanZoomComplete() {
+      if (panZoomTimeout) clearTimeout(panZoomTimeout);
+      panZoomTimeout = setTimeout(() => {
+        const { min, max } = chart.scales.x;
+        console.log(
+          `New range ${new Date(min).toLocaleString()} - ${new Date(max).toLocaleString()}`,
+        );
+      }, 500);
+    }
 
     return () => {
       if (chart) chart.destroy();
