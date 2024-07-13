@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from "chart.js";
 import "chartjs-adapter-luxon";
+import zoomPlugin from "chartjs-plugin-zoom";
 import { useEffect } from "react";
 
 import { COLORS, PARAMETER_METADATA } from "../../meta";
@@ -27,6 +28,7 @@ BaseChart.register(
   TimeScale,
   Title,
   Tooltip,
+  zoomPlugin,
 );
 BaseChart.defaults.font.family = "system-ui, sans-serif";
 
@@ -70,6 +72,23 @@ export default function Chart({ data }) {
               label: (context) => PARAMETER_METADATA[data.field].render(context.raw),
             },
             titleColor: "#000000",
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: "x",
+              onPanComplete: () => console.log("pan complete"),
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: "x",
+              onZoomComplete: () => console.log("zoom complete"),
+            },
           },
         },
         responsive: true,
