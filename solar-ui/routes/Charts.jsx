@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
@@ -43,15 +43,15 @@ export default function Charts() {
   const [initialStartDate, initialStopDate] = getDatesForOffset(OFFSETS["10m"]);
 
   const location = useLocation();
-  const headerRef = useRef(null);
 
-  const [data, setData] = useState(null);
+  const [accordionKeys, setAccordionKeys] = useState([]);
 
   const [seriesA, setSeriesA] = useState(location.state?.choice || "");
   const [seriesB, setSeriesB] = useState("");
   const [startDate, setStartDate] = useState(initialStartDate);
   const [stopDate, setStopDate] = useState(initialStopDate);
 
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false); // left false on purpose
   const [error, setError] = useState(null);
 
@@ -80,11 +80,7 @@ export default function Charts() {
         }
 
         setLoading(false);
-
-        const accordionButton = headerRef.current.firstElementChild;
-        if (accordionButton.ariaExpanded) {
-          accordionButton.click();
-        }
+        setAccordionKeys([]);
       },
     );
   }
@@ -105,9 +101,11 @@ export default function Charts() {
   return (
     <>
       <h1 className="my-3">{STRINGS.MENU_CHARTS}</h1>
-      <Accordion>
+      <Accordion activeKey={accordionKeys}>
         <AccordionItem eventKey="0">
-          <AccordionHeader ref={headerRef}>
+          <AccordionHeader
+            onClick={() => setAccordionKeys(accordionKeys.length > 0 ? [] : ["0"])}
+          >
             {renderDateTime(startDate)} &mdash;
             <br /> {renderDateTime(stopDate)}
           </AccordionHeader>
