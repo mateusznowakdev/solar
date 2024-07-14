@@ -11,6 +11,18 @@ h1 {
   font-weight: 300;
 }
 
+.accordion {
+  --bs-accordion-active-bg: transparent;
+  --bs-accordion-body-padding-x: 0.5rem;
+  --bs-accordion-body-padding-y: 0.5rem;
+  --bs-accordion-btn-padding-x: 0.5rem;
+  --bs-accordion-btn-padding-y: 0.5rem;
+}
+
+.accordion-button:not(.collapsed) {
+  box-shadow: none;
+}
+
 .badge {
   background: var(--bs-light);
   border: 1px solid var(--bs-light);

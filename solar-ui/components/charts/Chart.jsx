@@ -149,7 +149,7 @@ export default function Chart({ data }) {
         {unit && <> ({unit})</>}
       </p>
       <div>
-        <canvas height="256px" id={"canvas-" + data.field}></canvas>
+        <canvas height="224px" id={"canvas-" + data.field}></canvas>
       </div>
     </>
   );

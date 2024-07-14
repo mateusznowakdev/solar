@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import Accordion from "react-bootstrap/Accordion";
+import AccordionBody from "react-bootstrap/AccordionBody";
+import AccordionHeader from "react-bootstrap/AccordionHeader";
+import AccordionItem from "react-bootstrap/AccordionItem";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useLocation } from "react-router-dom";
@@ -11,7 +15,7 @@ import ErrorText from "../components/generic/ErrorText";
 import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
 import { STRINGS } from "../locale";
-import { getBackendResponse, getDatesForOffset } from "../utils";
+import { getBackendResponse, getDatesForOffset, renderDateTime } from "../utils";
 
 const OFFSETS = {
   "10m": 60 * 10,
@@ -95,18 +99,28 @@ export default function Charts() {
   return (
     <>
       <h1 className="my-3">{STRINGS.MENU_CHARTS}</h1>
-      <Form className="my-3">
-        <ChartSeriesPicker setValue={setSeriesA} value={seriesA} />
-        <ChartSeriesPicker setValue={setSeriesB} value={seriesB} />
-        <ChartDateTimePicker setValue={setStartDate} value={startDate} />
-        <ChartDateTimePicker setValue={setStopDate} value={stopDate} />
-        <ChartPresetButtonGroup
-          offsets={OFFSETS}
-          setStartDate={setStartDate}
-          setStopDate={setStopDate}
-          submitButton={submitButton}
-        />
-      </Form>
+      <Accordion>
+        <AccordionItem eventKey={0}>
+          <AccordionHeader>
+            {renderDateTime(startDate)} &mdash;
+            <br /> {renderDateTime(stopDate)}
+          </AccordionHeader>
+          <AccordionBody>
+            <Form>
+              <ChartSeriesPicker setValue={setSeriesA} value={seriesA} />
+              <ChartSeriesPicker setValue={setSeriesB} value={seriesB} />
+              <ChartDateTimePicker setValue={setStartDate} value={startDate} />
+              <ChartDateTimePicker setValue={setStopDate} value={stopDate} />
+              <ChartPresetButtonGroup
+                offsets={OFFSETS}
+                setStartDate={setStartDate}
+                setStopDate={setStopDate}
+                submitButton={submitButton}
+              />
+            </Form>
+          </AccordionBody>
+        </AccordionItem>
+      </Accordion>
       <ChartContainer data={data} error={error} loading={loading} />
     </>
   );
