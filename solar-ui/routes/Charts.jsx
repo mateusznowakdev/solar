@@ -96,8 +96,8 @@ export default function Charts() {
   }
 
   function updateRange(min, max) {
-    const start = DateTime.fromMillis(Math.floor(min));
-    const stop = DateTime.fromMillis(Math.ceil(max));
+    const start = DateTime.fromMillis(min);
+    const stop = DateTime.fromMillis(max);
     getSeries(start, stop);
   }
 
