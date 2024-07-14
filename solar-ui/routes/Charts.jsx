@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import AccordionHeader from "react-bootstrap/AccordionHeader";
@@ -43,6 +43,7 @@ export default function Charts() {
   const [initialStartDate, initialStopDate] = getDatesForOffset(OFFSETS["10m"]);
 
   const location = useLocation();
+  const headerRef = useRef(null);
 
   const [data, setData] = useState(null);
 
@@ -79,6 +80,11 @@ export default function Charts() {
         }
 
         setLoading(false);
+
+        const accordionButton = headerRef.current.firstElementChild;
+        if (accordionButton.ariaExpanded) {
+          accordionButton.click();
+        }
       },
     );
   }
@@ -100,8 +106,8 @@ export default function Charts() {
     <>
       <h1 className="my-3">{STRINGS.MENU_CHARTS}</h1>
       <Accordion>
-        <AccordionItem eventKey={0}>
-          <AccordionHeader>
+        <AccordionItem eventKey="0">
+          <AccordionHeader ref={headerRef}>
             {renderDateTime(startDate)} &mdash;
             <br /> {renderDateTime(stopDate)}
           </AccordionHeader>
