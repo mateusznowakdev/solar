@@ -6,6 +6,10 @@ body {
   user-select: none;
 }
 
+canvas {
+  border: 1px solid #eee;
+}
+
 h1 {
   color: var(--bs-secondary);
   font-weight: 300;
