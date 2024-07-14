@@ -11,9 +11,9 @@ export function dateReviver(key, value) {
 }
 
 export function getBackendResponse(path, options) {
-  const backendURI = getStorage(STORAGE_KEYS.API_URL);
+  const baseURL = window.location.protocol + "//" + window.location.hostname + ":8000";
 
-  return fetch(backendURI + path, options)
+  return fetch(baseURL + path, options)
     .then(async (response) => {
       const status = response.status;
       const text = await response.text();

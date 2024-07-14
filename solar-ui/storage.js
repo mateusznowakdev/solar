@@ -1,5 +1,4 @@
 export const STORAGE_KEYS = {
-  API_URL: "apiUrl",
   FILTERS: "filters",
   FULL_NAMES: "fullNames",
   PINNED: "pinned",
@@ -7,8 +6,6 @@ export const STORAGE_KEYS = {
 
 export function getDefaultValue(key) {
   switch (key) {
-    case STORAGE_KEYS.API_URL:
-      return `${window.location.protocol}//${window.location.hostname}:8000`;
     case STORAGE_KEYS.FILTERS:
       return [];
     case STORAGE_KEYS.FULL_NAMES:
