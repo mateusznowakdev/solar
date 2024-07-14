@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import AccordionBody from "react-bootstrap/AccordionBody";
@@ -25,7 +26,7 @@ const OFFSETS = {
   "24h": 60 * 60 * 24,
 };
 
-function ChartContainer({ data, error, loading }) {
+function ChartContainer({ data, error, loading, updateRange }) {
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
 
@@ -33,8 +34,12 @@ function ChartContainer({ data, error, loading }) {
 
   return (
     <>
-      {data && data.values.length > 0 && <Chart data={data.values[0]} />}
-      {data && data.values.length > 1 && <Chart data={data.values[1]} />}
+      {data && data.values.length > 0 && (
+        <Chart data={data.values[0]} updateRange={updateRange} />
+      )}
+      {data && data.values.length > 1 && (
+        <Chart data={data.values[1]} updateRange={updateRange} />
+      )}
     </>
   );
 }
@@ -55,10 +60,15 @@ export default function Charts() {
   const [loading, setLoading] = useState(false); // left false on purpose
   const [error, setError] = useState(null);
 
-  function getSeries() {
+  function getSeries(dateFrom, dateTo) {
+    if (!dateFrom || !dateTo) {
+      dateFrom = startDate;
+      dateTo = stopDate;
+    }
+
     const params = [
-      ["date_from", startDate.toISO()],
-      ["date_to", stopDate.toISO()],
+      ["date_from", dateFrom.toISO()],
+      ["date_to", dateTo.toISO()],
     ];
 
     if (!seriesA && !seriesB) return;
@@ -83,6 +93,12 @@ export default function Charts() {
         setAccordionKeys([]);
       },
     );
+  }
+
+  function updateRange(min, max) {
+    const start = DateTime.fromMillis(Math.floor(min));
+    const stop = DateTime.fromMillis(Math.ceil(max));
+    getSeries(start, stop);
   }
 
   useEffect(getSeries, []);
@@ -125,7 +141,12 @@ export default function Charts() {
           </AccordionBody>
         </AccordionItem>
       </Accordion>
-      <ChartContainer data={data} error={error} loading={loading} />
+      <ChartContainer
+        data={data}
+        error={error}
+        loading={loading}
+        updateRange={updateRange}
+      />
     </>
   );
 }

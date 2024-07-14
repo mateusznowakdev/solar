@@ -34,7 +34,7 @@ BaseChart.defaults.font.family = "system-ui, sans-serif";
 
 const Y_AXIS_WIDTH = 48;
 
-export default function Chart({ data }) {
+export default function Chart({ data, updateRange }) {
   let panZoomTimeout = null;
 
   useEffect(() => {
@@ -128,9 +128,7 @@ export default function Chart({ data }) {
       if (panZoomTimeout) clearTimeout(panZoomTimeout);
       panZoomTimeout = setTimeout(() => {
         const { min, max } = chart.scales.x;
-        console.log(
-          `New range ${new Date(min).toLocaleString()} - ${new Date(max).toLocaleString()}`,
-        );
+        updateRange(min, max);
       }, 500);
     }
 
