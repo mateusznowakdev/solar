@@ -133,10 +133,6 @@ class SeriesAPIService:
         if len(data) > MAX_DATA_POINTS:
             data = data[:: len(data) // MAX_DATA_POINTS + 1]
 
-        if data:
-            date_from = date_round_minutes_down(data[0][0])
-            date_to = date_round_minutes_up(data[-1][0])
-
         return {
             "date_from": date_from,
             "date_to": date_to,

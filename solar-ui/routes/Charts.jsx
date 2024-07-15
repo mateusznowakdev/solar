@@ -35,10 +35,20 @@ function ChartContainer({ data, error, loading, updateRange }) {
   return (
     <>
       {data && data.values.length > 0 && (
-        <Chart data={data.values[0]} updateRange={updateRange} />
+        <Chart
+          data={data.values[0]}
+          startDate={data.date_from}
+          stopDate={data.date_to}
+          updateRange={updateRange}
+        />
       )}
       {data && data.values.length > 1 && (
-        <Chart data={data.values[1]} updateRange={updateRange} />
+        <Chart
+          data={data.values[1]}
+          startDate={data.date_from}
+          stopDate={data.date_to}
+          updateRange={updateRange}
+        />
       )}
     </>
   );
