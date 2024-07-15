@@ -83,7 +83,7 @@ class ControlService(BaseControlService):
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)
 
-        charging_time = not time(0, 30) <= local_now.time() < time(22, 30)
+        charging_time = not time(0, 30) <= local_now.time() < time(23, 30)
         grid_time = not local_sunrise.time() <= local_now.time() < time(22, 30)
         is_high_voltage = avg_pv_voltage >= 230
         is_low_voltage = avg_pv_voltage <= 190
