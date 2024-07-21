@@ -26,8 +26,6 @@ services:
       - POSTGRES_HOST=db
     logging:
       driver: journald
-    ports:
-      - 8000:8000
   communicator:
     image: ghcr.io/mateusznowakdev/solar/backend:1.9.0
     # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY

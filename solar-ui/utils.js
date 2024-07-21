@@ -11,7 +11,7 @@ export function dateReviver(key, value) {
 }
 
 export function getBackendResponse(path, options) {
-  const baseURL = window.location.protocol + "//" + window.location.hostname + ":8000";
+  const baseURL = ""; // custom URL for development
 
   return fetch(baseURL + path, options)
     .then(async (response) => {
