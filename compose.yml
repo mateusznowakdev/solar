@@ -1,9 +1,8 @@
 services:
   frontend:
     image: ghcr.io/mateusznowakdev/solar/frontend:1.9.0
-    # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
-    # build:
-    #   dockerfile: config/frontend/Dockerfile
+    build:
+      dockerfile: config/frontend/Dockerfile
     deploy:
       restart_policy:
         condition: any
@@ -12,9 +11,8 @@ services:
       driver: journald
   backend:
     image: ghcr.io/mateusznowakdev/solar/backend:1.9.0
-    # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
-    # build:
-    #   dockerfile: config/backend/Dockerfile
+    build:
+      dockerfile: config/backend/Dockerfile
     command: python manage.py runserver --noreload --nostatic 0.0.0.0:8000
     deploy:
       restart_policy:
@@ -28,9 +26,8 @@ services:
       driver: journald
   communicator:
     image: ghcr.io/mateusznowakdev/solar/backend:1.9.0
-    # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
-    # build:
-    #   dockerfile: config/backend/Dockerfile
+    build:
+      dockerfile: config/backend/Dockerfile
     command: python manage.py run_communicator
     deploy:
       restart_policy:
@@ -48,9 +45,8 @@ services:
     privileged: true
   transformer:
     image: ghcr.io/mateusznowakdev/solar/backend:1.9.0
-    # THIS IMAGE SHOULD BE DOWNLOADED FROM THE REGISTRY
-    # build:
-    #   dockerfile: config/backend/Dockerfile
+    build:
+      dockerfile: config/backend/Dockerfile
     command: python manage.py run_transformer
     deploy:
       restart_policy:
