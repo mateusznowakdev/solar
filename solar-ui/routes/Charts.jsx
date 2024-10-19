@@ -87,22 +87,20 @@ export default function Charts() {
 
     setLoading(true);
 
-    getBackendResponse("/api/series/?" + new URLSearchParams(params)).then(
-      ({ data, error }) => {
-        setData(data);
-        setError(error);
+    getBackendResponse("/api/series/?" + new URLSearchParams(params)).then(({ data, error }) => {
+      setData(data);
+      setError(error);
 
-        if (data) {
-          setSeriesA(data?.values[0]?.field || "");
-          setSeriesB(data?.values[1]?.field || "");
-          setStartDate(data.date_from);
-          setStopDate(data.date_to);
-        }
+      if (data) {
+        setSeriesA(data?.values[0]?.field || "");
+        setSeriesB(data?.values[1]?.field || "");
+        setStartDate(data.date_from);
+        setStopDate(data.date_to);
+      }
 
-        setLoading(false);
-        setAccordionKeys([]);
-      },
-    );
+      setLoading(false);
+      setAccordionKeys([]);
+    });
   }
 
   function updateRange(min, max) {
@@ -129,9 +127,7 @@ export default function Charts() {
       <h1 className="my-3">{STRINGS.MENU_CHARTS}</h1>
       <Accordion activeKey={accordionKeys}>
         <AccordionItem eventKey="0">
-          <AccordionHeader
-            onClick={() => setAccordionKeys(accordionKeys.length > 0 ? [] : ["0"])}
-          >
+          <AccordionHeader onClick={() => setAccordionKeys(accordionKeys.length > 0 ? [] : ["0"])}>
             {renderDateTime(startDate)} &mdash;
             <br /> {renderDateTime(stopDate)}
           </AccordionHeader>
@@ -151,12 +147,7 @@ export default function Charts() {
           </AccordionBody>
         </AccordionItem>
       </Accordion>
-      <ChartContainer
-        data={data}
-        error={error}
-        loading={loading}
-        updateRange={updateRange}
-      />
+      <ChartContainer data={data} error={error} loading={loading} updateRange={updateRange} />
     </>
   );
 }

@@ -3,11 +3,7 @@ import Button from "react-bootstrap/Button";
 
 export default function RefreshButton() {
   return (
-    <Button
-      className="refresh-button"
-      onClick={() => window.location.reload()}
-      variant="light"
-    >
+    <Button className="refresh-button" onClick={() => window.location.reload()} variant="light">
       <RefreshCw strokeWidth={1.25} />
     </Button>
   );

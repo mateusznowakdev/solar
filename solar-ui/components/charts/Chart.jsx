@@ -121,10 +121,7 @@ export default function Chart({ data, startDate, stopDate, updateRange }) {
       type: "line",
     };
 
-    const chart = new BaseChart(
-      document.getElementById("canvas-" + data.field),
-      chartOptions,
-    );
+    const chart = new BaseChart(document.getElementById("canvas-" + data.field), chartOptions);
 
     function onPanZoomComplete() {
       if (panZoomTimeout) clearTimeout(panZoomTimeout);

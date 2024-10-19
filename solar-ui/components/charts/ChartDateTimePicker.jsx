@@ -29,15 +29,11 @@ export default function ChartDateTimePicker({ setValue, value }) {
   }, [value]);
 
   function addDay() {
-    setDate(
-      DateTime.fromFormat(date, "yyyy-MM-dd").plus({ days: 1 }).toFormat("yyyy-MM-dd"),
-    );
+    setDate(DateTime.fromFormat(date, "yyyy-MM-dd").plus({ days: 1 }).toFormat("yyyy-MM-dd"));
   }
 
   function subDay() {
-    setDate(
-      DateTime.fromFormat(date, "yyyy-MM-dd").minus({ days: 1 }).toFormat("yyyy-MM-dd"),
-    );
+    setDate(DateTime.fromFormat(date, "yyyy-MM-dd").minus({ days: 1 }).toFormat("yyyy-MM-dd"));
   }
 
   return (

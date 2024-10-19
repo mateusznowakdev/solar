@@ -1,9 +1,4 @@
-import {
-  renderChoice,
-  renderDateTime,
-  renderMultipleChoices,
-  renderNumber,
-} from "./utils";
+import { renderChoice, renderDateTime, renderMultipleChoices, renderNumber } from "./utils";
 
 export const COLORS = {
   PRIMARY: "#198754", // --bs-green
