@@ -3,24 +3,25 @@ name = "solar"
 version = "1.9.0"
 description = ""
 authors = []
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.13"
 astral = "^3.2"
-django = "^5.0.7"
-django-cors-headers = "^4.4.0"
+django = "^5.1.2"
+django-cors-headers = "^4.5.0"
 djangorestframework = "^3.15.2"
 drf-spectacular = "^0.27.2"
 paho-mqtt = "^2.1.0"
-psycopg = {extras = ["binary"], version = "^3.2.1"}
-pymodbus = "^3.6.9"
+psycopg = {extras = ["binary"], version = "^3.2.3"}
+pymodbus = "^3.7.3"
 pyserial = "^3.5"
 python-dateutil = "^2.9.0.post0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.4.2"
+black = "^24.10.0"
 isort = "^5.13.2"
-pylint = "^3.1.0"
+pylint = "^3.3.1"
 pylint-django = "^2.5.5"
 
 [tool.isort]
