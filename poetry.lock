@@ -502,22 +502,22 @@ pylint = ">=1.7"
 
 [[package]]
 name = "pymodbus"
-version = "3.7.3"
+version = "3.6.9"
 description = "A fully featured modbus protocol stack in python"
 optional = false
-python-versions = ">=3.9.0"
+python-versions = ">=3.8.0"
 files = [
-    {file = "pymodbus-3.7.3-py3-none-any.whl", hash = "sha256:47d694d1fd6ad56e392e140bad089331aca23cd5ba45c610226c2db6aae0b556"},
-    {file = "pymodbus-3.7.3.tar.gz", hash = "sha256:603490162382fe34258992e3b8fe8d2da573a08aa49257ee7ab7b5b1d1a6653c"},
+    {file = "pymodbus-3.6.9-py3-none-any.whl", hash = "sha256:91dea79f157ca2d26c137190de76dce5a6c99c0ea514d2d1bf3980acbbdaf29c"},
+    {file = "pymodbus-3.6.9.tar.gz", hash = "sha256:f4223b72c20cd00a2cf25f6ddb31ecb2c0587309111a55283b2f4a1ac115e4cc"},
 ]
 
 [package.extras]
 all = ["pymodbus[development,documentation,repl,serial,simulator]"]
-development = ["build (>=1.2.2)", "codespell (>=2.3.0)", "coverage (>=7.6.1)", "mypy (>=1.11.2)", "pylint (>=3.3.0)", "pytest (>=8.3.3)", "pytest-aiohttp (>=1.0.5)", "pytest-asyncio (>=0.24.0)", "pytest-cov (>=5.0.0)", "pytest-profiling (>=1.7.0)", "pytest-timeout (>=2.3.1)", "pytest-xdist (>=3.6.1)", "ruff (>=0.5.3)", "twine (>=5.1.1)", "types-Pygments", "types-pyserial"]
-documentation = ["Sphinx (>=7.3.7)", "recommonmark (>=0.7.1)", "sphinx-rtd-theme (>=2.0.0)"]
-repl = ["pymodbus-repl (>=2.0.4)"]
+development = ["build (>=1.1.1)", "codespell (>=2.2.6)", "coverage (>=7.4.3)", "mypy (>=1.9.0)", "pylint (>=3.1.0)", "pytest (>=8.1.0)", "pytest-asyncio (>=0.23.5.post1)", "pytest-cov (>=4.1.0)", "pytest-profiling (>=1.7.0)", "pytest-timeout (>=2.3.1)", "pytest-xdist (>=3.5.0)", "ruff (>=0.3.3)", "twine (>=5.0.0)", "types-Pygments", "types-pyserial"]
+documentation = ["Sphinx (>=5.3.0)", "recommonmark (>=0.7.1)", "sphinx-rtd-theme (>=1.1.1)"]
+repl = ["pymodbus-repl (>=2.0.3)"]
 serial = ["pyserial (>=3.5)"]
-simulator = ["aiohttp (>=3.10.5)", "aiohttp (>=3.8.6)"]
+simulator = ["aiohttp (>=3.8.6)", "aiohttp (>=3.9.0b0)"]
 
 [[package]]
 name = "pyserial"
@@ -798,4 +798,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "ff796b46d54fde4b42c8d05f13caa10ef85c77038116002b1701aeb7b67abc77"
+content-hash = "c144e3a51c879086e60e75d2f7c8134b09c54388e95f090233518e96905dce8e"
