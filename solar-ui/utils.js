@@ -38,10 +38,6 @@ export function getDatesForOffset(value) {
   return [startDate, stopDate];
 }
 
-export function getVersion() {
-  return import.meta.env.PACKAGE_VERSION;
-}
-
 export function isSecureNetwork() {
   return window.location.protocol === "https:";
 }
