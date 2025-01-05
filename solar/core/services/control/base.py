@@ -154,7 +154,7 @@ class BaseControlService:
     def save_state(self, *, state: StateRaw) -> None:
         state.save()
 
-    def postprocess_state(self, *, state: StateRaw) -> None:
+    def postprocess_state(self, *, state: StateRaw, extra: dict) -> None:
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
 

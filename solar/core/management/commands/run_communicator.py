@@ -1,3 +1,4 @@
+import json
 import sys
 import time
 import traceback
@@ -10,9 +11,18 @@ from solar.core.services.publish import PublishService
 
 DEVICE_LIST = ("/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3")
 
+recv_settings = {}
+
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
+    def do_POST(self):
+        content_length = int(self.headers["content-length"])
+        body = self.rfile.read(content_length)
+        body = json.loads(body)
+
+        recv_settings.clear()
+        recv_settings.update(body)
+
         self.send_response(200)
         self.end_headers()
 
@@ -20,7 +30,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         publish_service = PublishService()
-        http_server = HTTPServer(("0.0.0.0", 8000), HTTPRequestHandler)
+        http_server = HTTPServer(("0.0.0.0", 8100), HTTPRequestHandler)
         http_server.timeout = 0.5
 
         for device in DEVICE_LIST:
@@ -41,7 +51,8 @@ def run_communicator(control_service, publish_service, http_server):
         state = control_service.get_state()
 
         control_service.save_state(state=state)
-        control_service.postprocess_state(state=state)
+        control_service.postprocess_state(state=state, extra=recv_settings)
         publish_service.publish(state=state)
 
+        recv_settings.clear()
         time.sleep(0.5)

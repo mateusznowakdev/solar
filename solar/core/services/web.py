@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+import requests
 from dateutil.relativedelta import relativedelta
 from django.db.models import Case, QuerySet, Sum, When
 from django.utils import timezone
@@ -146,5 +147,8 @@ class SettingsAPIService:
         for name in ("auto_charge_priority", "auto_output_priority"):
             if name in settings:
                 SettingsService.put_setting(name=name, checked=settings[name])
+
+        # TODO: handle errors
+        requests.post("http://transporter:8100", json=settings)
 
         return SettingsAPIService.get_settings()

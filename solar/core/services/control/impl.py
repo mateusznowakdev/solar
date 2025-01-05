@@ -26,8 +26,8 @@ class ControlService(BaseControlService):
     def __init__(self, *, device: str) -> None:
         super().__init__(device=device)
 
-        self.auto_charge = SettingsService.get_setting(name="auto_charge_priority")
-        self.auto_output = SettingsService.get_setting(name="auto_output_priority")
+        self.auto_charge_priority = SettingsService.get_setting(name="auto_charge_priority")
+        self.auto_output_priority = SettingsService.get_setting(name="auto_output_priority")
 
         self.past_pv_voltages = collections.deque(maxlen=60)
 
@@ -35,32 +35,22 @@ class ControlService(BaseControlService):
         self.next_charge_change_time = timezone.now()
         self.next_output_change_time = timezone.now()
 
-    def postprocess_state(self, *, state: StateRaw) -> None:
-        super().postprocess_state(state=state)
+    def postprocess_state(self, *, state: StateRaw, extra: dict) -> None:
+        super().postprocess_state(state=state, extra=extra)
 
-        self._refresh_settings()
+        if value := extra.get("auto_charge_priority"):
+            self.auto_charge_priority = value
+            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY)
+        elif value := extra.get("charge_priority"):
+            raise NotImplementedError
+
+        if value := extra.get("auto_output_priority"):
+            self.auto_output_priority = value
+            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY)
+        elif value := extra.get("output_priority"):
+            raise NotImplementedError
+
         self._change_priority(state=state)
-
-    def _refresh_settings(self) -> None:
-        now = timezone.now()
-        if now < self.next_settings_refresh_time:
-            return
-
-        auto_charge = SettingsService.get_setting(name="auto_charge_priority")
-        auto_output = SettingsService.get_setting(name="auto_output_priority")
-
-        if auto_charge != self.auto_charge:
-            LoggingService.log(
-                timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY
-            )
-        if auto_output != self.auto_output:
-            LoggingService.log(
-                timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY
-            )
-
-        self.auto_charge = auto_charge
-        self.auto_output = auto_output
-        self.next_settings_refresh_time = now + timedelta(seconds=10)
 
     @functools.lru_cache(maxsize=1)
     def _get_sunrise(self, *, date: date_, tzinfo: timezone_) -> datetime:
@@ -89,7 +79,7 @@ class ControlService(BaseControlService):
         new_charge_priority = None
         new_output_priority = None
 
-        if self.auto_charge and now > self.next_charge_change_time:
+        if self.auto_charge_priority and now > self.next_charge_change_time:
             self.next_charge_change_time = now + timedelta(seconds=10)
 
             if charging_time:
@@ -101,7 +91,7 @@ class ControlService(BaseControlService):
                     new_charge_priority = CHARGE_ONLY_PV
                     self.next_charge_change_time = now + timedelta(minutes=1)
 
-        if self.auto_output and now > self.next_output_change_time:
+        if self.auto_output_priority and now > self.next_output_change_time:
             self.next_output_change_time = now + timedelta(seconds=10)
 
             if grid_time:
