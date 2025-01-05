@@ -146,9 +146,17 @@ class SeriesAPIService:
 class SettingsAPIService:
     @staticmethod
     def get_settings() -> dict:
+        last_state = StateRaw.objects.order_by("-timestamp").first()
+
         return {
-            name: SettingsService.get_setting(name=name)
-            for name in ("auto_charge_priority", "auto_output_priority")
+            "charge_priority": last_state.charge_priority,
+            "output_priority": last_state.output_priority,
+            "auto_charge_priority": SettingsService.get_setting(
+                name="auto_charge_priority"
+            ),
+            "auto_output_priority": SettingsService.get_setting(
+                name="auto_output_priority"
+            ),
         }
 
     @staticmethod
