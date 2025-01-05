@@ -76,9 +76,7 @@ class ControlService(BaseControlService):
         # pylint:disable=too-many-branches
         now = timezone.now()
         local_now = now.astimezone(timezone.get_default_timezone())
-        local_sunrise = self._get_sunrise(
-            date=local_now.date(), tzinfo=local_now.tzinfo
-        )
+        local_sunrise = self._get_sunrise(date=local_now.date(), tzinfo=local_now.tzinfo)
 
         self.past_pv_voltages.append(state.pv_voltage)
         avg_pv_voltage = sum(self.past_pv_voltages) / len(self.past_pv_voltages)

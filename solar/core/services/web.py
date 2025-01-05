@@ -4,15 +4,7 @@ from dateutil.relativedelta import relativedelta
 from django.db.models import Case, QuerySet, Sum, When
 from django.utils import timezone
 
-from solar.core.models import (
-    LogEntry,
-    StateArchive,
-    StateRaw,
-    StateT1,
-    StateT2,
-    StateT3,
-    StateT4,
-)
+from solar.core.models import LogEntry, StateArchive, StateRaw, StateT1, StateT2, StateT3, StateT4
 from solar.core.services.settings import SettingsService
 
 CHART_DATA_MODELS = (
@@ -78,16 +70,12 @@ class ProductionAPIService:
         else:
             return []
 
-        group_qs = Case(
-            *(When(timestamp__gte=ts, then=idx) for idx, ts in enumerate(timestamps))
-        )
+        group_qs = Case(*(When(timestamp__gte=ts, then=idx) for idx, ts in enumerate(timestamps)))
 
         data = (
             StateArchive.objects.annotate(group=group_qs)
             .values("group")
-            .annotate(
-                pv_power=Sum("pv_power"), load_active_power=Sum("load_active_power")
-            )
+            .annotate(pv_power=Sum("pv_power"), load_active_power=Sum("load_active_power"))
             .filter(timestamp__gte=min(timestamps))
             .order_by("group")
         )
@@ -100,9 +88,7 @@ class ProductionAPIService:
 
 class SeriesAPIService:
     @staticmethod
-    def get_series(
-        *, fields: list[str], date_from: datetime, date_to: datetime
-    ) -> dict:
+    def get_series(*, fields: list[str], date_from: datetime, date_to: datetime) -> dict:
         if date_from > date_to:
             date_from, date_to = date_to, date_from
 
@@ -151,12 +137,8 @@ class SettingsAPIService:
         return {
             "charge_priority": last_state.charge_priority,
             "output_priority": last_state.output_priority,
-            "auto_charge_priority": SettingsService.get_setting(
-                name="auto_charge_priority"
-            ),
-            "auto_output_priority": SettingsService.get_setting(
-                name="auto_output_priority"
-            ),
+            "auto_charge_priority": SettingsService.get_setting(name="auto_charge_priority"),
+            "auto_output_priority": SettingsService.get_setting(name="auto_output_priority"),
         }
 
     @staticmethod

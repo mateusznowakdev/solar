@@ -30,9 +30,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 # E.g. "localhost":
 ALLOWED_HOSTS = [h for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if h]
 # E.g. "http://localhost:5173":
-CORS_ALLOWED_ORIGINS = [
-    o for o in os.environ.get("DJANGO_ALLOWED_ORIGINS", "").split(",") if o
-]
+CORS_ALLOWED_ORIGINS = [o for o in os.environ.get("DJANGO_ALLOWED_ORIGINS", "").split(",") if o]
 
 MAIN_APPS = [
     "django.contrib.admin",

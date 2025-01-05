@@ -147,9 +147,7 @@ class TransformService:
 
         with transaction.atomic():
             with connection.cursor() as cursor:
-                query = INSERT_NEW_DATA.format(
-                    source=source, target=target, cache=cache
-                )
+                query = INSERT_NEW_DATA.format(source=source, target=target, cache=cache)
                 cursor.execute(query, {"stride": model.PRECISION})
 
                 query = CACHE_LAST_TIMESTAMP.format(target=target, cache=cache)

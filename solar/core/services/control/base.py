@@ -97,9 +97,7 @@ class BaseControlService:
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
-        LoggingService.log(
-            timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING
-        )
+        LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING)
 
     def get_state(self) -> StateRaw:
         con = recv_data(self.client, 0x100, 0x10E)
@@ -149,9 +147,7 @@ class BaseControlService:
         )
 
         state.battery_current = -state.battery_current
-        state.battery_apparent_power = int(
-            state.battery_current * state.battery_voltage
-        )
+        state.battery_apparent_power = int(state.battery_current * state.battery_voltage)
 
         return state
 

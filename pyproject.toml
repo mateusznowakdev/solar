@@ -20,8 +20,12 @@ isort = "^5.13.2"
 pylint = "^3.3.3"
 pylint-django = "^2.6.1"
 
+[tool.black]
+line-length = 99
+
 [tool.isort]
 profile = "black"
+line_length = 99
 
 [tool.pylint]
 disable = ["broad-exception-raised", "missing-class-docstring", "missing-function-docstring", "missing-module-docstring", "too-few-public-methods"]
