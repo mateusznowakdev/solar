@@ -6,14 +6,14 @@ export const COLORS = {
   SECONDARY: "#6c757d",
 };
 
-const CHARGE_PRIORITY = {
+export const CHARGE_PRIORITY = {
   0: "Preferuj panele",
   1: "Preferuj sieć",
   2: "Tryb mieszany",
   3: "Tylko panele",
 };
 
-const CHARGE_PRIORITY_S = {
+export const CHARGE_PRIORITY_S = {
   0: "CSO",
   1: "CUB",
   2: "SNU",
@@ -51,13 +51,13 @@ const INVERTER_FAULTS = {
   /* Error codes are documented so badly, there is no way to make correct guess */
 };
 
-const OUTPUT_PRIORITY = {
+export const OUTPUT_PRIORITY = {
   0: "Panel",
   1: "Sieć",
   2: "Inwerter",
 };
 
-const OUTPUT_PRIORITY_S = {
+export const OUTPUT_PRIORITY_S = {
   0: "SOL",
   1: "UTI",
   2: "SBU",

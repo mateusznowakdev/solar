@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
+import ListGroup from "react-bootstrap/ListGroup";
+import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
+import { CHARGE_PRIORITY, OUTPUT_PRIORITY, PARAMETER_METADATA } from "../../meta";
 import { getBackendResponse } from "../../utils";
 import ErrorText from "../generic/ErrorText";
 import HintText from "../generic/HintText";
@@ -50,32 +53,55 @@ export default function MainSettingsForm() {
 
   return (
     <Form>
-      <Separator text={STRINGS.SETTINGS_AUTOMATION} />
-      <div className="mt-3">
-        <Switch
-          checked={data.auto_charge_priority}
-          id="auto_charge_priority"
-          label={STRINGS.SETTINGS_AUTO_CHARGE_PRIORITY}
-          onChange={(e) =>
-            putSettingsDelayed({
-              auto_charge_priority: !!e.target.checked,
-            })
-          }
-        />
+      <Separator text={PARAMETER_METADATA.charge_priority.description} />
+      <div className="mb-4">
+        <div>
+          <Switch
+            checked={data.auto_charge_priority}
+            id="auto_charge_priority"
+            label={STRINGS.SETTINGS_AUTOMATIC}
+            onChange={(e) =>
+              putSettingsDelayed({
+                auto_charge_priority: !!e.target.checked,
+              })
+            }
+          />
+        </div>
+        {!data.auto_charge_priority && (
+          <ListGroup className="mt-3">
+            {Object.entries(CHARGE_PRIORITY).map(([value, label]) => (
+              <ListGroupItem className="p-2" key={value}>
+                {label}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        )}
       </div>
-      <div className="mt-3">
-        <Switch
-          checked={data.auto_output_priority}
-          id="auto_output_priority"
-          label={STRINGS.SETTINGS_AUTO_OUTPUT_PRIORITY}
-          onChange={(e) =>
-            putSettingsDelayed({
-              auto_output_priority: !!e.target.checked,
-            })
-          }
-        />
+      <Separator text={PARAMETER_METADATA.output_priority.description} />
+      <div className="mb-4">
+        <div>
+          <Switch
+            checked={data.auto_output_priority}
+            id="auto_output_priority"
+            label={STRINGS.SETTINGS_AUTOMATIC}
+            onChange={(e) =>
+              putSettingsDelayed({
+                auto_output_priority: !!e.target.checked,
+              })
+            }
+          />
+        </div>
+        {!data.auto_output_priority && (
+          <ListGroup className="mt-3">
+            {Object.entries(OUTPUT_PRIORITY).map(([value, label]) => (
+              <ListGroupItem className="p-2" key={value}>
+                {label}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        )}
       </div>
-      <HintText className="mt-4" hint={STRINGS.SETTINGS_AUTOMATION_HINT} />
+      <HintText hint={STRINGS.SETTINGS_AUTOMATION_HINT} />
     </Form>
   );
 }
