@@ -1,4 +1,4 @@
-FROM node:20.18.0-alpine3.20 AS intermediate
+FROM node:22.12.0-alpine3.21 AS intermediate
 WORKDIR /app
 
 COPY package.json .
@@ -13,7 +13,7 @@ RUN yarn run build
 
 # ---
 
-FROM python:3.13.0-alpine3.20 AS target
+FROM python:3.13.1-alpine3.21 AS target
 WORKDIR /app
 
 COPY --from=intermediate /app/solar-ui/dist .
