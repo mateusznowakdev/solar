@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from solar.core import const
 from solar.core.models import LogEntry, StateRaw, get_numeric_field_names
 from solar.core.services.logging import LoggingService
 
@@ -57,8 +58,16 @@ class SeriesResponseSerializer(Serializer):
 
 
 class SettingsSerializer(Serializer):
-    charge_priority = serializers.IntegerField(required=False)
-    output_priority = serializers.IntegerField(required=False)
+    charge_priority = serializers.IntegerField(
+        required=False,
+        min_value=min(const.CHARGE_PRIORITY_ALLOWED),
+        max_value=max(const.CHARGE_PRIORITY_ALLOWED),
+    )
+    output_priority = serializers.IntegerField(
+        required=False,
+        min_value=min(const.OUTPUT_PRIORITY_ALLOWED),
+        max_value=max(const.OUTPUT_PRIORITY_ALLOWED),
+    )
     auto_charge_priority = serializers.BooleanField(required=False)
     auto_output_priority = serializers.BooleanField(required=False)
 
