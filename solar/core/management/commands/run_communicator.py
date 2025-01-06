@@ -50,8 +50,8 @@ def run_communicator(control_service, publish_service, http_server):
 
         state = control_service.get_state()
 
-        control_service.save_state(state=state)
         control_service.postprocess_state(state=state, extra=recv_settings)
+        control_service.save_state(state=state)
         publish_service.publish(state=state)
 
         recv_settings.clear()
