@@ -148,7 +148,6 @@ class SettingsAPIService:
             if name in settings:
                 SettingsService.put_setting(name=name, checked=settings[name])
 
-        # TODO: handle errors
-        requests.post("http://transporter:8100", json=settings)
+        requests.post("http://communicator:8100", json=settings)
 
         return SettingsAPIService.get_settings()
