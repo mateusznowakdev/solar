@@ -81,6 +81,14 @@ def send_data(client: ModbusSerialClient, reg: int, value: int) -> None:
     client.write_register(reg, value, 1)
 
 
+def send_charge_priority(client: ModbusSerialClient, value: int) -> None:
+    send_data(client, 0xE20F, value)
+
+
+def send_output_priority(client: ModbusSerialClient, value: int) -> None:
+    send_data(client, 0xE204, value)
+
+
 class ModbusLenientSerialClient(ModbusSerialClient):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -159,22 +167,36 @@ class BaseControlService:
         state.save()
 
     def postprocess_state(self, *, state: StateRaw, extra: dict) -> None:
-        self._update_settings(settings=extra)
+        self._update_charge_priority(settings=extra)
+        self._update_output_priority(settings=extra)
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
 
-    def _update_settings(self, *, settings: dict) -> None:
-        if value := settings.get("auto_charge_priority"):
-            self.auto_charge_priority = value
-            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY)
-        elif value := settings.get("charge_priority"):
-            raise NotImplementedError
+    def _update_charge_priority(self, *, settings: dict) -> None:
+        auto_key = "auto_charge_priority"
+        manual_key = "charge_priority"
 
-        if value := settings.get("auto_output_priority"):
-            self.auto_output_priority = value
-            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY)
-        elif value := settings.get("output_priority"):
-            raise NotImplementedError
+        if auto_key in settings:
+            self.auto_charge_priority = settings[auto_key]
+        elif manual_key in settings:
+            send_charge_priority(self.client, settings[manual_key])
+        else:
+            return
+
+        LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY)
+
+    def _update_output_priority(self, *, settings: dict) -> None:
+        auto_key = "auto_output_priority"
+        manual_key = "output_priority"
+
+        if auto_key in settings:
+            self.auto_output_priority = settings[auto_key]
+        elif manual_key in settings:
+            send_output_priority(self.client, settings[manual_key])
+        else:
+            return
+
+        LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY)
 
     def _process_controller_faults(self, *, state: StateRaw) -> None:
         if state.controller_faults:
