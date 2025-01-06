@@ -179,8 +179,7 @@ class BaseControlService:
         if auto_key in settings:
             self.auto_charge_priority = settings[auto_key]
         elif manual_key in settings:
-            state.charge_priority = settings[manual_key]
-            send_charge_priority(self.client, state.charge_priority)
+            send_charge_priority(self.client, settings[manual_key])
         else:
             return
 
@@ -193,8 +192,7 @@ class BaseControlService:
         if auto_key in settings:
             self.auto_output_priority = settings[auto_key]
         elif manual_key in settings:
-            state.output_priority = settings[manual_key]
-            send_output_priority(self.client, state.output_priority)
+            send_output_priority(self.client, settings[manual_key])
         else:
             return
 

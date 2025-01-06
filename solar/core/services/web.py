@@ -150,4 +150,7 @@ class SettingsAPIService:
 
         requests.post("http://communicator:8100", json=settings, timeout=2.0)
 
-        return SettingsAPIService.get_settings()
+        new_settings = SettingsAPIService.get_settings()
+        new_settings.update(**settings)
+
+        return new_settings
