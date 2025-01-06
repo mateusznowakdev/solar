@@ -3,6 +3,7 @@ from pymodbus.client import ModbusSerialClient
 
 from solar.core.models import StateRaw
 from solar.core.services.logging import LoggingService
+from solar.core.services.settings import SettingsService
 
 CHUNK_SIZE = 32
 
@@ -97,6 +98,9 @@ class BaseControlService:
         self.past_controller_faults = []
         self.past_inverter_faults = []
 
+        self.auto_charge_priority = SettingsService.get_setting(name="auto_charge_priority")
+        self.auto_output_priority = SettingsService.get_setting(name="auto_output_priority")
+
         LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CONNECTING)
 
     def get_state(self) -> StateRaw:
@@ -155,8 +159,22 @@ class BaseControlService:
         state.save()
 
     def postprocess_state(self, *, state: StateRaw, extra: dict) -> None:
+        self._update_settings(settings=extra)
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
+
+    def _update_settings(self, *, settings: dict) -> None:
+        if value := settings.get("auto_charge_priority"):
+            self.auto_charge_priority = value
+            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY)
+        elif value := settings.get("charge_priority"):
+            raise NotImplementedError
+
+        if value := settings.get("auto_output_priority"):
+            self.auto_output_priority = value
+            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY)
+        elif value := settings.get("output_priority"):
+            raise NotImplementedError
 
     def _process_controller_faults(self, *, state: StateRaw) -> None:
         if state.controller_faults:

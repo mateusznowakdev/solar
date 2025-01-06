@@ -12,7 +12,6 @@ from django.utils import timezone
 from solar.core.models import StateRaw
 from solar.core.services.control.base import BaseControlService, send_data
 from solar.core.services.logging import LoggingService
-from solar.core.services.settings import SettingsService
 
 CHARGE_PREFER_PV = 0
 CHARGE_ONLY_PV = 3
@@ -26,29 +25,13 @@ class ControlService(BaseControlService):
     def __init__(self, *, device: str) -> None:
         super().__init__(device=device)
 
-        self.auto_charge_priority = SettingsService.get_setting(name="auto_charge_priority")
-        self.auto_output_priority = SettingsService.get_setting(name="auto_output_priority")
-
         self.past_pv_voltages = collections.deque(maxlen=60)
 
-        self.next_settings_refresh_time = timezone.now() + timedelta(seconds=10)
         self.next_charge_change_time = timezone.now()
         self.next_output_change_time = timezone.now()
 
     def postprocess_state(self, *, state: StateRaw, extra: dict) -> None:
         super().postprocess_state(state=state, extra=extra)
-
-        if value := extra.get("auto_charge_priority"):
-            self.auto_charge_priority = value
-            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY)
-        elif value := extra.get("charge_priority"):
-            raise NotImplementedError
-
-        if value := extra.get("auto_output_priority"):
-            self.auto_output_priority = value
-            LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_OUTPUT_PRIORITY)
-        elif value := extra.get("output_priority"):
-            raise NotImplementedError
 
         self._change_priority(state=state)
 
