@@ -24,9 +24,6 @@ export const STRINGS = {
   SETTINGS_ADVANCED: "Zaawansowane",
   SETTINGS_APPEARANCE: "Wygląd",
   SETTINGS_AUTOMATIC: "Automatycznie",
-  SETTINGS_AUTOMATION_HINT:
-    "Ustawienia mogą zostać zaktualizowane z\u00a0opóźnieniem. " +
-    "Odpowiednia informacja pojawi się w\u00a0dzienniku.",
   SETTINGS_MAIN: "Ogólne",
   SETTINGS_SHOW_FULL_NAMES: "Pokaż pełne nazwy priorytetów",
   SYSTEM: "System",

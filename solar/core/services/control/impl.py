@@ -88,11 +88,15 @@ class ControlService(BaseControlService):
         if new_charge_priority is not None:
             send_charge_priority(self.client, new_charge_priority)
             LoggingService.log(
-                timestamp=timezone.now(), name=LoggingService.AUTOMATION_CHARGE_PRIORITY, value=new_charge_priority
+                timestamp=timezone.now(),
+                name=LoggingService.AUTOMATION_CHARGE_PRIORITY,
+                value=new_charge_priority,
             )
 
         if new_output_priority is not None:
             send_output_priority(self.client, new_output_priority)
             LoggingService.log(
-                timestamp=timezone.now(), name=LoggingService.AUTOMATION_OUTPUT_PRIORITY, value=new_output_priority
+                timestamp=timezone.now(),
+                name=LoggingService.AUTOMATION_OUTPUT_PRIORITY,
+                value=new_output_priority,
             )

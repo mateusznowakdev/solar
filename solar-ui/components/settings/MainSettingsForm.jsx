@@ -9,7 +9,6 @@ import { STRINGS } from "../../locale";
 import { CHARGE_PRIORITY, OUTPUT_PRIORITY, PARAMETER_METADATA } from "../../meta";
 import { getBackendResponse } from "../../utils";
 import ErrorText from "../generic/ErrorText";
-import HintText from "../generic/HintText";
 import LoadingText from "../generic/LoadingText";
 import Separator from "../generic/Separator";
 
@@ -44,7 +43,7 @@ export default function MainSettingsForm() {
 
   function putSettingsDelayed(data) {
     setLoading(true);
-    setTimeout(() => putSettings(data), 1000);
+    setTimeout(() => putSettings(data), 100);
   }
 
   useEffect(getSettings, []);
@@ -69,7 +68,15 @@ export default function MainSettingsForm() {
         {!data.auto_charge_priority && (
           <ListGroup className="mt-3">
             {Object.entries(CHARGE_PRIORITY).map(([value, label]) => (
-              <ListGroupItem className="d-flex justify-content-between p-2" key={value}>
+              <ListGroupItem
+                className="d-flex justify-content-between p-2"
+                key={value}
+                onClick={() =>
+                  putSettingsDelayed({
+                    charge_priority: value,
+                  })
+                }
+              >
                 {label}
                 {data.charge_priority === +value && <Check strokeWidth={1.25} />}
               </ListGroupItem>
@@ -92,7 +99,15 @@ export default function MainSettingsForm() {
         {!data.auto_output_priority && (
           <ListGroup className="mt-3">
             {Object.entries(OUTPUT_PRIORITY).map(([value, label]) => (
-              <ListGroupItem className="d-flex justify-content-between p-2" key={value}>
+              <ListGroupItem
+                className="d-flex justify-content-between p-2"
+                key={value}
+                onClick={() =>
+                  putSettingsDelayed({
+                    output_priority: value,
+                  })
+                }
+              >
                 {label}
                 {data.output_priority === +value && <Check strokeWidth={1.25} />}
               </ListGroupItem>
@@ -100,7 +115,6 @@ export default function MainSettingsForm() {
           </ListGroup>
         )}
       </div>
-      <HintText hint={STRINGS.SETTINGS_AUTOMATION_HINT} />
     </Form>
   );
 }
