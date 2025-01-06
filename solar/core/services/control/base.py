@@ -167,32 +167,36 @@ class BaseControlService:
         state.save()
 
     def postprocess_state(self, *, state: StateRaw, extra: dict) -> None:
-        self._update_charge_priority(settings=extra)
-        self._update_output_priority(settings=extra)
+        self._update_charge_priority(state=state, settings=extra)
+        self._update_output_priority(state=state, settings=extra)
         self._process_controller_faults(state=state)
         self._process_inverter_faults(state=state)
 
-    def _update_charge_priority(self, *, settings: dict) -> None:
+    def _update_charge_priority(self, *, state: StateRaw, settings: dict) -> None:
         auto_key = "auto_charge_priority"
         manual_key = "charge_priority"
 
         if auto_key in settings:
             self.auto_charge_priority = settings[auto_key]
         elif manual_key in settings:
-            send_charge_priority(self.client, settings[manual_key])
+            state.charge_priority = settings[manual_key]
+            state.save()
+            send_charge_priority(self.client, state.charge_priority)
         else:
             return
 
         LoggingService.log(timestamp=timezone.now(), name=LoggingService.SYSTEM_CHARGE_PRIORITY)
 
-    def _update_output_priority(self, *, settings: dict) -> None:
+    def _update_output_priority(self, *, state: StateRaw, settings: dict) -> None:
         auto_key = "auto_output_priority"
         manual_key = "output_priority"
 
         if auto_key in settings:
             self.auto_output_priority = settings[auto_key]
         elif manual_key in settings:
-            send_output_priority(self.client, settings[manual_key])
+            state.output_priority = settings[manual_key]
+            state.save()
+            send_output_priority(self.client, state.output_priority)
         else:
             return
 
