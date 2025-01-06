@@ -47,19 +47,19 @@ export default function MainSettingsForm() {
   }
 
   function patchChargePriority(value) {
-    patchSettingsDelayed({charge_priority: value})
+    patchSettingsDelayed({ charge_priority: value });
   }
 
   function patchOutputPriority(value) {
-    patchSettingsDelayed({output_priority: value})
+    patchSettingsDelayed({ output_priority: value });
   }
 
   function patchAutoChargePriority(value) {
-    patchSettingsDelayed({auto_charge_priority: value})
+    patchSettingsDelayed({ auto_charge_priority: value });
   }
 
   function patchAutoOutputPriority(value) {
-    patchSettingsDelayed({auto_output_priority: value})
+    patchSettingsDelayed({ auto_output_priority: value });
   }
 
   useEffect(getSettings, []);

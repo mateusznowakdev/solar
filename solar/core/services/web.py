@@ -148,6 +148,6 @@ class SettingsAPIService:
             if name in settings:
                 SettingsService.put_setting(name=name, checked=settings[name])
 
-        requests.post("http://communicator:8100", json=settings)
+        requests.post("http://communicator:8100", json=settings, timeout=2.0)
 
         return SettingsAPIService.get_settings()

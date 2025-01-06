@@ -15,7 +15,7 @@ recv_settings = {}
 
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_POST(self):
+    def do_POST(self):  # pylint:disable=invalid-name
         content_length = int(self.headers["content-length"])
         body = self.rfile.read(content_length)
         body = json.loads(body)
