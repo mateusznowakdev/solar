@@ -27,7 +27,7 @@ export default function MainSettingsForm() {
     });
   }
 
-  function putSettings(data) {
+  function patchSettings(data) {
     setLoading(true);
 
     getBackendResponse("/api/settings/", {
@@ -41,9 +41,25 @@ export default function MainSettingsForm() {
     });
   }
 
-  function putSettingsDelayed(data) {
+  function patchSettingsDelayed(data) {
     setLoading(true);
-    setTimeout(() => putSettings(data), 100);
+    setTimeout(() => patchSettings(data), 100);
+  }
+
+  function patchChargePriority(value) {
+    patchSettingsDelayed({charge_priority: value})
+  }
+
+  function patchOutputPriority(value) {
+    patchSettingsDelayed({output_priority: value})
+  }
+
+  function patchAutoChargePriority(value) {
+    patchSettingsDelayed({auto_charge_priority: value})
+  }
+
+  function patchAutoOutputPriority(value) {
+    patchSettingsDelayed({auto_output_priority: value})
   }
 
   useEffect(getSettings, []);
@@ -59,11 +75,7 @@ export default function MainSettingsForm() {
           checked={data.auto_charge_priority}
           id="auto_charge_priority"
           label={STRINGS.SETTINGS_AUTOMATIC}
-          onChange={(e) =>
-            putSettingsDelayed({
-              auto_charge_priority: !!e.target.checked,
-            })
-          }
+          onChange={(e) => patchAutoChargePriority(!!e.target.checked)}
         />
         {!data.auto_charge_priority && (
           <ListGroup className="mt-3">
@@ -71,11 +83,7 @@ export default function MainSettingsForm() {
               <ListGroupItem
                 className="d-flex justify-content-between p-2"
                 key={value}
-                onClick={() =>
-                  putSettingsDelayed({
-                    charge_priority: value,
-                  })
-                }
+                onClick={() => patchChargePriority(+value)}
               >
                 {label}
                 {data.charge_priority === +value && <Check strokeWidth={1.25} />}
@@ -90,11 +98,7 @@ export default function MainSettingsForm() {
           checked={data.auto_output_priority}
           id="auto_output_priority"
           label={STRINGS.SETTINGS_AUTOMATIC}
-          onChange={(e) =>
-            putSettingsDelayed({
-              auto_output_priority: !!e.target.checked,
-            })
-          }
+          onChange={(e) => patchAutoOutputPriority(!!e.target.checked)}
         />
         {!data.auto_output_priority && (
           <ListGroup className="mt-3">
@@ -102,11 +106,7 @@ export default function MainSettingsForm() {
               <ListGroupItem
                 className="d-flex justify-content-between p-2"
                 key={value}
-                onClick={() =>
-                  putSettingsDelayed({
-                    output_priority: value,
-                  })
-                }
+                onClick={() => patchOutputPriority(+value)}
               >
                 {label}
                 {data.output_priority === +value && <Check strokeWidth={1.25} />}
