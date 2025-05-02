@@ -9,6 +9,7 @@ export const STRINGS = {
     "programistycznych.",
   ERRORS: "Błędy",
   LOADING: "Wczytywanie",
+  LOG_HINT: "Wybierz filtry z listy powyżej",
   MENU_CHARTS: "Wykresy",
   MENU_LOG: "Dziennik",
   MENU_MAIN: "Na żywo",

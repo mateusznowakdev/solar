@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import ErrorText from "../components/generic/ErrorText";
+import HintText from "../components/generic/HintText";
 import LoadingText from "../components/generic/LoadingText";
 import LogFilters from "../components/log/LogFilters";
 import LogList from "../components/log/LogList";
@@ -8,9 +9,11 @@ import { STRINGS } from "../locale";
 import { STORAGE_KEYS, getStorage, setStorage } from "../storage";
 import { getBackendResponse, renderDate, toggleItem } from "../utils";
 
-function LogContainer({ data, error, loading }) {
+function LogContainer({ filters, data, error, loading }) {
   if (loading) return <LoadingText />;
   if (error) return <ErrorText error={error} />;
+
+  if (filters.length === 0) return <HintText hint={STRINGS.LOG_HINT} />;
 
   return <LogList data={data} />;
 }
@@ -23,6 +26,12 @@ export default function Log() {
   const [error, setError] = useState(null);
 
   function getLogs() {
+    if (filters.length === 0) {
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
     const params = filters.map((f) => ["category", f]);
@@ -51,7 +60,7 @@ export default function Log() {
     <>
       <h1 className="my-3">{STRINGS.MENU_LOG}</h1>
       <LogFilters filters={filters} toggleFilter={toggleFilter} />
-      <LogContainer data={data} error={error} loading={loading} />
+      <LogContainer filters={filters} data={data} error={error} loading={loading} />
     </>
   );
 }
