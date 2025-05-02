@@ -38,6 +38,10 @@ h1 {
   color: var(--bs-success);
 }
 
+.badge svg {
+  margin-right: 2px;
+}
+
 .btn {
   align-items: center;
   display: flex;
