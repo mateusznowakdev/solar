@@ -8,11 +8,18 @@
   </head>
   <body>
     <div class="container-fluid" id="root">
-      <div style="font-family: sans-serif; text-align: center">
-        <p>
-          <progress style="width: 100%"></progress>
-        </p>
-      </div>
+      <p>
+        <progress></progress>
+      </p>
+      <p id="stuck" style="display: none; font-family: sans-serif">
+        App not loading? <a style="color: black">&#128472; Refresh</a>
+        <script type="text/javascript">
+          setTimeout(() => {
+            document.querySelector("#stuck a").href = `/?t=${Date.now()}`;
+            document.querySelector("#stuck").style.removeProperty("display");
+          }, 3000);
+        </script>
+      </p>
     </div>
     <script type="module" src="/index.jsx"></script>
     <noscript>This application requires JavaScript</noscript>
