@@ -4,9 +4,8 @@ import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
 import { STORAGE_KEYS, getStorage, setStorage } from "../../storage";
-import Separator from "../generic/Separator";
 
-export default function AdvancedSettingsForm() {
+export default function AppearanceSettingsForm() {
   const [data, setData] = useState({
     [STORAGE_KEYS.FULL_NAMES]: getStorage(STORAGE_KEYS.FULL_NAMES),
   });
@@ -20,7 +19,6 @@ export default function AdvancedSettingsForm() {
 
   return (
     <Form>
-      <Separator text={STRINGS.SETTINGS_APPEARANCE} />
       <div className="mt-3 mb-4">
         <Switch
           checked={data[STORAGE_KEYS.FULL_NAMES]}

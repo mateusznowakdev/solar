@@ -6,13 +6,12 @@ import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Switch from "react-bootstrap/Switch";
 
 import { STRINGS } from "../../locale";
-import { CHARGE_PRIORITY, OUTPUT_PRIORITY, PARAMETER_METADATA } from "../../meta";
+import { CHARGE_PRIORITY, OUTPUT_PRIORITY } from "../../meta";
 import { getBackendResponse } from "../../utils";
 import ErrorText from "../generic/ErrorText";
 import LoadingText from "../generic/LoadingText";
-import Separator from "../generic/Separator";
 
-export default function MainSettingsForm() {
+export default function DeviceSettingsForm() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -69,12 +68,11 @@ export default function MainSettingsForm() {
 
   return (
     <Form>
-      <Separator text={PARAMETER_METADATA.charge_priority.description} />
-      <div className="mb-4">
+      <div className="mt-3 mb-4">
         <Switch
           checked={data.auto_charge_priority}
           id="auto_charge_priority"
-          label={STRINGS.SETTINGS_AUTOMATIC}
+          label={STRINGS.SETTINGS_CHARGE_PRIORITY}
           onChange={(e) => patchAutoChargePriority(!!e.target.checked)}
         />
         {!data.auto_charge_priority && (
@@ -92,12 +90,11 @@ export default function MainSettingsForm() {
           </ListGroup>
         )}
       </div>
-      <Separator text={PARAMETER_METADATA.output_priority.description} />
       <div className="mb-4">
         <Switch
           checked={data.auto_output_priority}
           id="auto_output_priority"
-          label={STRINGS.SETTINGS_AUTOMATIC}
+          label={STRINGS.SETTINGS_OUTPUT_PRIORITY}
           onChange={(e) => patchAutoOutputPriority(!!e.target.checked)}
         />
         {!data.auto_output_priority && (
