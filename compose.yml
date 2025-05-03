@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/mateusznowakdev/solar/frontend:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/frontend:1.11.0
     build:
       dockerfile: config/frontend/Dockerfile
     deploy:
@@ -10,7 +10,7 @@ services:
     logging:
       driver: journald
   backend:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
     build:
       dockerfile: config/backend/Dockerfile
     command: python manage.py runserver --noreload --nostatic 0.0.0.0:8000
@@ -25,7 +25,7 @@ services:
     logging:
       driver: journald
   communicator:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
     build:
       dockerfile: config/backend/Dockerfile
     command: python manage.py run_communicator
@@ -44,7 +44,7 @@ services:
       driver: journald
     privileged: true
   transformer:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
     build:
       dockerfile: config/backend/Dockerfile
     command: python manage.py run_transformer
@@ -59,7 +59,7 @@ services:
     logging:
       driver: journald
   db:
-    image: ghcr.io/mateusznowakdev/solar/db:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/db:1.11.0
     build:
       dockerfile: config/db/Dockerfile
     deploy:
@@ -73,7 +73,7 @@ services:
     volumes:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
   mqtt:
-    image: ghcr.io/mateusznowakdev/solar/mqtt:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/mqtt:1.11.0
     build:
       dockerfile: config/mqtt/Dockerfile
     env_file:
@@ -87,7 +87,7 @@ services:
     ports:
       - 1883:1883
   nginx:
-    image: ghcr.io/mateusznowakdev/solar/nginx:1.10.0
+    image: ghcr.io/mateusznowakdev/solar/nginx:1.11.0
     build:
       dockerfile: config/nginx/Dockerfile
     deploy:

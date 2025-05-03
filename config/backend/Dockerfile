@@ -1,7 +1,7 @@
-FROM python:3.13.1-alpine3.21 AS intermediate
+FROM python:3.13.3-alpine3.21 AS intermediate
 WORKDIR /app
 
-RUN apk add poetry
+RUN pip install "poetry==2.1.2" "poetry-plugin-export==1.9.0"
 
 COPY poetry.lock .
 COPY pyproject.toml .
@@ -10,7 +10,7 @@ RUN poetry export > requirements.txt
 
 # ---
 
-FROM python:3.13.1-alpine3.21 AS target
+FROM python:3.13.3-alpine3.21 AS target
 WORKDIR /app
 
 RUN apk add tzdata
