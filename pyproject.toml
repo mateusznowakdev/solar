@@ -4,21 +4,21 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.13"
 astral = "^3.2"
-django = "^5.1.5"
-django-cors-headers = "^4.6.0"
-djangorestframework = "^3.15.2"
+django = "^5.2"
+django-cors-headers = "^4.7.0"
+djangorestframework = "^3.16.0"
 drf-spectacular = "^0.28.0"
 paho-mqtt = "^2.1.0"
-psycopg = {extras = ["binary"], version = "^3.2.4"}
+psycopg = {extras = ["binary"], version = "^3.2.7"}
 pymodbus = "<3.7"  # 3.7.3 had major refactor (in a point release...) which caused performance issues
 pyserial = "^3.5"
 python-dateutil = "^2.9.0.post0"
 requests = "^2.32.3"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.10.0"
-isort = "^5.13.2"
-pylint = "^3.3.3"
+black = "^25.1.0"
+isort = "^6.0.1"
+pylint = "^3.3.6"
 pylint-django = "^2.6.1"
 
 [tool.black]
