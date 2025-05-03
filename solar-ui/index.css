@@ -93,8 +93,12 @@ h1 {
 }
 
 .nav-link.active {
-  color: var(--bs-green);
-  font-weight: 500;
+  color: var(--bs-green) !important;
+  font-weight: 700;
+}
+
+.nav-link.active svg {
+  stroke-width: 1.75;
 }
 
 .network-indicator {
