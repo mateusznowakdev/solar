@@ -7,13 +7,18 @@ services:
       restart_policy:
         condition: any
         delay: 5s
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -A docker-healthcheck -f http://localhost" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: journald
+
   backend:
     image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
     build:
       dockerfile: config/backend/Dockerfile
-    command: python manage.py runserver --noreload --nostatic 0.0.0.0:8000
     deploy:
       restart_policy:
         condition: any
@@ -22,8 +27,14 @@ services:
       - .env
     environment:
       - POSTGRES_HOST=db
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -A docker-healthcheck -f http://localhost/api/healthcheck/" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: journald
+
   communicator:
     image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
     build:
@@ -43,6 +54,7 @@ services:
     logging:
       driver: journald
     privileged: true
+
   transformer:
     image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
     build:
@@ -58,6 +70,7 @@ services:
       - POSTGRES_HOST=db
     logging:
       driver: journald
+
   db:
     image: ghcr.io/mateusznowakdev/solar/db:1.11.0
     build:
@@ -68,10 +81,16 @@ services:
         delay: 5s
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
     logging:
       driver: journald
     volumes:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
+
   mqtt:
     image: ghcr.io/mateusznowakdev/solar/mqtt:1.11.0
     build:
@@ -82,10 +101,16 @@ services:
       restart_policy:
         condition: any
         delay: 5s
+    healthcheck:
+      test: [ "CMD-SHELL", "mosquitto_sub -i healthcheck -t solar/json -C 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: journald
     ports:
-      - 1883:1883
+      - "1883:1883"
+
   nginx:
     image: ghcr.io/mateusznowakdev/solar/nginx:1.11.0
     build:
@@ -94,7 +119,12 @@ services:
       restart_policy:
         condition: any
         delay: 5s
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -A docker-healthcheck -f http://localhost" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging:
       driver: journald
     ports:
-      - 80:80
+      - "80:80"

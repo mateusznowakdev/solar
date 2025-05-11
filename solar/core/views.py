@@ -21,6 +21,11 @@ from solar.core.services.web import (
 )
 
 
+class HealthcheckAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        return Response()
+
+
 class LogAPIView(views.APIView):
     category = OpenApiParameter("category", type=OpenApiTypes.STR, many=True)
 

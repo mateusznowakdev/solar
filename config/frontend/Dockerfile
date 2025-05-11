@@ -16,6 +16,8 @@ RUN npm run build
 FROM python:3.13.3-alpine3.21 AS target
 WORKDIR /app
 
+RUN apk add curl
+
 COPY --from=intermediate /app/solar-ui/dist .
 
-ENTRYPOINT ["python", "-m", "http.server", "80"]
+CMD ["python", "-m", "http.server", "80"]
