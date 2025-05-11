@@ -22,4 +22,4 @@ WORKDIR /app
 COPY solar solar
 COPY manage.py .
 
-CMD ["python", "manage.py", "runserver", "--noreload", "--nostatic", "0.0.0.0:80"]
+CMD ["gunicorn", "-w", "4", "-b", ":80", "solar.wsgi"]

@@ -8,6 +8,7 @@ django = "^5.2"
 django-cors-headers = "^4.7.0"
 djangorestframework = "^3.16.0"
 drf-spectacular = "^0.28.0"
+gunicorn = "^23.0.0"
 paho-mqtt = "^2.1.0"
 psycopg = {extras = ["binary"], version = "^3.2.7"}
 pymodbus = "<3.7"  # 3.7.3 had major refactor (in a point release...) which caused performance issues
