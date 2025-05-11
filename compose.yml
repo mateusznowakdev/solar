@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/mateusznowakdev/solar/frontend:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/frontend:1.11.1
     build:
       dockerfile: config/frontend/Dockerfile
     deploy:
@@ -16,7 +16,7 @@ services:
       driver: journald
 
   backend:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/backend:1.11.1
     build:
       dockerfile: config/backend/Dockerfile
     deploy:
@@ -36,7 +36,7 @@ services:
       driver: journald
 
   communicator:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/backend:1.11.1
     build:
       dockerfile: config/backend/Dockerfile
     command: python manage.py run_communicator
@@ -56,7 +56,7 @@ services:
     privileged: true
 
   transformer:
-    image: ghcr.io/mateusznowakdev/solar/backend:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/backend:1.11.1
     build:
       dockerfile: config/backend/Dockerfile
     command: python manage.py run_transformer
@@ -72,7 +72,7 @@ services:
       driver: journald
 
   db:
-    image: ghcr.io/mateusznowakdev/solar/db:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/db:1.11.1
     build:
       dockerfile: config/db/Dockerfile
     deploy:
@@ -92,7 +92,7 @@ services:
       - /var/lib/solar/postgresql/data:/var/lib/postgresql/data
 
   mqtt:
-    image: ghcr.io/mateusznowakdev/solar/mqtt:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/mqtt:1.11.1
     build:
       dockerfile: config/mqtt/Dockerfile
     env_file:
@@ -102,7 +102,7 @@ services:
         condition: any
         delay: 5s
     healthcheck:
-      test: [ "CMD-SHELL", "mosquitto_sub -i healthcheck -t solar/json -C 1" ]
+      test: [ "CMD-SHELL", "mosquitto_sub -i docker-healthcheck -t solar/json -C 1" ]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -112,7 +112,7 @@ services:
       - "1883:1883"
 
   nginx:
-    image: ghcr.io/mateusznowakdev/solar/nginx:1.11.0
+    image: ghcr.io/mateusznowakdev/solar/nginx:1.11.1
     build:
       dockerfile: config/nginx/Dockerfile
     deploy:
