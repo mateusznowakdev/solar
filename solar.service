@@ -1,0 +1,16 @@
+[Unit]
+Description=Restart unhealthy services
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=user
+Group=docker
+WorkingDirectory=/home/user/solar
+ExecStart=/home/user/solar/healthcheck.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
