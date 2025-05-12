@@ -22,4 +22,4 @@ WORKDIR /app
 COPY solar solar
 COPY manage.py .
 
-CMD ["gunicorn", "--access-logfile", "-", "-w", "4", "-b", ":80", "solar.wsgi"]
+CMD gunicorn --access-logfile - --error-logfile - --capture-output -w 4 -b :80 solar.wsgi

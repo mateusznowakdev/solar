@@ -20,4 +20,4 @@ RUN apk add curl
 
 COPY --from=intermediate /app/solar-ui/dist .
 
-CMD ["python", "-m", "http.server", "80"]
+CMD python -m http.server 80
