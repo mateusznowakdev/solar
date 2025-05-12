@@ -1,9 +1,9 @@
 from django.utils import timezone
 from pymodbus.client import ModbusSerialClient
 
-from solar.core.models import StateRaw
-from solar.core.services.logging import LoggingService
-from solar.core.services.settings import SettingsService
+from solar.models import StateRaw
+from solar.services.logging import LoggingService
+from solar.services.settings import SettingsService
 
 CHUNK_SIZE = 32
 

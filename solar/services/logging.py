@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any
 
-from solar.core.models import LogEntry
+from solar.models import LogEntry
 
 
 class LoggingService:

@@ -5,8 +5,8 @@ from dateutil.relativedelta import relativedelta
 from django.db.models import Case, QuerySet, Sum, When
 from django.utils import timezone
 
-from solar.core.models import LogEntry, StateArchive, StateRaw, StateT1, StateT2, StateT3, StateT4
-from solar.core.services.settings import SettingsService
+from solar.models import LogEntry, StateArchive, StateRaw, StateT1, StateT2, StateT3, StateT4
+from solar.services.settings import SettingsService
 
 CHART_DATA_MODELS = (
     (StateRaw, timedelta(hours=1)),

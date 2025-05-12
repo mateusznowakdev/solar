@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from solar.core.views import (
+from solar.views import (
     HealthcheckAPIView,
     LogAPIView,
     ProductionDailyAPIView,

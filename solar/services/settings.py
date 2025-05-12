@@ -1,4 +1,4 @@
-from solar.core.models import SettingsEntry
+from solar.models import SettingsEntry
 
 
 class SettingsService:

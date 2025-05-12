@@ -4,7 +4,7 @@ from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from solar.core.serializers import (
+from solar.serializers import (
     LogRequestSerializer,
     LogResponseSerializer,
     ProductionResponseSerializer,
@@ -13,7 +13,7 @@ from solar.core.serializers import (
     SettingsRequestSerializer,
     SettingsResponseSerializer,
 )
-from solar.core.services.web import (
+from solar.services.web import (
     LogAPIService,
     ProductionAPIService,
     SeriesAPIService,

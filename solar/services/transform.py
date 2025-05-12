@@ -1,6 +1,6 @@
 from django.db import connection, transaction
 
-from solar.core.models import StateCache, StateRaw
+from solar.models import StateCache, StateRaw
 
 INSERT_NEW_DATA = """
     insert into {target} (

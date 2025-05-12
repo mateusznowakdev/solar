@@ -9,14 +9,24 @@ from astral.sun import sun
 from django.conf import settings
 from django.utils import timezone
 
-from solar.core import const
-from solar.core.models import StateRaw
-from solar.core.services.control.base import (
+from solar.models import StateRaw
+from solar.services.control.base import (
     BaseControlService,
     send_charge_priority,
     send_output_priority,
 )
-from solar.core.services.logging import LoggingService
+from solar.services.logging import LoggingService
+
+CHARGE_PRIORITY_ID_PREFER_PV = 0
+CHARGE_PRIORITY_ID_PREFER_GRID = 1
+CHARGE_PRIORITY_ID_HYBRID = 2
+CHARGE_PRIORITY_ID_ONLY_PV = 3
+CHARGE_PRIORITY_ALLOWED = (0, 1, 2, 3)
+
+OUTPUT_PRIORITY_ID_PV = 0
+OUTPUT_PRIORITY_ID_GRID = 1
+OUTPUT_PRIORITY_ID_INVERTER = 2
+OUTPUT_PRIORITY_ALLOWED = (0, 1, 2)
 
 
 class ControlService(BaseControlService):
@@ -64,26 +74,26 @@ class ControlService(BaseControlService):
             self.next_charge_change_time = now + timedelta(seconds=10)
 
             if charging_time:
-                if state.charge_priority != const.CHARGE_PRIORITY_ID_PREFER_PV:
-                    new_charge_priority = const.CHARGE_PRIORITY_ID_PREFER_PV
+                if state.charge_priority != CHARGE_PRIORITY_ID_PREFER_PV:
+                    new_charge_priority = CHARGE_PRIORITY_ID_PREFER_PV
                     self.next_charge_change_time = now + timedelta(minutes=1)
             else:
-                if state.charge_priority != const.CHARGE_PRIORITY_ID_ONLY_PV:
-                    new_charge_priority = const.CHARGE_PRIORITY_ID_ONLY_PV
+                if state.charge_priority != CHARGE_PRIORITY_ID_ONLY_PV:
+                    new_charge_priority = CHARGE_PRIORITY_ID_ONLY_PV
                     self.next_charge_change_time = now + timedelta(minutes=1)
 
         if self.auto_output_priority and now > self.next_output_change_time:
             self.next_output_change_time = now + timedelta(seconds=10)
 
             if grid_time:
-                if state.output_priority != const.OUTPUT_PRIORITY_ID_GRID:
-                    new_output_priority = const.OUTPUT_PRIORITY_ID_GRID
+                if state.output_priority != OUTPUT_PRIORITY_ID_GRID:
+                    new_output_priority = OUTPUT_PRIORITY_ID_GRID
             elif is_low_voltage:
-                if state.output_priority != const.OUTPUT_PRIORITY_ID_INVERTER:
-                    new_output_priority = const.OUTPUT_PRIORITY_ID_INVERTER
+                if state.output_priority != OUTPUT_PRIORITY_ID_INVERTER:
+                    new_output_priority = OUTPUT_PRIORITY_ID_INVERTER
             elif is_high_voltage:
-                if state.output_priority != const.OUTPUT_PRIORITY_ID_PV:
-                    new_output_priority = const.OUTPUT_PRIORITY_ID_PV
+                if state.output_priority != OUTPUT_PRIORITY_ID_PV:
+                    new_output_priority = OUTPUT_PRIORITY_ID_PV
 
         if new_charge_priority is not None:
             send_charge_priority(self.client, new_charge_priority)

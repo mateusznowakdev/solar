@@ -6,8 +6,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from django.core.management import BaseCommand
 
-from solar.core.services.control import ControlService
-from solar.core.services.publish import PublishService
+from solar.services.control.impl import ControlService
+from solar.services.publish import PublishService
 
 DEVICE_LIST = ("/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3")
 

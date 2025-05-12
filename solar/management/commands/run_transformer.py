@@ -5,8 +5,8 @@ from datetime import timedelta
 from django.core.management import BaseCommand
 from django.utils import timezone
 
-from solar.core.models import LogEntry, StateArchive, StateT1, StateT2, StateT3, StateT4
-from solar.core.services.transform import TransformService
+from solar.models import LogEntry, StateArchive, StateT1, StateT2, StateT3, StateT4
+from solar.services.transform import TransformService
 
 
 def catch_exception(fn):

@@ -6,8 +6,8 @@ from django.forms import model_to_dict
 from paho.mqtt.client import Client
 from paho.mqtt.enums import CallbackAPIVersion
 
-from solar.core.models import StateRaw
-from solar.core.serializers import StateSerializer
+from solar.models import StateRaw
+from solar.serializers import StateSerializer
 
 MQTT_TOPIC_PREFIX = "solar/"
 
