@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import JsonResponse
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
@@ -10,6 +11,23 @@ from solar.views import (
     SeriesAPIView,
     SettingsAPIView,
 )
+
+
+def handler400(request, exception):  # pylint:disable=unused-argument
+    return JsonResponse({"detail": "Bad request."}, status=400)
+
+
+def handler403(request, exception):  # pylint:disable=unused-argument
+    return JsonResponse({"detail": "Permission denied."}, status=403)
+
+
+def handler404(request, exception):  # pylint:disable=unused-argument
+    return JsonResponse({"detail": "Not found."}, status=404)
+
+
+def handler500(request):  # pylint:disable=unused-argument
+    return JsonResponse({"detail": "Server error."}, status=500)
+
 
 urlpatterns = [
     path("api/healthcheck/", HealthcheckAPIView.as_view()),
