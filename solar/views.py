@@ -21,11 +21,6 @@ from solar.services.web import (
 )
 
 
-class HealthcheckAPIView(views.APIView):
-    def get(self, request: Request) -> Response:
-        return Response()
-
-
 class LogAPIView(views.APIView):
     category = OpenApiParameter("category", type=OpenApiTypes.STR, many=True)
 
@@ -102,3 +97,8 @@ class SettingsAPIView(views.APIView):
         out_serializer = SettingsResponseSerializer(out_data)
 
         return Response(data=out_serializer.data)
+
+
+class StatusAPIView(views.APIView):
+    def get(self, request: Request) -> Response:
+        return Response({"status": "ok"})

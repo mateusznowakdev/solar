@@ -8,10 +8,10 @@ services:
         condition: any
         delay: 5s
     healthcheck:
-      test: [ "CMD-SHELL", "curl -A docker-healthcheck -f http://localhost" ]
-      interval: 30s
+      test: [ "CMD-SHELL", "curl -L -A docker-healthcheck -f http://localhost" ]
+      interval: 15s
       timeout: 5s
-      retries: 3
+      retries: 2
     logging:
       driver: journald
 
@@ -28,10 +28,10 @@ services:
     environment:
       - POSTGRES_HOST=db
     healthcheck:
-      test: [ "CMD-SHELL", "curl -A docker-healthcheck -f http://localhost/api/healthcheck/" ]
-      interval: 30s
+      test: [ "CMD-SHELL", "curl -L -A docker-healthcheck -f http://localhost/api/" ]
+      interval: 15s
       timeout: 5s
-      retries: 3
+      retries: 2
     logging:
       driver: journald
 
@@ -85,7 +85,7 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 1s
-      retries: 3
+      retries: 2
     logging:
       driver: journald
     volumes:
@@ -103,9 +103,9 @@ services:
         delay: 5s
     healthcheck:
       test: [ "CMD-SHELL", "mosquitto_sub -i docker-healthcheck -t solar/json -C 1" ]
-      interval: 30s
+      interval: 15s
       timeout: 5s
-      retries: 3
+      retries: 2
     logging:
       driver: journald
     ports:
@@ -120,10 +120,12 @@ services:
         condition: any
         delay: 5s
     healthcheck:
-      test: [ "CMD-SHELL", "curl -A docker-healthcheck -f http://localhost" ]
-      interval: 30s
+      test: [ "CMD-SHELL", "
+        curl -L -A docker-healthcheck -f http://localhost &&
+        curl -L -A docker-healthcheck -f http://localhost/api/" ]
+      interval: 15s
       timeout: 5s
-      retries: 3
+      retries: 2
     logging:
       driver: journald
     ports:

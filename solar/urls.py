@@ -4,12 +4,12 @@ from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from solar.views import (
-    HealthcheckAPIView,
     LogAPIView,
     ProductionDailyAPIView,
     ProductionMonthlyAPIView,
     SeriesAPIView,
     SettingsAPIView,
+    StatusAPIView,
 )
 
 
@@ -30,7 +30,7 @@ def handler500(request):  # pylint:disable=unused-argument
 
 
 urlpatterns = [
-    path("api/healthcheck/", HealthcheckAPIView.as_view()),
+    path("api/", StatusAPIView.as_view()),
     path("api/log/", LogAPIView.as_view()),
     path("api/production/daily/", ProductionDailyAPIView.as_view()),
     path("api/production/monthly/", ProductionMonthlyAPIView.as_view()),
